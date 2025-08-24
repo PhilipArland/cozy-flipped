@@ -20,11 +20,57 @@
     align-items: center;
 }
 
-body {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, var(--warm-cream) 0%, #f5f1eb 100%);
-    color: var(--deep-brown);
+#main-container {
+    transition: all 0.3s ease;
 }
+
+#sidebar {
+    width: 400px;
+    transition: all 0.3s ease;
+}
+
+#sidebar.closed {
+    width: 80px;
+    overflow: hidden;
+    padding: 0;
+}
+
+#content {
+    transition: all 0.3s ease;
+}
+
+.cozy-profile img {
+    object-fit: cover;
+    width: 250px;
+    height: 250px;
+    border-radius: 16px;
+    transition: all 0.3s ease-in-out;
+}
+
+#sidebar.closed .cozy-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+}
+
+#sidebar span {
+    display: inline-block;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+    /* smooth fade */
+}
+
+#sidebar.closed span {
+    opacity: 0;
+    /* fade out instead of instantly hiding */
+    pointer-events: none;
+    /* prevent interaction when hidden */
+}
+
+#sidebar.closed h4 {
+    display: none;
+}
+
 
 .album-cover {
     width: 40px;
@@ -93,11 +139,6 @@ body {
 .cozy-card {
     background-color: var(--warm-cream);
 }
-
-/* .cozy-card i {
-    color: var(--cozy-orange);
-    font-size: 1.5rem;
-} */
 
 .cozy-card h5 {
     color: var(--deep-brown);
