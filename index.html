@@ -22,7 +22,7 @@
                         <div class="card cozy-card p-3 rounded-4 border-1 shadow-sm">
                             <div class="d-flex align-items-center mb-3 justify-content-between">
                                 <div class="d-flex align-items-center">
-                                    <i class="bi bi-list-check me-2"></i>
+                                    <i class="bi bi-list-check me-2" style="color: var(--cozy-orange); font-size: 1.5rem;"></i>
                                     <h5 class="mb-0">Exercise To-Do</h5>
                                 </div>
                                 <button class="btn-add" data-bs-toggle="modal" data-bs-target="#addExerciseModal">
@@ -40,7 +40,7 @@
                     <div class="col-md-4">
                         <div class="card cozy-card rounded-4 border-1 shadow-sm text-center p-3">
                             <div class="d-flex align-items-center mb-3">
-                                <i class="bi bi-clock-history me-2"></i>
+                                <i class="bi bi-clock-history me-2" style="color: var(--cozy-orange); font-size: 1.5rem;"></i>
                                 <h5 class="mb-0">
                                     Cozy Timer
                                 </h5>
@@ -59,9 +59,7 @@
                                         </linearGradient>
                                     </defs>
                                 </svg>
-                                <span class="position-absolute top-50 start-50 translate-middle fs-3"
-                                    style="font-family: 'Comic Sans MS', cursive; color: var(--cozy-orange);"
-                                    id="timerDisplay">
+                                <span class="position-absolute top-50 start-50 translate-middle fs-3" style="color: var(--cozy-orange);" id="timerDisplay">
                                     00:00
                                 </span>
                             </div>
@@ -75,7 +73,7 @@
             <div class="modal fade" id="addExerciseModal" tabindex="-1" aria-labelledby="addExerciseModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog">
-                    <div class="modal-content" style="border-radius: 15px; font-family: 'Comic Sans MS', cursive;">
+                    <div class="modal-content" style="border-radius: 15px;">
                         <div class="modal-header">
                             <h5 class="modal-title" id="addExerciseModalLabel">Add New Exercise</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

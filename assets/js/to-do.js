@@ -33,7 +33,6 @@ function renderExercises() {
         // Add text
         const text = document.createElement('p');
         text.className = 'mb-0';
-        text.style.fontFamily = "'Comic Sans MS', cursive";
         text.innerHTML = 'No exercises yet! <br>Click "Add Exercise" to start your cozy routine.';
 
         placeholder.appendChild(img);
