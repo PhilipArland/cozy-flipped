@@ -24,15 +24,15 @@
     transition: all 0.3s ease;
 }
 
-#sidebar {
+#left-sidebar {
     max-width: 250px;
     transition: all 0.3s ease;
-    height: 9vh;
+    height: 96vh;
     position: sticky;
     top: 16px;
 }
 
-#sidebar.closed {
+#left-sidebar.closed {
     min-width: 80px;
     overflow: hidden;
     padding: 0;
@@ -50,26 +50,26 @@
     transition: all 0.3s ease-in-out;
 }
 
-#sidebar.closed .cozy-profile img {
+#left-sidebar.closed .cozy-profile img {
     width: 40px;
     height: 40px;
     border-radius: 10px;
 }
 
-#sidebar span {
+#left-sidebar span {
     display: inline-block;
     opacity: 1;
     transition: opacity 0.3s ease-in-out;
 }
 
-#sidebar.closed span {
+#left-sidebar.closed span {
     opacity: 0;
     pointer-events: none;
 }
 
-#sidebar.closed h4,
-#sidebar.closed p,
-#sidebar.closed span {
+#left-sidebar.closed h4,
+#left-sidebar.closed p,
+#left-sidebar.closed span {
     display: none;
 }
 
@@ -92,8 +92,8 @@ li a {
 }
 
 /* Collapsed sidebar */
-#sidebar.closed li a,
-#sidebar.closed .cozy-toggle {
+#left-sidebar.closed li a,
+#left-sidebar.closed .cozy-toggle {
     justify-content: center;
 }
 

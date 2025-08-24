@@ -209,30 +209,27 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     loadHTML("left-sidebar", "includes/left-sidebar.html", () => {
-        console.log("Left sidebar loaded");
+        const toggleBtn = document.getElementById('toggle-btn');
+        const sidebar = document.getElementById('left-sidebar');
 
-        // Toggle button
-        const toggleBtn = document.getElementById("toggle-btn");
-        const sidebar = document.getElementById("left-sidebar");
-
-        toggleBtn.addEventListener("click", () => {
-            sidebar.classList.toggle("closed");
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('closed');
             toggleBtn.innerHTML = '<i class="bi bi-list"></i>';
         });
 
-        // Sidebar navigation links
+        // Sidebar navigation
         document.querySelectorAll('#left-sidebar a[data-page]').forEach(link => {
             link.addEventListener('click', e => {
                 e.preventDefault();
                 const page = link.getAttribute('data-page');
                 loadPage(page);
 
-                // Update active class
                 document.querySelectorAll('#left-sidebar a').forEach(l => l.classList.remove('active'));
                 link.classList.add('active');
             });
         });
     });
+
 
     // Load dashboard by default
     loadPage('dashboard');

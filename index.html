@@ -17,41 +17,11 @@
             <div class="col-lg-9">
                 <div class="d-flex position-relative" id="main-container">
                     <!-- Sidebar -->
-                    <div id="sidebar" class="card cozy-card rounded-4 shadow-sm border-0 p-3 d-none d-md-block">
-                        <div id="left-sidebar" class="container-fluid p-0 m-0 center flex-column">
-
-                        </div>
+                    <div id="left-sidebar" class="card cozy-card rounded-4 shadow-sm border-0 p-3 d-none d-md-block">
+                        
                     </div>
 
-                    <div class="modal fade" id="addExerciseModal" tabindex="-1" aria-labelledby="addExerciseModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content" style="border-radius: 15px;">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="addExerciseModalLabel">Add New Exercise</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="mb-3">
-                                        <label for="exerciseNameInput" class="form-label">Exercise Name</label>
-                                        <input type="text" class="form-control" id="exerciseNameInput"
-                                            placeholder="Push-ups">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="exerciseDurationInput" class="form-label">Duration (minutes)</label>
-                                        <input type="number" class="form-control" id="exerciseDurationInput"
-                                            placeholder="30">
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn-add" id="modalAddBtn">Add Exercise</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                    
                     <!-- Main Content -->
                     <div id="content" class="flex-grow-1 p-3 py-0" style="height: 400vh;">
 
@@ -64,19 +34,7 @@
             </div>
         </div>
     </div>
-    <script>
-        const toggleBtn = document.getElementById('toggle-btn');
-        const sidebar = document.getElementById('sidebar');
 
-        toggleBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('closed');
-            if (sidebar.classList.contains('closed')) {
-                toggleBtn.innerHTML = '<i class="bi bi-list"></i>';
-            } else {
-                toggleBtn.innerHTML = '<i class="bi bi-list"></i>';
-            }
-        });
-    </script>
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/to-do.js"></script>
