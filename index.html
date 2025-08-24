@@ -12,71 +12,231 @@
 </head>
 
 <body>
-    <div class="container-fluid p-3">
+    <div class="container-fluid p-2 p-md-3">
         <div class="row g-3">
-            <div class="col-lg-9 d-none d-lg-block">
-            </div>
+            <div class="col-lg-9">
+                <div class="row g-3">
+                    <!-- Exercise List -->
 
-            <div class="col-lg-3">
-                <div class="card p-4 rounded-4 border-0 shadow-sm">
-                    <div class="d-flex align-items-center mb-4">
-                        <div class="album-cover d-flex align-items-center justify-content-center me-3">
-                            <i class="bi bi-music-note-beamed"></i>
+                    <div class="col-md-8">
+                        <div class="card cozy-card p-4 rounded-4 border-1 shadow-sm">
+                            <div class="d-flex align-items-center mb-3 justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-list-check me-2"></i>
+                                    <h5 class="mb-0">Exercise To-Do</h5>
+                                </div>
+                                <button class="btn-add" data-bs-toggle="modal" data-bs-target="#addExerciseModal">
+                                    + Add Exercise
+                                </button>
+                            </div>
+
+                            <ul class="list-unstyled m-0 p-0 exercise-list">
+
+                            </ul>
                         </div>
-                        <div>
-                            <h6 id="trackTitle" class="fw-semibold text-dark fs-6 mb-0">Multo</h6>
-                            <p id="trackArtist" class="text-muted small mb-0">Cup of Joe</p>
+                    </div>
+
+                    <!-- Timer Section -->
+                    <div class="col-md-4">
+                        <div class="card cozy-card rounded-4 border-1 shadow-sm text-center p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-clock-history me-2"></i>
+                                <h5 class="mb-0">
+                                    Cozy Timer
+                                </h5>
+                            </div>
+                            <div class="position-relative mx-auto mb-3" style="width: 150px; height: 150px;">
+                                <svg width="150" height="150">
+                                    <circle cx="75" cy="75" r="70" stroke="var(--soft-brown)" stroke-width="10"
+                                        fill="none" />
+                                    <circle id="progressCircle" cx="75" cy="75" r="70" stroke="url(#gradient)"
+                                        stroke-width="10" fill="none" stroke-dasharray="439.82"
+                                        stroke-dashoffset="439.82" stroke-linecap="round" />
+                                    <defs>
+                                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" stop-color="var(--cozy-orange)" />
+                                            <stop offset="100%" stop-color="var(--gentle-green)" />
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                                <span class="position-absolute top-50 start-50 translate-middle fs-3"
+                                    style="font-family: 'Comic Sans MS', cursive; color: var(--cozy-orange);"
+                                    id="timerDisplay">
+                                    00:00
+                                </span>
+                            </div>
+                            <button id="resetBtn" class="btn btn-secondary">Reset</button>
                         </div>
-                    </div>
-
-                    <div id="trackCover" class="album-img-cover center">
-                    </div>
-
-                    <!-- Player Controls -->
-                    <div class="d-flex justify-content-center align-items-center gap-1 mt-1">
-                        <button class="control-btn control2-btn" id="shuffleBtn" title="Shuffle">
-                            <i class="bi bi-shuffle"></i>
-                        </button>
-
-                        <button class="control-btn" id="prevBtn">
-                            <i class="bi bi-skip-start-fill"></i>
-                        </button>
-
-                        <button class="control-btn play-btn" id="playBtn">
-                            <i class="bi bi-play-fill" id="playIcon"></i>
-                        </button>
-
-                        <button class="control-btn" id="nextBtn">
-                            <i class="bi bi-skip-end-fill"></i>
-                        </button>
-
-                        <button class="control-btn control2-btn" id="repeatBtn" title="Repeat">
-                            <i class="bi bi-repeat"></i>
-                        </button>
-                    </div>
-
-
-                    <div class="progress" style="height: 6px; cursor: pointer;" id="progressContainer">
-                        <div class="progress-bar" id="progressBar"
-                            style="width: 0%; background-color: var(--cozy-orange);"></div>
-                    </div>
-
-                    <div class="d-flex justify-content-between text-muted small mt-2">
-                        <span id="currentTime">0:00</span>
-                        <span id="duration"></span>
                     </div>
                 </div>
+            </div>
 
-                <!-- Playlist -->
-                <div class="mt-4">
-                    <h6 class="fw-semibold" style="color: var(--deep-brown);">Current Playlist</h6>
-                    <div id="playlistContainer">
+            <!-- Add Modal -->
+            <div class="modal fade" id="addExerciseModal" tabindex="-1" aria-labelledby="addExerciseModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content" style="border-radius: 15px; font-family: 'Comic Sans MS', cursive;">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addExerciseModalLabel">Add New Exercise</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="exerciseNameInput" class="form-label">Exercise Name</label>
+                                <input type="text" class="form-control" id="exerciseNameInput" placeholder="Push-ups">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exerciseDurationInput" class="form-label">Duration (minutes)</label>
+                                <input type="number" class="form-control" id="exerciseDurationInput" placeholder="30">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn-add" id="modalAddBtn">Add Exercise</button>
+                        </div>
                     </div>
                 </div>
-
             </div>
+
         </div>
     </div>
+
+    <script>
+        const exerciseList = document.querySelector('.exercise-list');
+        const modalAddBtn = document.getElementById('modalAddBtn');
+        const exerciseNameInput = document.getElementById('exerciseNameInput');
+        const exerciseDurationInput = document.getElementById('exerciseDurationInput');
+
+        // Load exercises from localStorage or start empty
+        let exercises = JSON.parse(localStorage.getItem('cozyExercises')) || [];
+
+        // Save to localStorage
+        function saveExercises() {
+            localStorage.setItem('cozyExercises', JSON.stringify(exercises));
+        }
+
+        // Render exercises in the list
+        function renderExercises() {
+            exerciseList.innerHTML = '';
+            exercises.forEach(ex => {
+                const li = document.createElement('li');
+                li.className = 'exercise-item d-flex justify-content-between align-items-center mb-3';
+                li.innerHTML = `
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="exercise${ex.id}" ${ex.completed ? 'checked' : ''}>
+                <label class="form-check-label" for="exercise${ex.id}">${ex.name}</label>
+                <p class="small">${ex.duration} min</p>
+            </div>
+            <div class="d-flex gap-1">
+                <button class="start-btn btn btn-warning btn-sm">Start</button>
+                <button class="delete-btn btn btn-danger btn-sm"><i class="bi bi-trash fs-5 text-white"></i></button>
+            </div>
+        `;
+                exerciseList.appendChild(li);
+
+                const checkbox = li.querySelector('input[type="checkbox"]');
+
+                // Checkbox toggle
+                checkbox.addEventListener('change', e => {
+                    ex.completed = e.target.checked;
+                    saveExercises();
+                });
+
+                // Delete button
+                li.querySelector('.delete-btn').addEventListener('click', () => {
+                    exercises = exercises.filter(item => item.id !== ex.id);
+                    saveExercises();
+                    renderExercises();
+                });
+
+                // Start button
+                li.querySelector('.start-btn').addEventListener('click', () => {
+                    startExerciseTimer(ex);
+                });
+            });
+        }
+
+        const timerSound = new Audio('assets/playlist/Alarm02.wav');
+
+        // Timer logic (minutes to seconds)
+        let timerInterval;
+        function startExerciseTimer(exercise) {
+            clearInterval(timerInterval);
+            let remaining = exercise.duration * 10; // minutes to seconds
+            const timerDisplay = document.getElementById('timerDisplay');
+            const progressCircle = document.getElementById('progressCircle');
+            const circumference = 2 * Math.PI * 70;
+            progressCircle.style.strokeDasharray = circumference;
+            progressCircle.style.strokeDashoffset = circumference;
+
+            timerInterval = setInterval(() => {
+                if (remaining <= 0) {
+                    clearInterval(timerInterval);
+                    progressCircle.style.strokeDashoffset = 0;
+                    timerDisplay.textContent = '00:00';
+
+                    // Play timer sound
+                    let playCount = 0;
+                    timerSound.onended = () => {
+                        playCount++;
+                        if (playCount < 2) {
+                            timerSound.play();
+                        } else {
+                            timerSound.onended = null;
+                        }
+                    };
+
+                    timerSound.play();
+
+                    // Auto-check the exercise
+                    exercise.completed = true;
+                    saveExercises();
+                    renderExercises(); // update checkbox
+                    return;
+                }
+
+                remaining--;
+                const mins = Math.floor(remaining / 60);
+                const secs = remaining % 60;
+                timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                progressCircle.style.strokeDashoffset = circumference * (remaining / (exercise.duration * 60));
+            }, 1000);
+        }
+
+        // Add exercise from modal (duration in minutes)
+        modalAddBtn.addEventListener('click', () => {
+            const name = exerciseNameInput.value.trim();
+            const duration = parseFloat(exerciseDurationInput.value);
+
+            if (name && duration > 0) {
+                exercises.push({ id: Date.now(), name, duration, completed: false });
+                saveExercises();
+                renderExercises();
+
+                // Reset inputs and close modal
+                exerciseNameInput.value = '';
+                exerciseDurationInput.value = '';
+                const modalEl = document.getElementById('addExerciseModal');
+                const modal = bootstrap.Modal.getInstance(modalEl);
+                modal.hide();
+            } else {
+                alert('Please enter a valid name and duration!');
+            }
+        });
+
+        // Reset timer
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            clearInterval(timerInterval);
+            const timerDisplay = document.getElementById('timerDisplay');
+            const progressCircle = document.getElementById('progressCircle');
+            timerDisplay.textContent = '00:00';
+            progressCircle.style.strokeDashoffset = 2 * Math.PI * 70;
+        });
+
+        // Initial render
+        renderExercises();
+
+    </script>
 
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/main.js"></script>

@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
                 <div>
                     <h6 class="mb-1 fs-6">${track.title}</h6>
-                    <small class="text-muted">${track.artist} • <span class="track-duration">--:--</span></small>
+                    <small class="text-muted">${track.artist} • <span class="track-duration">--:--</span>
                 </div>
             `;
             playlistContainer.appendChild(item);

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Cozy Flipped</title>
+    <link href="assets/img/logo.jpg" rel="icon">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container-fluid p-2 p-md-3">
+        <div class="row g-3">
+            <div class="col-lg-9">
+                <div class="row g-3">
+                    <!-- Exercise List -->
+                    <div class="col-md-8">
+                        <div class="card cozy-card p-4 rounded-4 border-1 shadow-sm">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-list-check me-2"></i>
+                                <h5 class="mb-0">
+                                    Exercise To-Do
+                                </h5>
+                            </div>
+                            <ul class="list-unstyled m-0 p-0 exercise-list">
+                                <li class="exercise-item d-flex justify-content-between align-items-center mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="exercise1">
+                                        <label class="form-check-label" for="exercise1">
+                                            Push-ups
+                                        </label>
+                                        <p class="small">30 sec</p>
+                                    </div>
+                                    <button class="start-btn btn btn-warning btn-sm">Start</button>
+                                </li>
+                                <li class="exercise-item d-flex justify-content-between align-items-center mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="exercise2">
+                                        <label class="form-check-label" for="exercise2">
+                                            Plank
+                                        </label>
+                                        <p class="small">60 sec</p>
+                                    </div>
+                                    <button class="start-btn btn btn-warning btn-sm">Start</button>
+                                </li>
+                                <li class="exercise-item d-flex justify-content-between align-items-center mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="exercise3">
+                                        <label class="form-check-label" for="exercise3">
+                                            Jumping Jacks
+                                        </label>
+                                        <p class="small">30 sec</p>
+                                    </div>
+                                    <button class="start-btn btn btn-warning btn-sm">Start</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Timer Section -->
+                    <div class="col-md-4">
+                        <div class="card cozy-card rounded-4 border-1 shadow-sm text-center p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-clock-history me-2"></i>
+                                <h5 class="mb-0">
+                                    Cozy Timer
+                                </h5>
+                            </div>
+                            <div class="position-relative mx-auto mb-3" style="width: 150px; height: 150px;">
+                                <svg width="150" height="150">
+                                    <circle cx="75" cy="75" r="70" stroke="var(--soft-brown)" stroke-width="10"
+                                        fill="none" />
+                                    <circle id="progressCircle" cx="75" cy="75" r="70" stroke="url(#gradient)"
+                                        stroke-width="10" fill="none" stroke-dasharray="439.82"
+                                        stroke-dashoffset="439.82" stroke-linecap="round" />
+                                    <defs>
+                                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" stop-color="var(--cozy-orange)" />
+                                            <stop offset="100%" stop-color="var(--gentle-green)" />
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                                <span class="position-absolute top-50 start-50 translate-middle fs-3"
+                                    style="font-family: 'Comic Sans MS', cursive; color: var(--cozy-orange);"
+                                    id="timerDisplay">
+                                    00:00
+                                </span>
+                            </div>
+                            <button id="resetBtn" class="btn btn-secondary">Reset</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <div class="card p-4 rounded-4 border-0 shadow-sm">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <div class="d-flex">
+                            <div class="album-cover d-flex align-items-center justify-content-center me-3">
+                                <i class="bi bi-music-note-beamed"></i>
+                            </div>
+                            <div>
+                                <h6 id="trackTitle" class="fw-semibold text-dark fs-6 mb-0">Multo</h6>
+                                <p id="trackArtist" class="text-muted small mb-0">Cup of Joe</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="trackCover" class="album-img-cover center">
+                    </div>
+
+                    <!-- Player Controls -->
+                    <div class="d-flex justify-content-center align-items-center gap-1 mt-1">
+                        <button class="control-btn control2-btn" id="shuffleBtn" title="Shuffle">
+                            <i class="bi bi-shuffle"></i>
+                        </button>
+
+                        <button class="control-btn" id="prevBtn">
+                            <i class="bi bi-skip-start-fill"></i>
+                        </button>
+
+                        <button class="control-btn play-btn" id="playBtn">
+                            <i class="bi bi-play-fill" id="playIcon"></i>
+                        </button>
+
+                        <button class="control-btn" id="nextBtn">
+                            <i class="bi bi-skip-end-fill"></i>
+                        </button>
+
+                        <button class="control-btn control2-btn" id="repeatBtn" title="Repeat">
+                            <i class="bi bi-repeat"></i>
+                        </button>
+                    </div>
+
+
+                    <div class="progress" style="height: 6px; cursor: pointer;" id="progressContainer">
+                        <div class="progress-bar" id="progressBar"
+                            style="width: 0%; background-color: var(--cozy-orange);"></div>
+                    </div>
+
+                    <div class="d-flex justify-content-between text-muted small mt-2">
+                        <span id="currentTime">0:00</span>
+                        <span id="duration"></span>
+                    </div>
+                </div>
+
+                <!-- Playlist -->
+                <div class="mt-4">
+                    <h6 class="fw-semibold" style="color: var(--deep-brown);">Current Playlist</h6>
+                    <div id="playlistContainer">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>
