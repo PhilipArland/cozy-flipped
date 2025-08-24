@@ -2,7 +2,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const tracks = [
         { title: "Multo", artist: "Cup of Joe", src: "assets/playlist/multo.mp3", cover: "assets/playlist/multo.jpg" },
         { title: "Migraine", artist: "Moonstar88", src: "assets/playlist/migraine.mp3", cover: "assets/playlist/migraine.jpg" },
-        { title: "Paraluman", artist: "Adie", src: "assets/playlist/paraluman.mp3", cover: "assets/playlist/paraluman.jpg" }
+        { title: "Paraluman", artist: "Adie", src: "assets/playlist/paraluman.mp3", cover: "assets/playlist/paraluman.jpg" },
+        { title: "Multo", artist: "Cup of Joe", src: "assets/playlist/multo.mp3", cover: "assets/playlist/multo.jpg" },
+        { title: "Multo", artist: "Cup of Joe", src: "assets/playlist/multo.mp3", cover: "assets/playlist/multo.jpg" },
+        { title: "Multo", artist: "Cup of Joe", src: "assets/playlist/multo.mp3", cover: "assets/playlist/multo.jpg" },
+
     ];
 
     const playBtn = document.getElementById("playBtn");
