@@ -1,0 +1,75 @@
+:root {
+    --warm-cream: #faf7f2;
+    --soft-brown: #8b7355;
+    --cozy-orange: #d4a574;
+    --gentle-green: #a8b5a0;
+    --warm-gray: #6b6b6b;
+    --deep-brown: #4a3f35;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, var(--warm-cream) 0%, #f5f1eb 100%);
+    color: var(--deep-brown);
+}
+
+.album-cover {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(45deg, var(--cozy-orange), var(--gentle-green));
+    color: white;
+    font-size: 1.2rem;
+}
+
+.control-btn {
+    background: none;
+    border: none;
+    color: var(--soft-brown);
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 8px;
+    border-radius: 50%;
+}
+
+.control-btn:hover {
+    transform: translateY(-3px);
+}
+
+.play-btn {
+    font-size: 3rem;
+    color: var(--cozy-orange);
+}
+
+.playlist-item {
+    background: white;
+    border-radius: 15px;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.playlist-item:hover {
+    transform: translateX(10px);
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+}
+
+.playlist-item.active {
+    background: linear-gradient(45deg, var(--cozy-orange), var(--gentle-green));
+    color: white;
+}
