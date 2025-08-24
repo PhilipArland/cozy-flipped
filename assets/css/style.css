@@ -25,8 +25,9 @@
 }
 
 #sidebar {
-    width: 400px;
+    width: 250px;
     transition: all 0.3s ease;
+    height: 97vh;
 }
 
 #sidebar.closed {
@@ -42,7 +43,7 @@
 .cozy-profile img {
     object-fit: cover;
     width: 250px;
-    height: 250px;
+    height: 200px;
     border-radius: 16px;
     transition: all 0.3s ease-in-out;
 }
@@ -57,18 +58,36 @@
     display: inline-block;
     opacity: 1;
     transition: opacity 0.3s ease-in-out;
-    /* smooth fade */
 }
 
 #sidebar.closed span {
     opacity: 0;
-    /* fade out instead of instantly hiding */
     pointer-events: none;
-    /* prevent interaction when hidden */
 }
 
-#sidebar.closed h4 {
-    display: none;
+#sidebar.closed h4,
+#sidebar.closed p,
+#sidebar.closed span {
+display: none;
+}
+
+.cozy-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+li a {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+#sidebar.closed li a,
+#sidebar.closed .cozy-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 
@@ -148,7 +167,13 @@
 
 
 
-
+.btn-cozy {
+    background-color: var(--cozy-orange);
+    border-radius: 6px;
+    color: white;
+    padding: 4px 8px;
+    border: none;
+}
 
 .btn-add {
     background-color: var(--gentle-green);
