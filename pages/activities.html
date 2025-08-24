@@ -1,0 +1,52 @@
+<div class="row g-3">
+    <div class="categories">
+
+    </div>
+    <div class="col-lg-12">
+        <div class="card cozy-card p-3 rounded-4 border-1 shadow-sm">
+            <div class="d-flex align-items-center mb-3 justify-content-between">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-list-check me-2" style="color: var(--cozy-orange); font-size: 1.5rem;"></i>
+                    <h5 class="mb-0">Exercise To-Do</h5>
+                </div>
+                <button class="btn-add" data-bs-toggle="modal" data-bs-target="#addExerciseModal">
+                    + Add Exercise
+                </button>
+            </div>
+
+            <ul class="list-unstyled m-0 p-0 exercise-list">
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card cozy-card rounded-4 border-1 shadow-sm text-center p-3">
+            <div class="d-flex align-items-center mb-3">
+                <i class="bi bi-clock-history me-2" style="color: var(--cozy-orange); font-size: 1.5rem;"></i>
+                <h5 class="mb-0">
+                    Cozy Timer
+                </h5>
+            </div>
+            <div class="position-relative mx-auto mb-3" style="width: 150px; height: 150px;">
+                <svg width="150" height="150">
+                    <circle cx="75" cy="75" r="70" stroke="var(--soft-brown)" stroke-width="10" fill="none" />
+                    <circle id="progressCircle" cx="75" cy="75" r="70" stroke="url(#gradient)" stroke-width="10"
+                        fill="none" stroke-dasharray="439.82" stroke-dashoffset="439.82" stroke-linecap="round" />
+                    <defs>
+                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="var(--cozy-orange)" />
+                            <stop offset="100%" stop-color="var(--gentle-green)" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span class="position-absolute top-50 start-50 translate-middle fs-3" style="color: var(--cozy-orange);"
+                    id="timerDisplay">
+                    00:00
+                </span>
+            </div>
+            <button id="resetBtn" class="btn btn-secondary">Reset</button>
+        </div>
+    </div>
+
+</div>

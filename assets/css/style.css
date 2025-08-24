@@ -27,7 +27,7 @@
 #sidebar {
     max-width: 250px;
     transition: all 0.3s ease;
-    height: 97vh;
+    height: 9vh;
     position: sticky;
     top: 16px;
 }
@@ -70,7 +70,7 @@
 #sidebar.closed h4,
 #sidebar.closed p,
 #sidebar.closed span {
-display: none;
+    display: none;
 }
 
 .cozy-toggle {
@@ -82,15 +82,35 @@ display: none;
 li a {
     display: flex;
     align-items: center;
-    justify-content: start;
+    justify-content: flex-start;
+    /* corrected */
+    color: var(--soft-brown);
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    /* smooth hover & active */
 }
 
+/* Collapsed sidebar */
 #sidebar.closed li a,
 #sidebar.closed .cozy-toggle {
-    display: flex;
-    align-items: center;
     justify-content: center;
 }
+
+/* Hover effect */
+li a:hover {
+    color: var(--warm-cream);
+    background-color: var(--soft-brown);
+}
+
+/* Active menu item */
+li a.active {
+    color: var(--warm-cream);
+    background-color: var(--soft-brown);
+    font-weight: 600;
+}
+
+
 
 /* .album-card {
     position: sticky;
