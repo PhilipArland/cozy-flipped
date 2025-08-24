@@ -3,8 +3,9 @@
     --soft-brown: #8b7355;
     --cozy-orange: #d4a574;
     --gentle-green: #a8b5a0;
-    --warm-gray: #6b6b6b;
+    --warm-gray: hsl(0, 0%, 42%);
     --deep-brown: #4a3f35;
+    --warm-red: #e35e59;
 }
 
 * {
@@ -24,29 +25,6 @@ body {
     background: linear-gradient(135deg, var(--warm-cream) 0%, #f5f1eb 100%);
     color: var(--deep-brown);
 }
-
-.cozy-navbar .navbar-brand {
-    color: var(--cozy-orange);
-    font-weight: bold;
-    font-size: 1.5rem;
-}
-
-.cozy-navbar .nav-link {
-    color: var(--deep-brown);
-    border-radius: 8px;
-    transition: all 0.2s;
-}
-
-.cozy-navbar .nav-link:hover {
-    background-color: var(--cozy-orange);
-    color: white;
-}
-
-.cozy-navbar .nav-link.active {
-    background-color: var(--gentle-green);
-    color: white;
-}
-
 
 .album-cover {
     width: 40px;
@@ -87,22 +65,6 @@ body {
     padding-bottom: 2px;
 }
 
-.btn-add {
-    background-color: var(--gentle-green);
-    border-radius: 6px;
-    color: white;
-    padding: 4px 8px;
-    border: none;
-}
-
-.btn-cancel {
-    background-color: var(--warm-gray);
-    border-radius: 6px;
-    color: white;
-    padding: 4px 8px;
-    border: none;
-}
-
 .play-btn {
     font-size: 3rem;
     color: var(--cozy-orange);
@@ -132,19 +94,50 @@ body {
     background-color: var(--warm-cream);
 }
 
-.cozy-card i {
+/* .cozy-card i {
     color: var(--cozy-orange);
     font-size: 1.5rem;
-}
+} */
 
 .cozy-card h5 {
     color: var(--deep-brown);
     font-family: 'Comic Sans MS', cursive;
 }
 
-.cozy-card li button {
-    background-color: var(--cozy-orange);
+
+
+
+
+
+
+.btn-add {
+    background-color: var(--gentle-green);
+    border-radius: 6px;
     color: white;
-    border-radius: 10px;
-    padding: 8px 16px;
+    padding: 4px 8px;
+    border: none;
+}
+
+.btn-cancel {
+    background-color: var(--warm-gray);
+    border-radius: 6px;
+    color: white;
+    padding: 4px 8px;
+    border: none;
+}
+
+.btn-start {
+    background-color: var(--cozy-orange);
+    border-radius: 6px;
+    color: white;
+    padding: 4px 8px;
+    border: none;
+}
+
+.btn-delete {
+    background-color: var(--warm-red);
+    border-radius: 6px;
+    color: white;
+    padding: 4px 8px;
+    border: none;
 }
