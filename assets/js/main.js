@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    const apiKey = "4f45e19606259e2ffb0eced14857d496";
-
     /*** Helper: Load HTML into a target element ***/
     function loadHTML(targetId, url, callback) {
         fetch(url)
@@ -36,34 +34,62 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /*** Weather fetch with safety and loading state ***/
-    function getWeatherByCity(city) {
-        const tempEl = document.getElementById("temperature");
-        const descEl = document.getElementById("weather-description");
-        const locEl = document.getElementById("location");
-        const iconEl = document.getElementById("weather-icon");
+    const apiKey = "4f45e19606259e2ffb0eced14857d496";
 
-        if (tempEl) tempEl.textContent = "Loading...";
-        if (descEl) descEl.textContent = "";
-        if (locEl) locEl.textContent = "";
-        if (iconEl) iconEl.innerHTML = "";
+    function getWeatherByLocation() {
+        if (!navigator.geolocation) {
+            console.error("Geolocation is not supported by your browser.");
+            return;
+        }
 
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
+        navigator.geolocation.getCurrentPosition(position => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
 
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                if (tempEl && descEl && locEl && iconEl) {
-                    tempEl.textContent = `${Math.round(data.main.temp)}°C`;
-                    descEl.textContent = data.weather[0].description;
-                    locEl.textContent = data.name;
-                    const icon = data.weather[0].icon;
-                    iconEl.innerHTML = `<img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="Weather icon" style="width: 120px; height: 120px;">`;
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching weather by city:", error);
-                if (tempEl) tempEl.textContent = "Error loading weather";
-            });
+            const tempEl = document.getElementById("temperature");
+            const descEl = document.getElementById("weather-description");
+            const locEl = document.getElementById("location");
+            const iconEl = document.getElementById("weather-icon");
+
+            if (tempEl) tempEl.textContent = "Loading...";
+            if (descEl) descEl.textContent = "";
+            if (locEl) locEl.textContent = "";
+            if (iconEl) iconEl.innerHTML = "";
+
+            // 🌤 Get weather from OpenWeatherMap
+            const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+            fetch(weatherUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (tempEl && descEl && iconEl) {
+                        tempEl.textContent = `${Math.round(data.main.temp)}°C`;
+                        descEl.textContent = data.weather[0].description;
+                        const icon = data.weather[0].icon;
+                        iconEl.innerHTML = `<img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="Weather icon" style="width: 120px; height: 120px;">`;
+                    }
+
+                    // 🧭 Use OpenStreetMap Nominatim to get city name
+                    const geoUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
+
+                    return fetch(geoUrl);
+                })
+                .then(response => response.json())
+                .then(locationData => {
+                    if (locEl) {
+                        const address = locationData.address;
+                        const city = address.city || address.town || address.village || address.state_district || "Unknown location";
+                        locEl.textContent = city;
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching data:", error);
+                    if (tempEl) tempEl.textContent = "Error loading weather";
+                });
+
+        }, error => {
+            console.error("Geolocation error:", error);
+        });
     }
 
     /*** MOBILE SIDEBAR ***/
@@ -98,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         initExerciseToDo();
                     }
                     if (page === 'dashboard') {
-                        getWeatherByCity("Puerto Princesa");
+                        getWeatherByLocation();
                     }
                 });
 
@@ -141,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         initExerciseToDo();
                     }
                     if (page === 'dashboard') {
-                        getWeatherByCity("Puerto Princesa");
+                        getWeatherByLocation();
                     }
                 });
 
@@ -154,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
     /*** Load default page (dashboard) and weather ***/
     loadPage('dashboard', () => {
         syncActiveLinks('dashboard');
-        getWeatherByCity("Puerto Princesa");
+        getWeatherByLocation();
     });
 
 });
