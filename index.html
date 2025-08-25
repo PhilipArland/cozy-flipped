@@ -12,18 +12,42 @@
 </head>
 
 <body>
+    <!-- Mobile Navbar (visible only on mobile) -->
+    <nav class="navbar d-md-none shadow-sm">
+        <div class="container-fluid">
+            <!-- Toggle button -->
+            <button class="navbar-toggler border-0" type="button" id="mobileSidebarToggle">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Profile -->
+            <div class="profile mx-2">
+                <img src="assets/img/yeti.jpg" height="40" width="40" alt="Profile" class="img-fluid rounded-circle">
+            </div>
+        </div>
+    </nav>
+
+    <!-- Off-canvas style Sidebar -->
+    <div id="mobileSidebar" class="mobile-sidebar">
+        
+    </div>
+
+    <!-- Overlay -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+
     <div class="container-fluid p-2 p-md-3">
         <div class="row g-0">
             <div class="col-lg-9">
                 <div class="d-flex position-relative" id="main-container">
                     <!-- Sidebar -->
                     <div id="left-sidebar" class="card cozy-card rounded-4 shadow-sm border-0 p-3 d-none d-md-block">
-                        
+
                     </div>
 
-                    
+
                     <!-- Main Content -->
-                    <div id="content" class="flex-grow-1 p-3 py-0">
+                    <div id="content" class="flex-grow-1 px-0 px-md-3 mb-2 mb-md-3">
 
                     </div>
                 </div>
