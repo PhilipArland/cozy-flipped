@@ -14,6 +14,8 @@ function initPlaylist() {
     const playIcon = document.getElementById("playIcon");
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
+    const shuffleBtn = document.getElementById("shuffleBtn");
+    const repeatBtn = document.getElementById("repeatBtn");
     const progressContainer = document.getElementById("progressContainer");
     const progressBar = document.getElementById("progressBar");
     const currentTimeEl = document.getElementById("currentTime");
@@ -25,6 +27,9 @@ function initPlaylist() {
 
     let currentTrack = 0;
     const audio = new Audio(tracks[currentTrack].src);
+    let isShuffled = false;
+    let playHistory = [];
+    let repeatMode = "off"; // can be 'off', 'all', 'one'
 
     /*** Build playlist ***/
     function buildPlaylist() {
@@ -41,7 +46,7 @@ function initPlaylist() {
         item.innerHTML = `
             <div class="icon-box me-3">
                 <img src="${track.cover}" 
-                    class="rounded-circle ${isActive ? "" : ""}" 
+                    class="rounded-circle" 
                     style="width:40px; height:40px; object-fit:cover;" 
                     alt="${track.title}">
             </div>
@@ -85,7 +90,6 @@ function initPlaylist() {
         const activeItem = playlistContainer.querySelector(`[data-track="${index}"]`);
         if (!activeItem) return;
 
-        // ✅ Remove the initial "no-animate" marker BEFORE we decide to animate
         if (activeItem.classList.contains("just-loaded")) {
             activeItem.classList.remove("just-loaded");
         }
@@ -93,7 +97,6 @@ function initPlaylist() {
         activeItem.classList.add("active");
 
         if (animate) {
-            // OUT animation
             void activeItem.offsetWidth; // reflow
             activeItem.classList.add("move-up");
 
@@ -101,7 +104,6 @@ function initPlaylist() {
                 activeItem.classList.remove("move-up");
                 playlistContainer.prepend(activeItem);
 
-                // IN animation
                 activeItem.classList.add("move-in");
                 void activeItem.offsetWidth;
                 activeItem.classList.add("show");
@@ -114,7 +116,6 @@ function initPlaylist() {
             }, { once: true });
         }
     }
-
 
     /*** Controls ***/
     function togglePlay() {
@@ -131,25 +132,68 @@ function initPlaylist() {
     }
 
     function nextTrack() {
-        currentTrack = (currentTrack + 1) % tracks.length;
+        if (isShuffled) {
+            let next;
+            do {
+                next = Math.floor(Math.random() * tracks.length);
+            } while (next === currentTrack && tracks.length > 1);
+
+            playHistory.push(currentTrack);
+            currentTrack = next;
+        } else {
+            playHistory.push(currentTrack);
+            currentTrack = (currentTrack + 1) % tracks.length;
+        }
+
         loadTrack(currentTrack);
         audio.play();
         playIcon.classList.replace("bi-play-fill", "bi-pause-fill");
 
-        // ✅ Add rotation to new active song
         const activeImg = playlistContainer.querySelector(`[data-track="${currentTrack}"] .icon-box img`);
         if (activeImg) activeImg.classList.add("rotate");
     }
 
     function prevTrack() {
-        currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+        if (isShuffled && playHistory.length > 0) {
+            currentTrack = playHistory.pop();
+        } else {
+            currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+        }
+
         loadTrack(currentTrack);
         audio.play();
         playIcon.classList.replace("bi-play-fill", "bi-pause-fill");
 
-        // ✅ Add rotation
         const activeImg = playlistContainer.querySelector(`[data-track="${currentTrack}"] .icon-box img`);
         if (activeImg) activeImg.classList.add("rotate");
+    }
+
+    if (shuffleBtn) {
+        shuffleBtn.addEventListener("click", () => {
+            isShuffled = !isShuffled;
+            shuffleBtn.classList.toggle("active", isShuffled);
+            console.log(`Shuffle is now ${isShuffled ? "ON" : "OFF"}`);
+        });
+    }
+
+    if (repeatBtn) {
+        repeatBtn.addEventListener("click", () => {
+            const repeatIcon = repeatBtn.querySelector("i"); // find the <i> inside button
+
+            if (repeatMode === "off") {
+                repeatMode = "all";
+                repeatIcon.className = "bi bi-repeat"; // standard repeat icon
+                repeatBtn.classList.add("active");
+            } else if (repeatMode === "all") {
+                repeatMode = "one";
+                repeatIcon.className = "bi bi-repeat-1"; // repeat-one icon
+            } else {
+                repeatMode = "off";
+                repeatIcon.className = "bi bi-repeat"; // default
+                repeatBtn.classList.remove("active");
+            }
+            console.log("Repeat mode:", repeatMode);
+        });
     }
 
     playlistContainer.addEventListener("click", e => {
@@ -160,12 +204,10 @@ function initPlaylist() {
             audio.play();
             playIcon.classList.replace("bi-play-fill", "bi-pause-fill");
 
-            // ✅ Add rotation
             const activeImg = playlistContainer.querySelector(`[data-track="${currentTrack}"] .icon-box img`);
             if (activeImg) activeImg.classList.add("rotate");
         }
     });
-
 
     function updateProgress() {
         if (!isNaN(audio.duration)) {
@@ -184,23 +226,26 @@ function initPlaylist() {
         }
     }
 
-    /*** Event listeners ***/
-    playlistContainer.addEventListener("click", e => {
-        const item = e.target.closest(".playlist-item");
-        if (item) {
-            currentTrack = parseInt(item.getAttribute("data-track"));
-            loadTrack(currentTrack);
-            audio.play();
-            playIcon.classList.replace("bi-play-fill", "bi-pause-fill");
-        }
-    });
-
     playBtn.addEventListener("click", togglePlay);
     prevBtn.addEventListener("click", prevTrack);
     nextBtn.addEventListener("click", nextTrack);
     progressContainer.addEventListener("click", seekTrack);
     audio.addEventListener("timeupdate", updateProgress);
-    audio.addEventListener("ended", nextTrack);
+
+    // Handle audio end depending on repeat mode
+    audio.addEventListener("ended", () => {
+        if (repeatMode === "one") {
+            audio.currentTime = 0;
+            audio.play();
+        } else if (repeatMode === "all") {
+            nextTrack();
+        } else {
+            // repeatMode off: stop playback and reset play button
+            playIcon.classList.replace("bi-pause-fill", "bi-play-fill");
+            const activeImg = playlistContainer.querySelector(`[data-track="${currentTrack}"] .icon-box img`);
+            if (activeImg) activeImg.classList.remove("rotate");
+        }
+    });
 
     // init playlist
     buildPlaylist();
