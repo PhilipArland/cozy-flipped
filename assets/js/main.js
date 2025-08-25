@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
 
+    const apiKey = "4f45e19606259e2ffb0eced14857d496";
+
     /*** Helper: Load HTML into a target element ***/
     function loadHTML(targetId, url, callback) {
         fetch(url)
@@ -33,6 +35,37 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
+    /*** Weather fetch with safety and loading state ***/
+    function getWeatherByCity(city) {
+        const tempEl = document.getElementById("temperature");
+        const descEl = document.getElementById("weather-description");
+        const locEl = document.getElementById("location");
+        const iconEl = document.getElementById("weather-icon");
+
+        if (tempEl) tempEl.textContent = "Loading...";
+        if (descEl) descEl.textContent = "";
+        if (locEl) locEl.textContent = "";
+        if (iconEl) iconEl.innerHTML = "";
+
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (tempEl && descEl && locEl && iconEl) {
+                    tempEl.textContent = `${Math.round(data.main.temp)}°C`;
+                    descEl.textContent = data.weather[0].description;
+                    locEl.textContent = data.name;
+                    const icon = data.weather[0].icon;
+                    iconEl.innerHTML = `<img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="Weather icon" style="width: 120px; height: 120px;">`;
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching weather by city:", error);
+                if (tempEl) tempEl.textContent = "Error loading weather";
+            });
+    }
+
     /*** MOBILE SIDEBAR ***/
     loadHTML("mobileSidebar", "includes/mobile-sidebar.html", () => {
         console.log("Mobile sidebar loaded");
@@ -63,6 +96,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 loadPage(page, () => {
                     if (page === 'activities' && typeof initExerciseToDo === 'function') {
                         initExerciseToDo();
+                    }
+                    if (page === 'dashboard') {
+                        getWeatherByCity("Puerto Princesa");
                     }
                 });
 
@@ -104,6 +140,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (page === 'activities' && typeof initExerciseToDo === 'function') {
                         initExerciseToDo();
                     }
+                    if (page === 'dashboard') {
+                        getWeatherByCity("Puerto Princesa");
+                    }
                 });
 
                 // Sync active state
@@ -112,6 +151,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    /*** Load default page (activities) ***/
-    loadPage('activities', () => syncActiveLinks('activities'));
+    /*** Load default page (dashboard) and weather ***/
+    loadPage('dashboard', () => {
+        syncActiveLinks('dashboard');
+        getWeatherByCity("Puerto Princesa");
+    });
+
 });
