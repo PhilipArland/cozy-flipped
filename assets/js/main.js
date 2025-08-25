@@ -178,5 +178,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     /*** Load default page (dashboard) ***/
-    loadPage('dashboard');
+    loadPage('activities');
 });

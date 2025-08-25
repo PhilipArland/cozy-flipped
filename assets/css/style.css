@@ -83,39 +83,36 @@ li a {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    /* corrected */
     color: var(--soft-brown);
     padding: 0.5rem 0.75rem;
     border-radius: 0.5rem;
     transition: all 0.3s ease;
-    /* smooth hover & active */
 }
 
-/* Collapsed sidebar */
 #left-sidebar.closed li a,
 #left-sidebar.closed .cozy-toggle {
     justify-content: center;
 }
 
-/* Hover effect */
 li a:hover {
     color: var(--warm-cream);
     background-color: var(--soft-brown);
 }
 
-/* Active menu item */
 li a.active {
     color: var(--warm-cream);
     background-color: var(--soft-brown);
     font-weight: 600;
 }
 
+.nav-tabs .nav-link {
+    color: var(--deep-brown);
+}
 
-
-/* .album-card {
-    position: sticky;
-    top: 16px;
-} */
+.nav-tabs .nav-link.active {
+    background-color: var(--soft-brown);
+    color: #fff;
+}
 
 .album-cover {
     width: 40px;

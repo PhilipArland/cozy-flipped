@@ -1,24 +1,58 @@
 <div class="row g-3">
-    <div class="categories">
-
-    </div>
     <div class="col-lg-12">
         <div class="card cozy-card p-3 rounded-4 border-1 shadow-sm">
-            <div class="d-flex align-items-center mb-3 justify-content-between">
-                <div class="d-flex align-items-center">
-                    <i class="bi bi-list-check me-2" style="color: var(--cozy-orange); font-size: 1.5rem;"></i>
-                    <h5 class="mb-0">Exercise To-Do</h5>
-                </div>
-                <button class="btn-add" data-bs-toggle="modal" data-bs-target="#addExerciseModal">
-                    + Add Exercise
-                </button>
-            </div>
-
-            <ul class="list-unstyled m-0 p-0 exercise-list">
-
+            <!-- Tabs Navigation -->
+            <ul class="nav nav-tabs mb-3" id="todoTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="exercise-tab" data-bs-toggle="tab"
+                        data-bs-target="#exercise-tab-pane" type="button" role="tab" aria-controls="exercise-tab-pane"
+                        aria-selected="true">
+                        Exercise
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="study-tab" data-bs-toggle="tab" data-bs-target="#study-tab-pane"
+                        type="button" role="tab" aria-controls="study-tab-pane" aria-selected="false">
+                        Study
+                    </button>
+                </li>
             </ul>
+
+            <!-- Tabs Content -->
+            <div class="tab-content" id="todoTabsContent">
+                <!-- Exercise Tab -->
+                <div class="tab-pane fade show active" id="exercise-tab-pane" role="tabpanel"
+                    aria-labelledby="exercise-tab">
+                    <div class="d-flex align-items-center mb-3 justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-list-check me-2" style="color: var(--cozy-orange); font-size: 1.5rem;"></i>
+                            <h5 class="mb-0">Exercise To-Do</h5>
+                        </div>
+                        <button class="btn-add" data-bs-toggle="modal" data-bs-target="#addExerciseModal">
+                            + Add Exercise
+                        </button>
+                    </div>
+                    <ul class="list-unstyled m-0 p-0 exercise-list"></ul>
+                </div>
+
+                <!-- Study Tab -->
+                <div class="tab-pane fade" id="study-tab-pane" role="tabpanel" aria-labelledby="study-tab">
+                    <div class="d-flex align-items-center mb-3 justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-journal-bookmark me-2"
+                                style="color: var(--cozy-orange); font-size: 1.5rem;"></i>
+                            <h5 class="mb-0">Study To-Do</h5>
+                        </div>
+                        <button class="btn-add" data-bs-toggle="modal" data-bs-target="#addStudyModal">
+                            + Add Study Task
+                        </button>
+                    </div>
+                    <ul class="list-unstyled m-0 p-0 study-list"></ul>
+                </div>
+            </div>
         </div>
     </div>
+
 
     <div class="col-lg-6">
         <div class="card cozy-card rounded-4 border-1 shadow-sm text-center p-3">
@@ -48,7 +82,31 @@
             <button id="resetBtn" class="btn btn-secondary">Reset</button>
         </div>
     </div>
-
+</div>
+<!-- Modal for Study Tasks -->
+<div class="modal fade" id="addStudyModal" tabindex="-1" aria-labelledby="addStudyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="border-radius: 15px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addStudyModalLabel">Add New Study Task</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="studyNameInput" class="form-label">Task Name</label>
+                    <input type="text" class="form-control" id="studyNameInput" placeholder="Read Chapter 1">
+                </div>
+                <div class="mb-3">
+                    <label for="studyDurationInput" class="form-label">Duration (minutes)</label>
+                    <input type="number" class="form-control" id="studyDurationInput" placeholder="30">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn-add" id="modalAddStudyBtn">Add Task</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="modal fade" id="addExerciseModal" tabindex="-1" aria-labelledby="addExerciseModalLabel" aria-hidden="true">
