@@ -32,9 +32,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Music player elements
         const tracks = [
-            { title: "Multo", artist: "Cup of Joe", src: "assets/playlist/multo.mp3", cover: "assets/playlist/multo.jpg" },
-            { title: "Migraine", artist: "Moonstar88", src: "assets/playlist/migraine.mp3", cover: "assets/playlist/migraine.jpg" },
-            { title: "Paraluman", artist: "Adie", src: "assets/playlist/paraluman.mp3", cover: "assets/playlist/paraluman.jpg" },
+            { title: "Multo", artist: "Cup of Joe", src: "assets/playlist/multo.mp3", cover: "assets/playlist/cover/multo.jpg" },
+            { title: "Migraine", artist: "Moonstar88", src: "assets/playlist/migraine.mp3", cover: "assets/playlist/cover/migraine.jpg" },
+            { title: "Paraluman", artist: "Adie", src: "assets/playlist/paraluman.mp3", cover: "assets/playlist/cover/paraluman.jpg" },
+            { title: "Kundiman", artist: "Silent Sanctuary", src: "assets/playlist/kundiman.mp3", cover: "assets/playlist/cover/kundiman.jpg" },
+            { title: "Museo", artist: "Eliza Maturan", src: "assets/playlist/museo.mp3", cover: "assets/playlist/cover/museo.jpg" },
         ];
 
         const playBtn = document.getElementById("playBtn");
@@ -178,5 +180,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     /*** Load default page (dashboard) ***/
-    loadPage('activities');
+    loadPage('dashboard');
 });
