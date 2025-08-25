@@ -223,13 +223,13 @@ li a.active,
     color: white;
 }
 
-/* OUT animation (before moving to top) */
+/* OUT animation */
 .playlist-item.move-up {
     transform: translateY(-30px);
     opacity: 0;
 }
 
-/* IN animation (after being prepended to top) */
+/* IN animation */
 .playlist-item.move-in {
     transform: translateY(30px);
     opacity: 0;
@@ -241,9 +241,9 @@ li a.active,
 }
 
 
-
-.rotate {
-    animation: spin 5s linear infinite;
+/* Continuous rotation only */
+.playlist-item .icon-box img.rotate {
+    animation: spin 4s linear infinite;
 }
 
 @keyframes spin {
@@ -256,9 +256,6 @@ li a.active,
     }
 }
 
-.playlist-item .icon-box img.rotate {
-    animation: spin 4s linear infinite;
-}
 
 .cozy-card {
     background-color: var(--warm-cream);
