@@ -33,6 +33,21 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
+    function attachViewActivitiesListener() {
+        const btn = document.getElementById('viewActivitiesBtn');
+        if (btn) {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                loadPage('activities', () => {
+                    if (typeof initExerciseToDo === 'function') {
+                        initExerciseToDo();
+                    }
+                    syncActiveLinks('activities'); // ✅ Add this line
+                });
+            });
+        }
+    }
+
     /*** Weather fetch with safety and loading state ***/
     const apiKey = "4f45e19606259e2ffb0eced14857d496";
 
@@ -125,6 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                     if (page === 'dashboard') {
                         getWeatherByLocation();
+                        attachViewActivitiesListener()
                     }
                 });
 
@@ -168,6 +184,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                     if (page === 'dashboard') {
                         getWeatherByLocation();
+                        attachViewActivitiesListener()
                     }
                 });
 
@@ -181,6 +198,7 @@ document.addEventListener("DOMContentLoaded", function () {
     loadPage('dashboard', () => {
         syncActiveLinks('dashboard');
         getWeatherByLocation();
+        attachViewActivitiesListener();
     });
 
 });
