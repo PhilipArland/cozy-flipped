@@ -270,6 +270,14 @@
     border: none;
 }
 
+.btn-soft {
+    background-color: var(--soft-brown);
+    border-radius: 6px;
+    color: white;
+    padding: 4px 8px;
+    border: none;
+}
+
 .btn-delete {
     background-color: var(--warm-red);
     border-radius: 6px;
@@ -287,8 +295,11 @@
 
 
 @media screen and (max-width: 640px) {
-    .mobile-sidebar {
-        height: 100dvh;
+    @media screen and (max-width: 640px) {
+        .mobile-sidebar {
+            height: 90vh;
+            height: 100dvh;
+        }
     }
 
     .welcome-content p {
