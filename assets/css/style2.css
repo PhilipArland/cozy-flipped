@@ -6,6 +6,8 @@
     --warm-gray: hsl(0, 0%, 42%);
     --deep-brown: #4a3f35;
     --warm-red: #e35e59;
+    --cozy-gold: #f0c97d;
+    --soft-orange: #c98e5b;
 }
 
 * {
@@ -30,13 +32,30 @@
 
 /* Left Sidebar */
 
+.cozy-profile img {
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
 #left-sidebar {
     min-width: 260px;
+    max-width: 260px;
     transition: all 0.3s ease;
     height: 96vh;
     position: sticky;
     top: 16px;
+    background-color: var(--deep-brown);
 }
+
+#left-sidebar.closed .cozy-profile img {
+    width: 45px;
+    height: 45px;
+    border-radius: 8px !important;
+}
+
 
 #left-sidebar.closed {
     min-width: 80px;
@@ -61,28 +80,22 @@
     justify-content: center;
 }
 
-.sidebar-menu a,
-.mobile-navbar a {
+.sidebar-menu a {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: var(--soft-brown);
+    color: var(--warm-cream);
     font-weight: 500;
 }
 
-.sidebar-menu a.active,
-.mobile-navbar a.active {
-    background: var(--deep-brown) !important;
-    color: var(--warm-cream) !important;
+.sidebar-menu a.active {
+    background: var(--cozy-orange) !important;
+    color: var(--deep-brown) !important;
     font-weight: 600;
 }
 
 
 /* Right Sidebar */
-
-#right-sidebar {
-    position: static;
-}
 
 .album-cover {
     width: 40px;
@@ -100,7 +113,7 @@
     font-size: 1.4rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    padding: 4px;
+    padding: 8px;
     border-radius: 50%;
 }
 
@@ -227,6 +240,19 @@
     color: #fff;
 }
 
+.mobile-navbar a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--soft-brown);
+    font-weight: 500;
+}
+
+.mobile-navbar a.active {
+    background: var(--deep-brown) !important;
+    color: var(--warm-cream) !important;
+    font-weight: 600;
+}
 
 
 
