@@ -277,3 +277,21 @@
     padding: 4px 8px;
     border: none;
 }
+
+
+
+
+
+
+
+
+
+@media screen and (max-width: 640px) {
+    .mobile-sidebar {
+        height: 100dvh;
+    }
+
+    .welcome-content p {
+        font-size: .8rem;
+    }
+}
