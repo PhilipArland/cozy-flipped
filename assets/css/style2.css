@@ -16,6 +16,11 @@
     box-sizing: border-box;
 }
 
+body.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+}
+
 .center {
     display: flex;
     justify-content: center;

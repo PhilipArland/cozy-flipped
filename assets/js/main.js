@@ -139,11 +139,19 @@ document.addEventListener("DOMContentLoaded", function () {
             toggleBtn.addEventListener("click", () => {
                 sidebar.classList.toggle("active");
                 overlay.classList.toggle("active");
+
+                // ✅ toggle body scroll lock
+                if (sidebar.classList.contains("active")) {
+                    document.body.classList.add("no-scroll");
+                } else {
+                    document.body.classList.remove("no-scroll");
+                }
             });
 
             overlay.addEventListener("click", () => {
                 sidebar.classList.remove("active");
                 overlay.classList.remove("active");
+                document.body.classList.remove("no-scroll"); // ✅ unlock scrolling
             });
         }
 
@@ -155,9 +163,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 loadPage(page);
                 sidebar.classList.remove("active");
                 overlay.classList.remove("active");
+                document.body.classList.remove("no-scroll"); // ✅ unlock after clicking link
             });
         });
     });
+
 
     /*** Right Sidebar (Music Player) ***/
     loadHTML("right-sidebar", "includes/right-sidebar.html", () => {
