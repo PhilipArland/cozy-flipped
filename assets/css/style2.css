@@ -33,6 +33,12 @@ body.no-scroll {
     color: var(--deep-brown);
 }
 
+.cozy-task {
+    border-left: 2px solid transparent;
+    border-image: linear-gradient(to bottom, var(--soft-brown), var(--cozy-orange));
+    border-image-slice: 1;
+}
+
 /* Left Sidebar */
 
 .cozy-profile img {

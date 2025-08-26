@@ -51,7 +51,7 @@ function initExerciseToDo() {
             placeholder.className = 'text-center text-muted py-4 d-flex flex-column align-items-center gap-2';
 
             const img = document.createElement('img');
-            img.src = type === 'exercise' ? 'assets/img/workout.gif' : 'assets/img/studying.gif';
+            img.src = type === 'exercise' ? 'assets/img/workout.gif' : 'assets/img/congrats.gif';
             img.alt = 'No tasks yet';
             img.classList.add('img-fluid', 'rounded-4', 'mb-3');
 

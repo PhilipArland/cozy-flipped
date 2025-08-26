@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
             getWeatherByLocation();
             attachViewActivitiesListener();
             attachGoBackHomeListener();
+            generateCalendar();
         }
     }
 
@@ -127,6 +128,54 @@ document.addEventListener("DOMContentLoaded", function () {
         }, error => {
             console.error("Geolocation error:", error);
         });
+    }
+
+    function generateCalendar() {
+        console.log("Calendar initialized");
+
+        const grid = document.getElementById("calendar-grid");
+        const monthLabel = document.getElementById("calendar-month");
+
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = date.getMonth();
+
+        const monthName = date.toLocaleString("default", { month: "long" });
+        monthLabel.textContent = `${monthName} ${year}`;
+
+        grid.innerHTML = "";
+
+        // Weekday labels
+        const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        weekdays.forEach(d => {
+            let div = document.createElement("div");
+            div.textContent = d;
+            div.style.fontWeight = "bold";
+            grid.appendChild(div);
+        });
+
+        // Days of month
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        // Empty slots before first day
+        for (let i = 0; i < firstDay; i++) {
+            grid.appendChild(document.createElement("div"));
+        }
+
+        // Fill days
+        for (let d = 1; d <= daysInMonth; d++) {
+            let div = document.createElement("div");
+            div.textContent = d;
+
+            if (d === date.getDate()) {
+                div.style.background = "var(--cozy-orange)";
+                div.style.color = "white";
+                div.style.borderRadius = "6px";
+            }
+
+            grid.appendChild(div);
+        }
     }
 
     /*** Mobile Sidebar ***/
