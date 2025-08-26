@@ -6,8 +6,6 @@
     --warm-gray: hsl(0, 0%, 42%);
     --deep-brown: #4a3f35;
     --warm-red: #e35e59;
-    --cozy-gold: #f0c97d;
-    --soft-orange: #c98e5b;
 }
 
 * {
@@ -96,7 +94,7 @@ body.no-scroll {
 .sidebar-menu a.active {
     background: var(--cozy-orange) !important;
     color: var(--deep-brown) !important;
-    font-weight: 600;
+    font-weight: bold;
 }
 
 
@@ -212,9 +210,6 @@ body.no-scroll {
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
     transition: left 0.3s ease-in-out;
     z-index: 1050;
-
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
 }
 
 .mobile-sidebar.active {
