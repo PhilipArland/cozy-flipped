@@ -80,6 +80,10 @@
 
 /* Right Sidebar */
 
+#right-sidebar {
+    position: static;
+}
+
 .album-cover {
     width: 40px;
     height: 40px;
@@ -240,6 +244,14 @@
 
 .btn-cozy {
     background-color: var(--cozy-orange);
+    border-radius: 6px;
+    color: white;
+    padding: 4px 8px;
+    border: none;
+}
+
+.btn-dark {
+    background-color: var(--deep-brown);
     border-radius: 6px;
     color: white;
     padding: 4px 8px;
