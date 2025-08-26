@@ -1,5 +1,5 @@
-<div class="row gx-0 justify-content-center">
-    <div class="col-lg-12 mb-2 mb-md-3">
+<div class="row g-2 g-md-3 justify-content-center">
+    <!-- <div class="col-lg-12">
         <div class="weather-card d-flex justify-content-between align-items-center p-4 rounded-4 text-light">
             <div class="weather-info">
                 <h4 id="location" class="mb-1">Loading location...</h4>
@@ -9,7 +9,29 @@
             <div class="weather-icon" id="weather-icon">
             </div>
         </div>
+    </div> -->
+
+    <div class="col-lg-12">
+        <div class="card cozy-card p-4 rounded-4 shadow-sm border-0">
+            <div class="d-flex align-items-start">
+                <!-- Image -->
+                <div class="me-4 mb-lg-0 flex-shrink-0">
+                    <img src="assets/img/welcome.jpg" alt="Welcome" height="140" width="140"
+                        class="img-fluid rounded-4 shadow-sm" style="object-fit: cover;">
+                </div>
+
+                <!-- Text Content -->
+                <div class="welcome-content">
+                    <h4 class="fw-bold mb-2" style="color: var(--deep-brown);">Welcome!</h4>
+                    <p class="mb-0 text-muted small">
+                        This is your cozy space where you can manage your tasks and enjoy music at the same time.
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
+
+
 
     <div class="col-lg-6">
         <div class="card cozy-card p-4 rounded-4 shadow-sm border-0">
@@ -18,7 +40,8 @@
                     <i class="bi bi-graph-up-arrow me-2" style="color: var(--soft-brown);"></i>
                     Activity Overview
                 </h5>
-                <a href="#" id="viewActivitiesBtn" class="btn btn-sm text-light" style="background-color: var(--gentle-green)">
+                <a href="#" id="viewActivitiesBtn" class="btn btn-sm text-light"
+                    style="background-color: var(--gentle-green)">
                     View All <i class="bi bi-arrow-right ms-1"></i>
                 </a>
             </div>
@@ -45,7 +68,7 @@
                 <div class="col-12">
                     <div class="d-flex align-items-center p-3 bg-light-subtle rounded-3 shadow-sm">
                         <div class="icon center me-3">
-                            <i class="bi bi-book fs-1" style="color: var(--deep-brown)"></i>
+                            <i class="bi bi-book-half fs-1" style="color: var(--deep-brown)"></i>
                         </div>
                         <div class="activity">
                             <span class="fw-semibold text-muted">Study Task</span>
@@ -56,6 +79,10 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="but pt-0">
+                    <p class="text-end">...</p>
+                </div>
             </div>
         </div>
     </div>
@@ -63,8 +90,63 @@
 
 
     <div class="col-lg-6">
+        <div class="card cozy-card p-4 rounded-4 shadow-sm border-0 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="mb-0">
+                    <i class="bi bi-music-note-list me-2" style="color: var(--soft-brown);"></i>
+                    Top Most Played Songs
+                </h5>
+            </div>
+
+            <!-- Top 1 (Emphasized layout) -->
+            <div class="d-flex align-items-start mb-4">
+                <div class="me-3 text-start" style="min-width: 24px;">
+                    <h4 class="mb-0 text-muted fw-bold">1</h4>
+                </div>
+                <img src="assets/playlist/cover/multo.jpg" alt="Multo Cover" class="rounded-3 shadow-sm me-3"
+                    style="width: 70px; height: 70px; object-fit: cover;">
+                <div>
+                    <h6 class="mb-1 fw-bold" style="color: var(--deep-brown);">Multo</h6>
+                    <p class="mb-1 text-muted small">Artist: Cup of Joe</p>
+                    <p class="mb-0 text-muted small">Plays: 152 times</p>
+                </div>
+            </div>
+
+
+
+
+            <!-- Top 2 -->
+            <div class="d-flex align-items-start mb-4">
+                <div class="me-3 text-start" style="min-width: 24px;">
+                    <h4 class="mb-0 text-muted fw-bold">2</h4>
+                </div>
+                <img src="assets/playlist/cover/migraine.jpg" alt="Migraine Cover" class="rounded-3 shadow-sm me-3"
+                    style="width: 70px; height: 70px; object-fit: cover;">
+                <div>
+                    <h6 class="mb-1 fw-bold" style="color: var(--deep-brown);">Migraine</h6>
+                    <p class="mb-1 text-muted small">Artist: Moonstar88</p>
+                    <p class="mb-0 text-muted small">Plays: 128 times</p>
+                </div>
+            </div>
+
+            <!-- Top 3 -->
+            <div class="d-flex align-items-start">
+                <div class="me-3 text-start" style="min-width: 24px;">
+                    <h4 class="mb-0 text-muted fw-bold">3</h4>
+                </div>
+                <img src="assets/playlist/cover/paraluman.jpg" alt="Paraluman Cover" class="rounded-3 shadow-sm me-3"
+                    style="width: 70px; height: 70px; object-fit: cover;">
+                <div>
+                    <h6 class="mb-1 fw-bold" style="color: var(--deep-brown);">Paraluman</h6>
+                    <p class="mb-1 text-muted small">Artist: Adie</p>
+                    <p class="mb-0 text-muted small">Plays: 109 times</p>
+                </div>
+            </div>
+        </div>
 
     </div>
+
+
 </div>
 
 

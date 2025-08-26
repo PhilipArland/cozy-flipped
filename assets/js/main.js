@@ -20,9 +20,26 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(res => res.text())
             .then(html => {
                 document.getElementById('content').innerHTML = html;
+                handlePageInit(page); // 🔁 Centralize page-specific initialization
                 if (callback) callback();
             })
             .catch(err => console.error(err));
+    }
+
+    /*** Handle per-page logic ***/
+    function handlePageInit(page) {
+        syncActiveLinks(page);
+
+        if (page === 'activities') {
+            if (typeof initExerciseToDo === 'function') initExerciseToDo();
+            attachGoBackHomeListener();
+        }
+
+        if (page === 'dashboard') {
+            getWeatherByLocation();
+            attachViewActivitiesListener();
+            attachGoBackHomeListener();
+        }
     }
 
     /*** Sync active state between sidebars ***/
@@ -33,22 +50,29 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
+    /*** View All > Activities Button Listener ***/
     function attachViewActivitiesListener() {
         const btn = document.getElementById('viewActivitiesBtn');
         if (btn) {
             btn.addEventListener('click', function (e) {
                 e.preventDefault();
-                loadPage('activities', () => {
-                    if (typeof initExerciseToDo === 'function') {
-                        initExerciseToDo();
-                    }
-                    syncActiveLinks('activities'); // ✅ Add this line
-                });
+                loadPage('activities');
             });
         }
     }
 
-    /*** Weather fetch with safety and loading state ***/
+    /*** Go Back < Button Listener ***/
+    function attachGoBackHomeListener() {
+        const btn = document.getElementById('goBackBtn');
+        if (btn) {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                loadPage('dashboard');
+            });
+        }
+    }
+
+    /*** Weather Fetcher ***/
     const apiKey = "4f45e19606259e2ffb0eced14857d496";
 
     function getWeatherByLocation() {
@@ -71,7 +95,6 @@ document.addEventListener("DOMContentLoaded", function () {
             if (locEl) locEl.textContent = "";
             if (iconEl) iconEl.innerHTML = "";
 
-            // 🌤 Get weather from OpenWeatherMap
             const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
 
             fetch(weatherUrl)
@@ -84,7 +107,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         iconEl.innerHTML = `<img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="Weather icon" style="width: 120px; height: 120px;">`;
                     }
 
-                    // 🧭 Use OpenStreetMap Nominatim to get city name
                     const geoUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
 
                     return fetch(geoUrl);
@@ -98,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 })
                 .catch(error => {
-                    console.error("Error fetching data:", error);
+                    console.error("Error fetching weather data:", error);
                     if (tempEl) tempEl.textContent = "Error loading weather";
                 });
 
@@ -107,10 +129,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    /*** MOBILE SIDEBAR ***/
+    /*** Mobile Sidebar ***/
     loadHTML("mobileSidebar", "includes/mobile-sidebar.html", () => {
-        console.log("Mobile sidebar loaded");
-
         const toggleBtn = document.getElementById("mobileSidebarToggle");
         const sidebar = document.getElementById("mobileSidebar");
         const overlay = document.getElementById("sidebarOverlay");
@@ -127,42 +147,26 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // Attach click events to mobile links
         const links = document.querySelectorAll("#mobileSidebar a[data-page]");
         links.forEach(link => {
             link.addEventListener("click", e => {
                 e.preventDefault();
                 const page = link.getAttribute("data-page");
-
-                loadPage(page, () => {
-                    if (page === 'activities' && typeof initExerciseToDo === 'function') {
-                        initExerciseToDo();
-                    }
-                    if (page === 'dashboard') {
-                        getWeatherByLocation();
-                        attachViewActivitiesListener()
-                    }
-                });
-
-                // Close sidebar after selecting a page
+                loadPage(page);
                 sidebar.classList.remove("active");
                 overlay.classList.remove("active");
-
-                // Sync active state
-                syncActiveLinks(page);
             });
         });
     });
 
-    /*** RIGHT SIDEBAR (Music Player) ***/
+    /*** Right Sidebar (Music Player) ***/
     loadHTML("right-sidebar", "includes/right-sidebar.html", () => {
-        console.log("Right sidebar loaded");
         if (typeof initPlaylist === "function") {
-            initPlaylist(); // Call function from playlist.js
+            initPlaylist();
         }
     });
 
-    /*** LEFT SIDEBAR ***/
+    /*** Left Sidebar ***/
     loadHTML("left-sidebar", "includes/left-sidebar.html", () => {
         const toggleBtn = document.getElementById('toggle-btn');
         const sidebar = document.getElementById('left-sidebar');
@@ -178,27 +182,11 @@ document.addEventListener("DOMContentLoaded", function () {
             link.addEventListener('click', e => {
                 e.preventDefault();
                 const page = link.getAttribute('data-page');
-                loadPage(page, () => {
-                    if (page === 'activities' && typeof initExerciseToDo === 'function') {
-                        initExerciseToDo();
-                    }
-                    if (page === 'dashboard') {
-                        getWeatherByLocation();
-                        attachViewActivitiesListener()
-                    }
-                });
-
-                // Sync active state
-                syncActiveLinks(page);
+                loadPage(page);
             });
         });
     });
 
-    /*** Load default page (dashboard) and weather ***/
-    loadPage('dashboard', () => {
-        syncActiveLinks('dashboard');
-        getWeatherByLocation();
-        attachViewActivitiesListener();
-    });
-
+    /*** Load default page ***/
+    loadPage('dashboard');
 });

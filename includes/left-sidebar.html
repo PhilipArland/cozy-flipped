@@ -1,39 +1,37 @@
-<div class="container-fluid p-0 m-0 center flex-column">
-    <!-- Toggle Button -->
-    <div class="cozy-toggle w-100">
-        <h4 class="fw-bold"><i class="bi bi-music-note me-1" style="color: var(--cozy-orange);"></i>Cozy Cove</h4>
-        <button id="toggle-btn" class="btn-cozy mb-3" style="padding: 0.5rem 0.75rem;">
-            <i class="bi bi-list fs-6"></i>
-        </button>
-    </div>
+<div class="sidebar-header d-flex align-items-center">
+    <h4 class="fw-bold m-0">
+        <i class="bi bi-music-note me-1" style="color: var(--cozy-orange);"></i>
+        Cozy Cove
+    </h4>
+    <button id="toggle-btn" class="btn rounded-2" title="Toggle Sidebar" style="background-color: var(--cozy-orange); color: var(--warm-cream);">
+        <i class="bi bi-list"></i>
+    </button>
 
-    <!-- Profile / Banner Image -->
-    <div class="text-center mb-4 cozy-profile">
-        <img src="assets/img/yeti.jpg" alt="Cozy Yeti" class="img-fluid shadow">
-        <p class=" mt-2 mb-0 fw-semibold" style="color: var(--deep-brown);">Cozy User</p>
-    </div>
+</div>
 
-    <!-- Sidebar Menu -->
-    <div class="sidebar-menu w-100">
-        <ul class="list-unstyled mb-0">
-            <li class="mb-2">
-                <a href="#" data-page="dashboard" class="d gap-2 p-2 rounded-3 text-decoration-none active">
-                    <i class="bi bi-speedometer2"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-            <li class="mb-2">
-                <a href="#" data-page="activities" class="gap-2 p-2 rounded-3 text-decoration-none">
-                    <i class="bi bi-list-check"></i>
-                    <span>Activities</span>
-                </a>
-            </li>
-            <li class="mb-2">
-                <a href="#" data-page="statistics" class="gap-2 p-2 rounded-3 text-decoration-none">
-                    <i class="bi bi-bar-chart-line"></i>
-                    <span>Statistics</span>
-                </a>
-            </li>
-        </ul>
-    </div>
+<div class="text-center mb-4 cozy-profile">
+    <!-- <p class="mb-0 fw-semibold" style="color: var(--deep-brown);">Cozy User</p> -->
+</div>
+
+<div class="sidebar-menu">
+    <ul class="list-unstyled mb-0">
+        <li class="mb-2">
+            <a href="#" data-page="dashboard" class="p-2 rounded-3 text-decoration-none active">
+                <i class="bi bi-speedometer2"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li class="mb-2">
+            <a href="#" data-page="activities" class="p-2 rounded-3 text-decoration-none">
+                <i class="bi bi-list-check"></i>
+                <span>Activities</span>
+            </a>
+        </li>
+        <li class="mb-2">
+            <a href="#" data-page="statistics" class="p-2 rounded-3 text-decoration-none">
+                <i class="bi bi-bar-chart-line"></i>
+                <span>Statistics</span>
+            </a>
+        </li>
+    </ul>
 </div>
