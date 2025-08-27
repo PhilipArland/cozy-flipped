@@ -40,7 +40,35 @@ document.addEventListener("DOMContentLoaded", function () {
             attachGoBackHomeListener();
             generateCalendar();
         }
+
+        if (page === 'settings') {
+            initSettingsPage();
+            updateStorageInfo()
+        }
     }
+
+    /*** Handle getting local storage ***/
+    function getLocalStorageSize() {
+        let total = 0;
+        for (let key in localStorage) {
+            if (localStorage.hasOwnProperty(key)) {
+                total += (localStorage[key].length + key.length) * 2; // 2 bytes per char
+            }
+        }
+        return total; // bytes
+    }
+
+    function updateStorageInfo() {
+        const storageInfo = document.getElementById("storage-info");
+        if (!storageInfo) return;
+
+        const itemCount = localStorage.length;
+        const sizeBytes = getLocalStorageSize();
+        const sizeKB = (sizeBytes / 1024).toFixed(2);
+
+        storageInfo.textContent = `You have ${itemCount} item(s) in localStorage (~${sizeKB} KB)`;
+    }
+
 
     /*** Sync active state between sidebars ***/
     function syncActiveLinks(page) {
@@ -71,6 +99,87 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
     }
+
+    function initSettingsPage() {
+        const fileInput = document.getElementById("profile-img");
+        const saveBtn = document.getElementById("save-settings");
+        const usernameInput = document.getElementById("username");
+        let uploadedImageData = null;
+
+        // Load saved data on page init
+        const savedName = localStorage.getItem("cozy-username");
+        const savedImg = localStorage.getItem("cozy-profile-img");
+
+        if (savedName) {
+            usernameInput.value = savedName;
+            const sidebarName = document.getElementById("sidebar-username");
+            if (sidebarName) sidebarName.textContent = savedName;
+        }
+
+        if (savedImg) {
+            const sidebarImg = document.getElementById("sidebar-profile-img");
+            if (sidebarImg) sidebarImg.src = savedImg;
+        }
+
+        // Preview uploaded image
+        if (fileInput) {
+            fileInput.addEventListener("change", function () {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        uploadedImageData = e.target.result;
+
+                        let preview = document.getElementById("profile-preview");
+                        if (!preview) {
+                            preview = document.createElement("img");
+                            preview.id = "profile-preview";
+                            preview.className = "img-fluid rounded-4 mt-3";
+                            fileInput.closest(".upload-box").appendChild(preview);
+                        }
+                        preview.src = uploadedImageData;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // Save button → update + persist
+        if (saveBtn) {
+            saveBtn.addEventListener("click", function () {
+                const newName = usernameInput.value.trim();
+
+                // Update + save name
+                if (newName) {
+                    const sidebarName = document.getElementById("sidebar-username");
+                    if (sidebarName) sidebarName.textContent = newName;
+                    localStorage.setItem("cozy-username", newName);
+                }
+
+                // Update + save image
+                if (uploadedImageData) {
+                    const sidebarImg = document.getElementById("sidebar-profile-img");
+                    if (sidebarImg) sidebarImg.src = uploadedImageData;
+                    localStorage.setItem("cozy-profile-img", uploadedImageData);
+                }
+
+                function showSettingsAlert() {
+                    const alertEl = document.getElementById('settings-toast');
+                    alertEl.style.display = 'block';
+                    alertEl.classList.add('show'); // triggers Bootstrap fade-in
+
+                    // Auto-hide after 2 seconds
+                    setTimeout(() => {
+                        alertEl.classList.remove('show'); // fade-out
+                        setTimeout(() => alertEl.style.display = 'none', 150); // hide after fade
+                    }, 3000);
+                }
+
+                showSettingsAlert();
+            });
+        }
+    }
+
 
     function generateCalendar() {
         console.log("Calendar initialized");
@@ -189,5 +298,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     /*** Load default page ***/
-    loadPage('dashboard');
+    loadPage('settings');
 });
