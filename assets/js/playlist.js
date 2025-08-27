@@ -32,7 +32,7 @@ function initPlaylist() {
     const audio = new Audio(tracks[currentTrack].src);
     let isShuffled = false;
     let playHistory = [];
-    let repeatMode = "off"; // can be 'off', 'all', 'one'
+    let repeatMode = "all"; // can be 'off', 'all', 'one'
 
     /*** Build playlist ***/
     function buildPlaylist() {
@@ -184,17 +184,19 @@ function initPlaylist() {
     }
 
     if (repeatBtn) {
+        // set initial button state
+        const repeatIcon = repeatBtn.querySelector("i");
+        repeatIcon.className = "bi bi-repeat";
+        
         repeatBtn.addEventListener("click", () => {
-            const repeatIcon = repeatBtn.querySelector("i");
-
             if (repeatMode === "all") {
-                repeatMode = "off";
-                repeatIcon.className = "bi bi-repeat";
-                repeatBtn.classList.remove("active");
+                repeatMode = "one";
+                repeatIcon.className = "bi bi-repeat-1"; 
+                repeatBtn.classList.add("active");
             } else {
                 repeatMode = "all";
-                repeatIcon.className = "bi bi-repeat";
-                repeatBtn.classList.add("active");
+                repeatIcon.className = "bi bi-repeat"; // repeat-all icon
+                repeatBtn.classList.remove("active");
             }
             console.log("Repeat mode:", repeatMode);
         });

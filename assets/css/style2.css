@@ -149,7 +149,7 @@ body.no-scroll {
 /* Playlist */
 
 .playlist-item {
-    background: white;
+    background-color: var(--warm-cream);
     border-radius: 15px;
     padding: 15px 20px;
     margin-bottom: 15px;
