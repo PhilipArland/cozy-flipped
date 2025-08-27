@@ -75,9 +75,22 @@
 
     <div class="col-lg-12">
         <div class="card cozy-card rounded-4 border-0 shadow-sm p-4">
-            <h5 class="settings-title mb-3">
-                <i class="bi bi-cloud-fill me-2"></i> Manage Your Storage
-            </h5>
+            <div class="d-flex justify-content-between">
+                <h5 class="settings-title mb-3 d-flex align-items-center">
+                    <i class="bi bi-cloud-fill me-2"></i> Manage Your Storage
+
+                </h5>
+                <h5>
+                    <i class="bi bi-info-circle ms-2 text-muted" tabindex="0" data-bs-toggle="popover"
+                        data-bs-trigger="focus" data-bs-placement="left" data-bs-html="true"
+                        title='<i class="bi bi-info-circle-fill me-1"></i> About Local Storage'
+                        data-bs-content="This page uses your browser's localStorage to save your settings. The available space may vary depending on your browser and device.">
+                    </i>
+
+                </h5>
+            </div>
+
+
             <p class="mb-2 small" style="color: var(--warm-gray);">
                 See how much space your saved data occupies in local storage and clear it if needed.
             </p>
@@ -138,5 +151,31 @@
         height: auto;
         display: block;
         margin: 0 auto;
+    }
+
+    .popover {
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        background-color: var(--warm-cream);
+        color: var(--deep-brown);
+        max-width: 280px;
+    }
+
+    .popover-header {
+        background-color: var(--soft-brown);
+        color: var(--warm-cream);
+        font-weight: 600;
+        border-bottom: none;
+        border-radius: 12px 12px 0 0;
+        font-size: 0.9rem;
+        padding: 8px 12px;
+    }
+
+    .popover-body {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+        line-height: 1.4;
+        color: var(--deep-brown);
     }
 </style>
