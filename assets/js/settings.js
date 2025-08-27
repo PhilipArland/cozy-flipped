@@ -53,99 +53,88 @@ async function updateStorageInfo() {
 
 /*** Init Settings Page ***/
 function initSettingsPage() {
+    const usernameInput = document.getElementById("username");
     const fileInput = document.getElementById("profile-img");
     const saveBtn = document.getElementById("save-settings");
-    const usernameInput = document.getElementById("username");
+    const clearBtn = document.getElementById("clear-storage");
+    const modalEl = document.getElementById("settings-modal");
     let uploadedImageData = null;
 
-    // Load saved data on page init
+    // Universal elements for username & profile images
+    const usernameDisplays = [
+        document.getElementById("sidebar-username"),
+        document.getElementById("navbar-username")
+    ];
+    const profileImages = [
+        document.getElementById("sidebar-profile-img"),
+        document.getElementById("navbar-profile-img"),
+        document.getElementById("nav-profile-img")
+    ];
+
+    // Load saved data
     const savedName = localStorage.getItem("cozy-username");
     const savedImg = localStorage.getItem("cozy-profile-img");
 
     if (savedName) {
         usernameInput.value = savedName;
-        const sidebarName = document.getElementById("sidebar-username");
-        if (sidebarName) sidebarName.textContent = savedName;
+        usernameDisplays.forEach(el => { if (el) el.textContent = savedName; });
     }
 
     if (savedImg) {
-        const sidebarImg = document.getElementById("sidebar-profile-img");
-        if (sidebarImg) sidebarImg.src = savedImg;
+        profileImages.forEach(el => { if (el) el.src = savedImg; });
     }
 
     // Preview uploaded image
     if (fileInput) {
         fileInput.addEventListener("change", function () {
             const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    uploadedImageData = e.target.result;
+            if (!file) return;
 
-                    let preview = document.getElementById("profile-preview");
-                    if (!preview) {
-                        preview = document.createElement("img");
-                        preview.id = "profile-preview";
-                        preview.className = "img-fluid rounded-4 mt-3";
-                        fileInput.closest(".upload-box").appendChild(preview);
-                    }
-                    preview.src = uploadedImageData;
-                };
-                reader.readAsDataURL(file);
-            }
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                uploadedImageData = e.target.result;
+                let preview = document.getElementById("profile-preview");
+                if (!preview) {
+                    preview = document.createElement("img");
+                    preview.id = "profile-preview";
+                    preview.className = "img-fluid rounded-4 mt-3";
+                    fileInput.closest(".upload-box").appendChild(preview);
+                }
+                preview.src = uploadedImageData;
+            };
+            reader.readAsDataURL(file);
         });
     }
 
-    // Save button → update + persist
+    // Save settings
     if (saveBtn) {
         saveBtn.addEventListener("click", function () {
             const newName = usernameInput.value.trim();
 
             if (newName) {
-                const sidebarName = document.getElementById("sidebar-username");
-                if (sidebarName) sidebarName.textContent = newName;
+                usernameDisplays.forEach(el => { if (el) el.textContent = newName; });
                 localStorage.setItem("cozy-username", newName);
             }
 
             if (uploadedImageData) {
-                const sidebarImg = document.getElementById("sidebar-profile-img");
-                if (sidebarImg) sidebarImg.src = uploadedImageData;
+                profileImages.forEach(el => { if (el) el.src = uploadedImageData; });
                 localStorage.setItem("cozy-profile-img", uploadedImageData);
             }
 
-            // 🔥 update storage info right after saving
             updateStorageInfo();
 
-            const modalEl = document.getElementById("settings-modal");
-            const modal = new bootstrap.Modal(modalEl);
-            modal.show();
+            if (modalEl) {
+                const modal = new bootstrap.Modal(modalEl);
+                modal.show();
+            }
         });
     }
 
-    // Cleanup on modal close
-    const modalEl = document.getElementById("settings-modal");
-    if (modalEl) {
-        modalEl.addEventListener("hidden.bs.modal", function () {
-            const preview = document.getElementById("profile-preview");
-            if (preview) preview.remove();
-
-            if (fileInput) fileInput.value = "";
-            uploadedImageData = null;
-        });
-    }
-
-    // Clear storage button
-    const clearBtn = document.getElementById("clear-storage");
+    // Clear storage
     if (clearBtn) {
         clearBtn.addEventListener("click", function () {
             localStorage.removeItem("cozy-username");
             localStorage.removeItem("cozy-profile-img");
-
-            const sidebarName = document.getElementById("sidebar-username");
-            if (sidebarName) sidebarName.textContent = "Cozy User";
-
-            const sidebarImg = document.getElementById("sidebar-profile-img");
-            if (sidebarImg) sidebarImg.src = "assets/img/yeti.jpg"; // default avatar
 
             usernameInput.value = "";
             const preview = document.getElementById("profile-preview");
@@ -153,9 +142,11 @@ function initSettingsPage() {
             if (fileInput) fileInput.value = "";
             uploadedImageData = null;
 
+            usernameDisplays.forEach(el => { if (el) el.textContent = "Cozy User"; });
+            profileImages.forEach(el => { if (el) el.src = "assets/img/yeti.jpg"; });
+
             updateStorageInfo();
 
-            const modalEl = document.getElementById("settings-modal");
             if (modalEl) {
                 modalEl.querySelector(".modal-title").innerHTML =
                     '<i class="bi bi-trash-fill text-danger me-2"></i> Storage Cleared';
@@ -167,11 +158,22 @@ function initSettingsPage() {
         });
     }
 
-    const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-    popoverTriggerList.map(function (popoverTriggerEl) {
-        return new bootstrap.Popover(popoverTriggerEl);
-    });
+    // Cleanup on modal close
+    if (modalEl) {
+        modalEl.addEventListener("hidden.bs.modal", function () {
+            const preview = document.getElementById("profile-preview");
+            if (preview) preview.remove();
+            if (fileInput) fileInput.value = "";
+            uploadedImageData = null;
+        });
+    }
 
-    // Show initial storage info
+    // Initialize popovers
+    const popovers = document.querySelectorAll('[data-bs-toggle="popover"]');
+    popovers.forEach(el => new bootstrap.Popover(el));
+
+    // Initial storage info
     updateStorageInfo();
 }
+
+
