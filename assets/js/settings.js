@@ -173,9 +173,21 @@ function initSettingsPage() {
     popovers.forEach(el => new bootstrap.Popover(el));
 
     const darkModeToggle = document.getElementById('darkModeToggle');
+
+    // Apply saved mode on load
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-mode");
+        if (darkModeToggle) {
+            darkModeToggle.innerHTML = '<i class="bi bi-sun-fill me-1"></i> Light Mode';
+        }
+    }
+
     if (darkModeToggle) {
-        darkModeToggle.addEventListener('click', () => {
-            const isDark = document.body.classList.toggle('dark-mode');
+        darkModeToggle.addEventListener("click", () => {
+            const isDark = document.body.classList.toggle("dark-mode");
+
+            // Save preference
+            localStorage.setItem("theme", isDark ? "dark" : "light");
 
             // Update button icon & text dynamically
             darkModeToggle.innerHTML = isDark
