@@ -18,11 +18,29 @@
 
     <!-- Settings Card + Alert -->
     <div class="col-lg-12">
-        <div id="settings-toast" class="alert alert-success alert-dismissible fade my-1" role="alert"
-            style="display:none;">
-            Changes saved!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <!-- Settings Success Modal -->
+        <div class="modal fade" id="settings-modal" tabindex="-1" aria-labelledby="settingsModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content rounded-4 shadow-sm">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title" id="settingsModalLabel">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i> Changes Saved
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        Your profile settings have been updated successfully.
+                    </div>
+                    <div class="modal-footer border-0">
+                        <button type="button" class="btn btn-dark px-3" data-bs-dismiss="modal">
+                            OK
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
+
 
         <div class="card cozy-card rounded-4 border-0 shadow-sm p-4">
             <h5 class="settings-title mb-3">
@@ -55,24 +73,36 @@
         </div>
     </div>
 
-    <div class="col-lg-12 mb-3">
+    <div class="col-lg-12">
         <div class="card cozy-card rounded-4 border-0 shadow-sm p-4">
-            <div class="d-flex align-items-center mb-2">
-                <i class="bi bi-hdd-network-fill fs-2 text-cozy me-3"></i>
-                <h6 class="mb-0 fw-bold" style="color: var(--deep-brown);">Manage Your Storage</h6>
-            </div>
+            <h5 class="settings-title mb-3">
+                <i class="bi bi-cloud-fill me-2"></i> Manage Your Storage
+            </h5>
             <p class="mb-2 small" style="color: var(--warm-gray);">
-                View how many items are saved in your local storage and their approximate size.
+                See how much space your saved data occupies in local storage and clear it if needed.
             </p>
-            <div id="storage-info" class="small text-muted fw-semibold">
+            <div class="progress mb-2" style="height: 12px; border-radius: 6px;">
+                <div id="storage-progress" class="progress-bar" role="progressbar"
+                    style="width: 0%; background-color: var(--soft-brown);" aria-valuenow="0" aria-valuemin="0"
+                    aria-valuemax="100"></div>
+            </div>
+
+            <div id="storage-info" class="small text-muted fw-semibold mb-2">
                 <!-- JS will populate this -->
             </div>
-            <button id="clear-storage" class="btn btn-sm mt-3"
-                style="background-color: var(--cozy-orange); color: var(--deep-brown);">
-                Clear Storage
-            </button>
+
+            <div class="d-flex justify-content-end">
+                <button id="clear-storage" class="btn-dark px-3">
+                    Clear Storage
+                </button>
+            </div>
         </div>
     </div>
+</div>
+</div>
+
+
+
 
 
 </div>
@@ -101,5 +131,12 @@
     .upload-box:hover {
         background: rgba(212, 165, 116, 0.2);
         border-color: var(--cozy-orange);
+    }
+
+    #profile-preview {
+        max-width: 400px;
+        height: auto;
+        display: block;
+        margin: 0 auto;
     }
 </style>
