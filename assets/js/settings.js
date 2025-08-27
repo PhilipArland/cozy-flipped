@@ -172,6 +172,18 @@ function initSettingsPage() {
     const popovers = document.querySelectorAll('[data-bs-toggle="popover"]');
     popovers.forEach(el => new bootstrap.Popover(el));
 
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', () => {
+            const isDark = document.body.classList.toggle('dark-mode');
+
+            // Update button icon & text dynamically
+            darkModeToggle.innerHTML = isDark
+                ? '<i class="bi bi-sun-fill me-1"></i> Light Mode'
+                : '<i class="bi bi-moon-fill me-1"></i> Dark Mode';
+        });
+    }
+
     // Initial storage info
     updateStorageInfo();
 }
