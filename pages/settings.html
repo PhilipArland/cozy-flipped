@@ -1,14 +1,14 @@
-<div class="row g-2 g-md-3">
+<div class="row g-3">
     <div class="col-lg-12">
-        <div class="card cozy-card rounded-4 border-0 shadow-sm p-4 d-flex flex-row align-items-center">
+        <div class="card cozy-card rounded-4 border-0 shadow-sm p-4 p-md-3 d-flex flex-row align-items-center">
             <div class="me-3">
-                <i class="bi bi-person-gear display-1 text-cozy"></i>
+                <i class="bi bi-person-gear display-1"></i>
             </div>
             <div>
-                <h5 class="fw-bold mb-1" style="color: var(--deep-brown);">
+                <h5 class="fw-bold mb-1">
                     Customize your profile ✨
                 </h5>
-                <p class="mb-0 small" style="color: var(--warm-gray);">
+                <p class="mb-0 small">
                     Change your display name, upload a new picture, and adjust settings so this
                     dashboard feels truly <span class="highlight">yours</span>.
                 </p>
@@ -16,43 +16,8 @@
         </div>
     </div>
 
-
+    <!-- Profile Settings -->
     <div class="col-lg-12">
-        <!-- Dark Mode Toggle Button -->
-        <div class="d-flex justify-content-end mb-3">
-            <button id="darkModeToggle" class="btn btn-sm px-3"
-                style="background-color: var(--cozy-orange); color: var(--deep-brown);">
-                <i class="bi bi-moon-fill me-1"></i> Dark Mode
-            </button>
-        </div>
-    </div>
-
-    <!-- Settings Card + Alert -->
-    <div class="col-lg-12">
-        <!-- Settings Success Modal -->
-        <div class="modal fade" id="settings-modal" tabindex="-1" aria-labelledby="settingsModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content rounded-4 shadow-sm">
-                    <div class="modal-header border-0">
-                        <h5 class="modal-title" id="settingsModalLabel">
-                            <i class="bi bi-check-circle-fill text-success me-2"></i> Changes Saved
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body text-center">
-                        Your profile settings have been updated successfully.
-                    </div>
-                    <div class="modal-footer border-0">
-                        <button type="button" class="btn btn-dark px-3" data-bs-dismiss="modal">
-                            OK
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
         <div class="card cozy-card rounded-4 border-0 shadow-sm p-4">
             <h5 class="settings-title mb-3">
                 <i class="bi bi-gear-fill me-2"></i> Profile Settings
@@ -68,7 +33,7 @@
                 <div class="upload-box text-center p-3 rounded-3">
                     <i class="bi bi-cloud-arrow-up fs-2 d-block mb-2"></i>
                     <input type="file" id="profile-img" accept="image/*" class="form-control custom-input d-none">
-                    <button type="button" id="upload-btn" class="btn btn-sm btn-outline-dark"
+                    <button type="button" id="upload-btn" class="btn-dark"
                         onclick="document.getElementById('profile-img').click();">
                         Upload Image
                     </button>
@@ -77,19 +42,90 @@
             </div>
 
             <div class="d-flex justify-content-end">
-                <button id="save-settings" class="btn-dark px-3">
-                    <i class="bi bi-check2-circle me-2"></i> Save Settings
+                <button id="save-settings" class="dark-btn px-3">
+                    <i class="bi bi-check2-circle me-2 text-light"></i> Save
                 </button>
             </div>
         </div>
     </div>
 
+
+    <!-- Section: Appearance -->
+    <h6 class="fw-semibold mt-4 mb-0 px-3" style="color: var(--soft-brown); letter-spacing: .5px;">
+        Appearance & Layout
+    </h6>
+
+    <!-- Sidebar Settings -->
+
+    <!-- Dark Mode -->
+    <div class="col-lg-12">
+        <div
+            class="card cozy-card rounded-4 border-0 shadow-sm p-4 d-flex flex-sm-row align-items-center justify-content-between">
+            <div class="d-flex flex-column">
+                <h5 class="settings-title mb-3 d-flex align-items-center">
+                    <i class="bi bi-moon-stars-fill me-2"></i> Dark Mode
+                </h5>
+                <p class="mb-0 small" style="color: var(--warm-gray);">
+                    Toggle between light and dark themes for a cozy experience.
+                </p>
+            </div>
+
+            <!-- Button toggle for dark/light -->
+            <div class="btn-group mt-3 mt-md-0" role="group" aria-label="Dark Mode toggle">
+                <input type="radio" class="btn-check" name="darkModeOption" id="lightMode" value="light" checked>
+                <label class="btn-sm rounded-pill px-3 py-1 d-flex align-items-center gap-2" for="lightMode">
+                    <i class="bi bi-sun-fill text-light"></i> Light
+                </label>
+
+                <input type="radio" class="btn-check" name="darkModeOption" id="darkMode" value="dark">
+                <label class="btn-sm rounded-pill px-3 py-1 d-flex align-items-center gap-2" for="darkMode">
+                    <i class="bi bi-moon-stars-fill"></i> Dark
+                </label>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-lg-12">
+        <div
+            class="card cozy-card rounded-4 border-0 shadow-sm p-4 d-flex flex-sm-row align-items-center justify-content-between">
+            <div class="d-flex flex-column">
+                <h5 class="settings-title mb-3 d-flex align-items-center">
+                    <i class="bi bi-layout-sidebar-inset me-2"></i> Sidebar Settings
+                </h5>
+                <p class="mb-0 small">
+                    Control how your sidebar behaves across pages.
+                </p>
+            </div>
+
+            <!-- Button toggle -->
+            <div class="btn-group mt-3 mt-md-0" role="group" aria-label="Sidebar behavior">
+                <input type="radio" class="btn-check" name="sidebarBehavior" id="sidebarAlways" value="always" checked>
+                <label class="btn-sm rounded-pill px-3 py-1 d-flex align-items-center gap-2" for="sidebarAlways">
+                    <i class="bi bi-layout-sidebar-inset"></i> Always open
+                </label>
+
+                <input type="radio" class="btn-check" name="sidebarBehavior" id="sidebarCollapsed" value="collapsed">
+                <label class="btn-sm rounded-pill px-3 py-1 d-flex align-items-center gap-2" for="sidebarCollapsed">
+                    <i class="bi bi-layout-sidebar"></i> Collapsed
+                </label>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Section: Storage -->
+    <h6 class="fw-semibold mt-4 mb-0 px-3" style="color: var(--soft-brown); letter-spacing: .5px;">
+        Storage & Data
+    </h6>
+
+    <!-- Storage Card -->
     <div class="col-lg-12">
         <div class="card cozy-card rounded-4 border-0 shadow-sm p-4">
             <div class="d-flex justify-content-between">
                 <h5 class="settings-title mb-3 d-flex align-items-center">
                     <i class="bi bi-cloud-fill me-2"></i> Manage Your Storage
-
                 </h5>
                 <h5>
                     <i class="bi bi-info-circle ms-2 text-muted" tabindex="0" data-bs-toggle="popover"
@@ -97,28 +133,49 @@
                         title='<i class="bi bi-info-circle-fill me-1"></i> About Local Storage'
                         data-bs-content="This page uses your browser's localStorage to save your settings. The available space may vary depending on your browser and device.">
                     </i>
-
                 </h5>
             </div>
-
 
             <p class="mb-2 small" style="color: var(--warm-gray);">
                 See how much space your saved data occupies in local storage and clear it if needed.
             </p>
+
             <div class="progress mb-2" style="height: 12px; border-radius: 6px;">
                 <div id="storage-progress" class="progress-bar" role="progressbar"
                     style="width: 0%; background-color: var(--soft-brown);" aria-valuenow="0" aria-valuemin="0"
-                    aria-valuemax="100"></div>
+                    aria-valuemax="100">
+                </div>
             </div>
 
-            <div id="storage-info" class="small text-muted fw-semibold mb-2">
-                <!-- JS will populate this -->
-            </div>
+            <div id="storage-info" class="small text-muted fw-semibold mb-2"></div>
 
             <div class="d-flex justify-content-end">
-                <button id="clear-storage" class="btn-dark px-3">
+                <button id="clear-storage" class="dark-btn px-3">
+                    <i class="bi bi-trash me-1 text-light"></i>
                     Clear Storage
                 </button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="settings-modal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 shadow-sm">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="settingsModalLabel">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i> Changes Saved
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    Your profile settings have been updated successfully.
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-dark px-3" data-bs-dismiss="modal">
+                        OK
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -128,33 +185,31 @@
 
 
 
-
-</div>
-
-
-
 <style>
+    i {
+        color: var(--text-primary);
+    }
+
     .custom-input {
-        border: 1px solid var(--gentle-green);
+        border: 1px solid var(--bg-gentle-green);
         background: #fffdf8;
         transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .custom-input:focus {
-        border-color: var(--cozy-orange);
+        border-color: var(--bg-cozy-orange);
         box-shadow: 0 0 5px rgba(212, 165, 116, 0.5);
     }
 
     .upload-box {
         background: rgba(212, 165, 116, 0.1);
-        border: 2px dashed var(--soft-brown);
+        border: 2px dashed var(--bg-cozy-orange);
         cursor: pointer;
         transition: background 0.3s ease, border-color 0.3s ease;
     }
 
     .upload-box:hover {
         background: rgba(212, 165, 116, 0.2);
-        border-color: var(--cozy-orange);
     }
 
     #profile-preview {
@@ -170,14 +225,14 @@
         border-radius: 12px;
         border: none;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        background-color: var(--warm-cream);
-        color: var(--deep-brown);
+        background-color: var(--bg-warm-cream);
+        color: var(--text-primary);
         max-width: 280px;
     }
 
     .popover-header {
-        background-color: var(--soft-brown);
-        color: var(--warm-cream);
+        background-color: var(--bg-soft-brown);
+        color: var(--text-primary);
         font-weight: 600;
         border-bottom: none;
         border-radius: 12px 12px 0 0;
@@ -190,5 +245,46 @@
         font-size: 0.85rem;
         line-height: 1.4;
         color: var(--deep-brown);
+    }
+
+    /* General style for all toggle buttons */
+    .btn-check+label {
+        border: 1px solid var(--cozy-orange);
+        background-color: transparent;
+        color: var(--deep-brown);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border-radius: 50rem;
+        /* pill style */
+    }
+
+    /* Dark Mode buttons */
+    #lightMode:checked+label {
+        background-color: var(--bg-deep-brown);
+        color: var(--text-light) !important;
+        border-color: var(--bg-deep-brown);
+    }
+
+    #darkMode:checked+label {
+        background-color: var(--bg-cozy-orange);
+        color: var(--text-primary) !important;
+        border-color: var(--bg-cozy-orange);
+    }
+
+    /* Sidebar buttons */
+    #sidebarAlways:checked+label,
+    #sidebarCollapsed:checked+label {
+        background-color: var(--bg-deep-brown);
+        color: var(--text-active) !important;
+    }
+
+    #sidebarAlways:checked+label i,
+    #sidebarCollapsed:checked+label i {
+        color: var(--text-active) !important;
+    }
+
+    .dark-mode #sidebarAlways:checked+label,
+    .dark-mode #sidebarCollapsed:checked+label {
+        background-color: var(--bg-cozy-orange) !important;
     }
 </style>

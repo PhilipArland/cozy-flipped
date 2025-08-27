@@ -71,7 +71,10 @@ body {
     border-image-slice: 1;
 }
 
-h6 {
+h6,
+h5,
+p,
+label {
     color: var(--text-primary) !important;
 }
 
@@ -379,6 +382,23 @@ h6 {
     color: white;
     padding: 4px 8px;
     border: none;
+}
+
+.dark-btn {
+    background-color: var(--bg-deep-brown);
+    border-radius: 6px;
+    color: var(--text-active);
+    padding: 4px 8px;
+    border: none;
+}
+
+.dark-mode .dark-btn {
+    background-color: var(--bg-cozy-orange);
+    color: var(--text-active) !important;
+}
+
+.dark-mode .dark-btn i {
+    color: var(--txt-active) !important;
 }
 
 

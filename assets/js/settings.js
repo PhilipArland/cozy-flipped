@@ -172,29 +172,33 @@ function initSettingsPage() {
     const popovers = document.querySelectorAll('[data-bs-toggle="popover"]');
     popovers.forEach(el => new bootstrap.Popover(el));
 
-    const darkModeToggle = document.getElementById('darkModeToggle');
+    const lightModeRadio = document.getElementById("lightMode");
+    const darkModeRadio = document.getElementById("darkMode");
 
     // Apply saved mode on load
-    if (localStorage.getItem("theme") === "dark") {
+    const savedTheme = localStorage.getItem("theme") || "light";
+    if (savedTheme === "dark") {
         document.body.classList.add("dark-mode");
-        if (darkModeToggle) {
-            darkModeToggle.innerHTML = '<i class="bi bi-sun-fill me-1"></i> Light Mode';
+        darkModeRadio.checked = true;
+    } else {
+        document.body.classList.remove("dark-mode");
+        lightModeRadio.checked = true;
+    }
+
+    // Event listeners
+    lightModeRadio.addEventListener("change", () => {
+        if (lightModeRadio.checked) {
+            document.body.classList.remove("dark-mode");
+            localStorage.setItem("theme", "light");
         }
-    }
+    });
 
-    if (darkModeToggle) {
-        darkModeToggle.addEventListener("click", () => {
-            const isDark = document.body.classList.toggle("dark-mode");
-
-            // Save preference
-            localStorage.setItem("theme", isDark ? "dark" : "light");
-
-            // Update button icon & text dynamically
-            darkModeToggle.innerHTML = isDark
-                ? '<i class="bi bi-sun-fill me-1"></i> Light Mode'
-                : '<i class="bi bi-moon-fill me-1"></i> Dark Mode';
-        });
-    }
+    darkModeRadio.addEventListener("change", () => {
+        if (darkModeRadio.checked) {
+            document.body.classList.add("dark-mode");
+            localStorage.setItem("theme", "dark");
+        }
+    });
 
     // Initial storage info
     updateStorageInfo();
