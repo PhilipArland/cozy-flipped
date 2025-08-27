@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (page === 'dashboard') {
-            getWeatherByLocation();
             attachViewActivitiesListener();
             attachGoBackHomeListener();
             generateCalendar();
@@ -71,63 +70,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 loadPage('dashboard');
             });
         }
-    }
-
-    /*** Weather Fetcher ***/
-    const apiKey = "4f45e19606259e2ffb0eced14857d496";
-
-    function getWeatherByLocation() {
-        if (!navigator.geolocation) {
-            console.error("Geolocation is not supported by your browser.");
-            return;
-        }
-
-        navigator.geolocation.getCurrentPosition(position => {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-
-            const tempEl = document.getElementById("temperature");
-            const descEl = document.getElementById("weather-description");
-            const locEl = document.getElementById("location");
-            const iconEl = document.getElementById("weather-icon");
-
-            if (tempEl) tempEl.textContent = "Loading...";
-            if (descEl) descEl.textContent = "";
-            if (locEl) locEl.textContent = "";
-            if (iconEl) iconEl.innerHTML = "";
-
-            const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
-
-            fetch(weatherUrl)
-                .then(response => response.json())
-                .then(data => {
-                    if (tempEl && descEl && iconEl) {
-                        tempEl.textContent = `${Math.round(data.main.temp)}°C`;
-                        descEl.textContent = data.weather[0].description;
-                        const icon = data.weather[0].icon;
-                        iconEl.innerHTML = `<img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="Weather icon" style="width: 120px; height: 120px;">`;
-                    }
-
-                    const geoUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
-
-                    return fetch(geoUrl);
-                })
-                .then(response => response.json())
-                .then(locationData => {
-                    if (locEl) {
-                        const address = locationData.address;
-                        const city = address.city || address.town || address.village || address.state_district || "Unknown location";
-                        locEl.textContent = city;
-                    }
-                })
-                .catch(error => {
-                    console.error("Error fetching weather data:", error);
-                    if (tempEl) tempEl.textContent = "Error loading weather";
-                });
-
-        }, error => {
-            console.error("Geolocation error:", error);
-        });
     }
 
     function generateCalendar() {
