@@ -10,17 +10,18 @@
     --bg-warm-red: #e35e59;
 
     --text-primary: #4a3f35;
-    --text--orange: #d4a574;
+    --text-orange: #d4a574;
     --text-secondary: #7a6b57;
     --text-light: #faf7f2;
     --text-brown: #8b7355;
+    --text-active: #faf7f2;
 }
 
 body.dark-mode {
     --bg-body: #2b2a28;
     --bg-warm-cream: #4a3f35;
     --bg-cozy-orange: #b87c4a;
-    --bg-deep-brown: #2e2721;
+    --bg-deep-brown: #1f1e1c;
     --bg-soft-brown: #665847;
     --bg-warm-gray: hsl(0, 0%, 70%);
     --bg-gentle-green: #6b7a65;
@@ -31,6 +32,8 @@ body.dark-mode {
     --text-secondary: #c0b7aa;
     --text-light: #4a3f35;
     --text-brown: #665847;
+    --text-active: #faf7f2;
+
 }
 
 * {
@@ -69,7 +72,7 @@ body {
 }
 
 h6 {
-    color: var(--text-primary);
+    color: var(--text-primary) !important;
 }
 
 .text-muted {
@@ -118,7 +121,8 @@ h6 {
 }
 
 #left-sidebar.closed .sidebar-menu span,
-#left-sidebar.closed h4 {
+#left-sidebar.closed h4,
+#left-sidebar.closed p {
     display: none;
 }
 
@@ -130,7 +134,7 @@ h6 {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: var(--text-light);
+    color: var(--text-active);
     font-weight: 500;
 }
 
@@ -155,7 +159,7 @@ h6 {
 .control-btn {
     background: none;
     border: none;
-    color: var(--text-secondary);
+    color: var(--text-orange);
     font-size: 1.4rem;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -166,7 +170,6 @@ h6 {
 .control2-btn {
     font-size: 1rem;
     padding: 6px;
-
 }
 
 .control-btn:hover {
@@ -174,14 +177,15 @@ h6 {
 }
 
 .control-btn.active i {
-    color: var(--text--orange);
+    color: var(--text-orange);
     border-bottom: 2px solid var(--bg-cozy-orange);
     padding-bottom: 2px;
+    font-weight: 600;
 }
 
 .play-btn {
     font-size: 2.5rem;
-    color: var(--text--orange);
+    color: var(--text-orange);
 }
 
 /* Playlist */
@@ -203,7 +207,7 @@ h6 {
 
 .playlist-item.active {
     background: linear-gradient(45deg, var(--bg-cozy-orange), var(--bg-gentle-green));
-    color: var(--bg-warm-cream);
+    font-weight: 600;
 }
 
 .playlist-item.active .track-duration {
