@@ -355,7 +355,7 @@ label {
 .btn-cancel {
     background-color: var(--bg-warm-gray);
     border-radius: 6px;
-    color: white;
+    color: var(--text-light);
     padding: 4px 8px;
     border: none;
 }
@@ -379,7 +379,7 @@ label {
 .btn-delete {
     background-color: var(--bg-warm-red);
     border-radius: 6px;
-    color: white;
+    color: var(--text-active);
     padding: 4px 8px;
     border: none;
 }

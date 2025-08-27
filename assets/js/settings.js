@@ -50,6 +50,20 @@ async function updateStorageInfo() {
     progressBar.setAttribute("aria-valuenow", percent.toFixed(2));
 }
 
+/*** Universal Cozy Status Modal Helper ***/
+function showStatusModal(type, title, message) {
+    const modalEl = document.getElementById("settings-modal");
+    if (!modalEl) return;
+
+    const titleEl = modalEl.querySelector(".modal-title");
+    const bodyEl = modalEl.querySelector(".modal-body");
+
+    if (titleEl) titleEl.textContent = title;
+    if (bodyEl) bodyEl.textContent = message;
+
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
+}
 
 /*** Init Settings Page ***/
 function initSettingsPage() {
@@ -123,38 +137,37 @@ function initSettingsPage() {
 
             updateStorageInfo();
 
-            if (modalEl) {
-                const modal = new bootstrap.Modal(modalEl);
-                modal.show();
-            }
+            showStatusModal("success", "Changes Saved", "Your profile settings have been updated successfully.");
         });
     }
 
-    // Clear storage
+    // Clear storage with confirmation
     if (clearBtn) {
         clearBtn.addEventListener("click", function () {
-            localStorage.removeItem("cozy-username");
-            localStorage.removeItem("cozy-profile-img");
+            const confirmModalEl = document.getElementById("confirm-clear-modal");
+            const confirmModal = new bootstrap.Modal(confirmModalEl);
+            confirmModal.show();
 
-            usernameInput.value = "";
-            const preview = document.getElementById("profile-preview");
-            if (preview) preview.remove();
-            if (fileInput) fileInput.value = "";
-            uploadedImageData = null;
+            const confirmBtn = document.getElementById("confirm-clear-btn");
+            confirmBtn.onclick = function () {
 
-            usernameDisplays.forEach(el => { if (el) el.textContent = "Cozy User"; });
-            profileImages.forEach(el => { if (el) el.src = "assets/img/yeti.jpg"; });
+                localStorage.removeItem("cozy-username");
+                localStorage.removeItem("cozy-profile-img");
 
-            updateStorageInfo();
+                usernameInput.value = "";
+                const preview = document.getElementById("profile-preview");
+                if (preview) preview.remove();
+                if (fileInput) fileInput.value = "";
+                uploadedImageData = null;
 
-            if (modalEl) {
-                modalEl.querySelector(".modal-title").innerHTML =
-                    '<i class="bi bi-trash-fill text-danger me-2"></i> Storage Cleared';
-                modalEl.querySelector(".modal-body").textContent =
-                    "All saved data has been removed from local storage.";
-                const modal = new bootstrap.Modal(modalEl);
-                modal.show();
-            }
+                usernameDisplays.forEach(el => { if (el) el.textContent = "Cozy User"; });
+                profileImages.forEach(el => { if (el) el.src = "assets/img/yeti.jpg"; });
+
+                updateStorageInfo();
+                confirmModal.hide();
+
+                showStatusModal("delete", "Storage Cleared", "All saved data has been removed from local storage.");
+            };
         });
     }
 
