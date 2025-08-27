@@ -53,7 +53,7 @@ body.no-scroll {
     min-width: 260px;
     max-width: 260px;
     transition: all 0.3s ease;
-    height: 96vh;
+    height: 95.6vh;
     position: sticky;
     top: 16px;
     background-color: var(--deep-brown);
@@ -106,11 +106,6 @@ body.no-scroll {
 
 /* Right Sidebar */
 
-.right-album {
-    position: sticky;
-    top: 1rem;
-}
-
 .album-cover {
     width: 40px;
     height: 40px;
@@ -151,6 +146,8 @@ body.no-scroll {
     color: var(--cozy-orange);
 }
 
+/* Playlist */
+
 .playlist-item {
     background: white;
     border-radius: 15px;
@@ -168,7 +165,11 @@ body.no-scroll {
 
 .playlist-item.active {
     background: linear-gradient(45deg, var(--cozy-orange), var(--gentle-green));
-    color: white;
+    color: var(--warm-cream);
+}
+
+.playlist-item.active .track-duration {
+    color: var(--warm-cream);
 }
 
 .playlist-item.move-up {

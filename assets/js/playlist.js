@@ -7,6 +7,9 @@ function initPlaylist() {
         { title: "Paraluman", artist: "Adie", src: "assets/playlist/paraluman.mp3", cover: "assets/playlist/cover/paraluman.jpg" },
         { title: "Kundiman", artist: "Silent Sanctuary", src: "assets/playlist/kundiman.mp3", cover: "assets/playlist/cover/kundiman.jpg" },
         { title: "Museo", artist: "Eliza Maturan", src: "assets/playlist/museo.mp3", cover: "assets/playlist/cover/museo.jpg" },
+        { title: "Ikot", artist: "Over October", src: "assets/playlist/ikot.mp3", cover: "assets/playlist/cover/ikot.jpg" },
+        { title: "Dalangin", artist: "Earl Agustin", src: "assets/playlist/dalangin.mp3", cover: "assets/playlist/cover/dalangin.jpg" },
+        { title: "Tingin", artist: "Cup of Joe ft. Janine Teñoso", src: "assets/playlist/tingin.mp3", cover: "assets/playlist/cover/tingin.jpg" },
     ];
 
     // DOM elements
@@ -50,11 +53,15 @@ function initPlaylist() {
                     style="width:40px; height:40px; object-fit:cover;" 
                     alt="${track.title}">
             </div>
-            <div>
+            <div class="w-100">
                 <h6 class="mb-1 fs-6">${track.title}</h6>
-                <small class="text-muted">${track.artist} • <span class="track-duration">--:--</span></small>
+                <div class="d-flex justify-content-between text-muted">
+                    <small>${track.artist}</small>
+                    <small class="track-duration">--:--</small>
+                </div>
             </div>
         `;
+
 
         const tempAudio = new Audio(track.src);
         tempAudio.onloadedmetadata = () => {
@@ -178,23 +185,21 @@ function initPlaylist() {
 
     if (repeatBtn) {
         repeatBtn.addEventListener("click", () => {
-            const repeatIcon = repeatBtn.querySelector("i"); // find the <i> inside button
+            const repeatIcon = repeatBtn.querySelector("i");
 
-            if (repeatMode === "off") {
-                repeatMode = "all";
-                repeatIcon.className = "bi bi-repeat"; // standard repeat icon
-                repeatBtn.classList.add("active");
-            } else if (repeatMode === "all") {
-                repeatMode = "one";
-                repeatIcon.className = "bi bi-repeat-1"; // repeat-one icon
-            } else {
+            if (repeatMode === "all") {
                 repeatMode = "off";
-                repeatIcon.className = "bi bi-repeat"; // default
+                repeatIcon.className = "bi bi-repeat";
                 repeatBtn.classList.remove("active");
+            } else {
+                repeatMode = "all";
+                repeatIcon.className = "bi bi-repeat";
+                repeatBtn.classList.add("active");
             }
             console.log("Repeat mode:", repeatMode);
         });
     }
+
 
     playlistContainer.addEventListener("click", e => {
         const item = e.target.closest(".playlist-item");
