@@ -56,8 +56,20 @@ function showStatusModal(type, title, message) {
     if (!modalEl) return;
 
     const titleEl = modalEl.querySelector(".modal-title");
+    const imgEl = modalEl.querySelector(".modal-img img");
     const bodyEl = modalEl.querySelector(".modal-body");
 
+    const images = {
+        success: "assets/img/congrats.gif",
+        error: "assets/img/coffee.gif",
+        warning: "assets/img/music.gif",
+        info: "assets/img/dance.gif"
+    };
+
+    if (imgEl) {
+        imgEl.src = images[type] || images.info;
+        imgEl.alt = type + " icon";
+    }
     if (titleEl) titleEl.textContent = title;
     if (bodyEl) bodyEl.textContent = message;
 
@@ -124,13 +136,22 @@ function initSettingsPage() {
     if (saveBtn) {
         saveBtn.addEventListener("click", function () {
             const newName = usernameInput.value.trim();
+            const hasImage = uploadedImageData !== null;
 
+            // 🚫 Validation: nothing to save
+            if (!newName && !hasImage) {
+                showStatusModal("warning", "Nothing to Save", "Please enter a name or upload an image first.");
+                return; // stop here
+            }
+
+            // ✅ Save name
             if (newName) {
                 usernameDisplays.forEach(el => { if (el) el.textContent = newName; });
                 localStorage.setItem("cozy-username", newName);
             }
 
-            if (uploadedImageData) {
+            // ✅ Save image
+            if (hasImage) {
                 profileImages.forEach(el => { if (el) el.src = uploadedImageData; });
                 localStorage.setItem("cozy-profile-img", uploadedImageData);
             }
@@ -140,6 +161,7 @@ function initSettingsPage() {
             showStatusModal("success", "Changes Saved", "Your profile settings have been updated successfully.");
         });
     }
+
 
     // Clear storage with confirmation
     if (clearBtn) {
