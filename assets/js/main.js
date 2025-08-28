@@ -240,5 +240,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     /*** Load default page ***/
-    loadPage('playlist');
+    loadPage('dashboard');
 });

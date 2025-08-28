@@ -1,18 +1,16 @@
 <div class="row g-2 g-md-3 justify-content-center dashboard-page">
-    <div class="col-lg-12">
-        <div class="card cozy-card p-2 p-md-4 rounded-4 shadow-sm border-0">
-            <div class="d-flex align-items-start">
-                <div class="me-4 mb-lg-0 flex-shrink-0">
-                    <img src="assets/img/welcome.jpg" alt="Welcome" height="140" width="140"
-                        class="img-fluid rounded-4 shadow-sm" style="object-fit: cover;">
-                </div>
 
-                <div class="welcome-content">
-                    <h4 class="fw-bold mb-2">Welcome!</h4>
-                    <p class="mb-0 small">
-                        This is your cozy space where you can manage your tasks and enjoy music at the same time.
-                    </p>
-                </div>
+    <div class="col-lg-12">
+        <div class="position-relative cozy-welcome">
+            <img src="assets/img/cozy-welcome.jpg" alt="" class="img-fluid rounded-4">
+
+            <div class="position-absolute bottom-0 start-0 w-100 p-3 p-md-4 overlay-box">
+                <h3 class="fw-bold mb-2">Welcome, Stranger!</h3>
+                <p class="mb-0 small d-none d-md-block"><i class="bi bi-play-circle me-1"></i> This is your cozy
+                    space where you can manage your tasks and enjoy music at the same time.</p>
+
+                <p class="mb-0 small d-md-none"><i class="bi bi-play-circle me-1"></i> This is your cozy
+                    space. <br> Manage your tasks and enjoy music at the same time.</p>
             </div>
         </div>
     </div>
@@ -224,8 +222,8 @@
 
     <div class="col-lg-12">
         <div class="card cozy-card rounded-4 shadow-sm border-0">
-            <div class="p-2 rounded-top-4 text-white" style="background-color: var(--soft-brown);">
-                <div class="d-flex justify-content-between px-2">
+            <div class="p-2 rounded-top-4">
+                <div class="d-flex justify-content-between px-2 calendar">
                     <div class="">
                         <h5 class="fw-bold mb-0">Calendar</h5>
                         <p class="small mb-0" id="calendar-month"></p>
@@ -262,5 +260,19 @@
         background: var(--bg-soft-brown);
         color: var(--text-primary);
         cursor: pointer;
+    }
+
+    .dashboard-page img {
+        width: 100%;
+        height: 30vh;
+        object-fit: cover;
+        object-position: 50% 80%;
+    }
+
+    @media (max-width: 640px) {
+        .dashboard-page img {
+            height: 24dvh;
+            object-position: 50% 100%;
+        }
     }
 </style>

@@ -1,5 +1,5 @@
 :root {
-    --bg-body: #f0f0f0;
+    --bg-body: #eef0f2;
     --bg-warm-cream: #faf7f2;
     --bg-cozy-orange: #d4a574;
     --bg-deep-brown: #4a3f35;
@@ -9,9 +9,10 @@
     --bg-warm-red: #e35e59;
 
     --text-primary: #4a3f35;
-    --text-orange: #d4a574;
     --text-secondary: #7a6b57;
-    --text-light: #faf7f2;
+    --text-soft: #f3ede4;
+    --text-orange: #d4a574;
+    --text-light: #f3ede4;
     --text-brown: #8b7355;
     --text-active: #faf7f2;
     --text-navbar: #faf7f2;
@@ -31,8 +32,9 @@ body.dark-mode {
     --bg-warm-red: #e07c78;
 
     --text-primary: #faf7f2;
-    --text-orange: #d4a574;
     --text-secondary: #c0b7aa;
+    --text-orange: #d4a574;
+    --text-soft: #b8b8b8;
     --text-light: #4a3f35;
     --text-brown: #665847;
     --text-active: #f5efe6;
@@ -298,6 +300,12 @@ body {
 
 /* Dark Moders */
 
+.overlay-box {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+    border-radius: 0 0 0.75rem 0.75rem;
+    color: var(--text-active);
+}
+
 .cozy-card {
     background-color: var(--bg-warm-cream);
 
@@ -309,7 +317,7 @@ body {
 }
 
 .dashboard-page {
-    h4 {
+    h4, h5 {
         color: var(--text-primary);
     }
 
@@ -330,6 +338,10 @@ body {
 
     .progress-bar {
         background-color: var(--bg-cozy-orange);
+    }
+
+    .calendar i {
+        color: var(--text-primary);
     }
 }
 
