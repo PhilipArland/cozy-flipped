@@ -65,6 +65,13 @@ body {
     align-items: center;
 }
 
+.cozy-hero img {
+    width: 100%;
+    height: 30vh;
+    object-fit: cover;
+    object-position: 50% 80%;
+}
+
 /* Left Sidebar */
 
 .cozy-profile img {
@@ -317,7 +324,9 @@ body {
 }
 
 .dashboard-page {
-    h4, h5 {
+
+    h4,
+    h5 {
         color: var(--text-primary);
     }
 
@@ -420,4 +429,7 @@ body {
         font-size: .8rem;
     }
 
+    .cozy-hero img {
+        height: 28dvh;
+    }
 }
