@@ -17,6 +17,7 @@
     --text-navbar: #faf7f2;
 
     --btn-primary: #4a3f35;
+    --btn-secondary: #8b7355;
 }
 
 body.dark-mode {
@@ -38,7 +39,7 @@ body.dark-mode {
     --text-navbar: #d4a574;
 
     --btn-primary: #b87c4a;
-
+    --btn-secondary: #1f1e1c;
 }
 
 * {
@@ -306,6 +307,33 @@ body {
     p {
         color: var(--text-primary);
     }
+
+
+}
+
+.dashboard-page {
+    h4 {
+        color: var(--text-primary);
+    }
+
+    .cozy-task {
+        background-color: var(--bg-body);
+        color: var(--text-primary);
+    }
+
+    .cozy-task i,
+    .progress-card i {
+        color: var(--text-secondary);
+    }
+
+    .progress {
+        background-color: var(--bg-body);
+        color: var(--text-primary);
+    }
+
+    .progress-bar {
+        background-color: var(--bg-cozy-orange);
+    }
 }
 
 .settings-page {
@@ -332,10 +360,26 @@ body {
 
 /* Buttons */
 
-.btn-primary, .btn-primary i {
-    background-color: var(--btn-primary);
+.btns {
     border-radius: 6px;
-    color: var(--text-active);
     padding: 4px 8px;
     border: none;
+}
+
+.btn-primary,
+.btn-primary i {
+    background-color: var(--btn-primary);
+    color: var(--text-active);
+}
+
+.btn-secondary,
+.btn-secondary i {
+    background-color: var(--btn-secondary);
+    color: var(--text-active);
+}
+
+.btn-add,
+.btn-add i {
+    background-color: var(--bg-gentle-green);
+    color: var(--text-active);
 }

@@ -1,30 +1,3 @@
-<style>
-    .dashboard-page {
-        h4,
-        h5,
-        p {
-            color: var(--text-primary);
-        }
-
-        i {
-            color: var(--text-secondary);
-        }
-
-        .cozy-task {
-            background-color: var(--bg-body);
-            color: var(--text-primary);
-        }
-        
-        .progress {
-            background-color: var(--bg-body);
-        }
-
-        .progress-bar {
-            background-color: var(--bg-cozy-orange);
-        }
-    }
-</style>
-
 <div class="row g-2 g-md-3 justify-content-center dashboard-page">
     <div class="col-lg-12">
         <div class="card cozy-card p-2 p-md-4 rounded-4 shadow-sm border-0">
@@ -36,7 +9,7 @@
 
                 <div class="welcome-content">
                     <h4 class="fw-bold mb-2">Welcome!</h4>
-                    <p class="mb-0 text-muted small">
+                    <p class="mb-0 small">
                         This is your cozy space where you can manage your tasks and enjoy music at the same time.
                     </p>
                 </div>
@@ -103,15 +76,15 @@
 
             <h5 class="fw-bold">No songs played yet</h5>
 
-            <p class="text-muted small mb-3">
+            <p class="small mb-3">
                 Your top played songs will appear here once you start listening 🎶
             </p>
 
             <div class="d-flex justify-content-center gap-3 my-2">
-                <button class="btn-soft small">
+                <button class="btns btn-secondary small">
                     Create Playlist <i class="bi bi-plus-circle"></i>
                 </button>
-                <button class="btn-dark small">
+                <button class="btns btn-primary small">
                     Start Listening <i class="bi bi-play-fill"></i>
                 </button>
             </div>
@@ -126,7 +99,7 @@
                     <i class="bi bi-graph-up-arrow me-2"></i>
                     Activity Overview
                 </h5>
-                <a href="#" id="viewActivitiesBtn" class="btn-add text-decoration-none">
+                <a href="#" id="viewActivitiesBtn" class="btns small btn-add text-decoration-none">
                     View All <i class="bi bi-arrow-right ms-1"></i>
                 </a>
             </div>
@@ -140,11 +113,11 @@
                             <i class="bi bi-person-fill fs-1"></i>
                         </div>
                         <div class="activity">
-                            <span class="fw-semibold text-muted">Personal Task</span>
+                            <span class="fw-semibold">Personal Task</span>
                             <div class="d-flex align-items-baseline">
                                 <h3 class="mb-0 fw-bold me-2" id="personal-count">0
                                 </h3>
-                                <p class="mb-0 small text-muted">remaining</p>
+                                <p class="mb-0 small">remaining</p>
                             </div>
                         </div>
                     </div>
@@ -156,11 +129,11 @@
                             <i class="bi bi-universal-access fs-1"></i>
                         </div>
                         <div class="activity">
-                            <span class="fw-semibold text-muted">Exercises</span>
+                            <span class="fw-semibold">Exercises</span>
                             <div class="d-flex align-items-baseline">
                                 <h3 class="mb-0 fw-bold me-2" id="exercise-count">0
                                 </h3>
-                                <p class="mb-0 small text-muted">remaining</p>
+                                <p class="mb-0 small">remaining</p>
                             </div>
                         </div>
                     </div>
@@ -198,11 +171,11 @@
         <div class="card cozy-card p-3 rounded-4 shadow-sm border-0">
             <div class="text-center">
                 <h5 class="fw-bold mb-2">Track and monitor your productivity</h5>
-                <p class="small text-muted mb-3">
+                <p class="small mb-3">
                     Stay motivated! Each completed task fills your progress bar below.
                 </p>
 
-                <div>
+                <div class="progress-card">
                     <div class="d-flex align-items-center">
                         <div class="me-3">
                             <i class="bi bi-person-fill fs-3"></i>
@@ -218,13 +191,13 @@
                         </div>
                     </div>
 
-                    <p class="small text-muted mt-2 text-center">
+                    <p class="small mt-0 text-center">
                         <span id="completed-count">0</span>/<span id="total-days">0</span> personal tasks completed
                     </p>
                 </div>
 
 
-                <div>
+                <div class="progress-card">
                     <div class="d-flex align-items-center">
                         <div class="me-3">
                             <i class="bi bi-universal-access fs-3"></i>
@@ -240,7 +213,7 @@
                         </div>
                     </div>
 
-                    <p class="small text-muted mt-2 text-center">
+                    <p class="small mt-0 text-center">
                         <span id="completed-count">0</span>/<span id="total-days">0</span> exercise tasks completed
                     </p>
                 </div>
