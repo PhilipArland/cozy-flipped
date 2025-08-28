@@ -174,7 +174,8 @@
                 </div>
 
                 <div class="modal-img center">
-                    <img src="assets/img/yeti.jpg" id="settingsModalImg" alt="" height="240" width="240" class="img-fluid rounded-4">
+                    <img src="assets/img/yeti.jpg" id="settingsModalImg" alt="" height="240" width="240"
+                        class="img-fluid rounded-4">
                 </div>
 
                 <div class="modal-body text-center small" style="color: var(--text-primary);">
@@ -263,7 +264,6 @@
         margin: 0 auto;
     }
 
-
     .popover {
         border-radius: 12px;
         border: none;
@@ -301,7 +301,7 @@
         /* pill style */
     }
 
-    /* Dark Mode buttons */
+    /* Dark Mode Buttons */
     #lightMode:checked+label {
         background-color: var(--bg-deep-brown);
         color: var(--text-light) !important;
@@ -314,7 +314,7 @@
         border-color: var(--bg-cozy-orange);
     }
 
-    /* Sidebar buttons */
+    /* Sidebar Behavior Buttons */
     #sidebarAlways:checked+label,
     #sidebarCollapsed:checked+label {
         background-color: var(--bg-deep-brown);
@@ -326,8 +326,14 @@
         color: var(--text-active) !important;
     }
 
+    /* Dark mode overrides for sidebar buttons */
     .dark-mode #sidebarAlways:checked+label,
     .dark-mode #sidebarCollapsed:checked+label {
         background-color: var(--bg-cozy-orange) !important;
+    }
+
+    .dark-mode #sidebarAlways:checked+label i,
+    .dark-mode #sidebarCollapsed:checked+label i {
+        color: var(--text-active) !important;
     }
 </style>

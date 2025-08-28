@@ -1,17 +1,33 @@
+<style>
+    .bi-music-note {
+        color: var(--text-orange);
+    }
+
+    .sidebar-header h4,
+    .sidebar-header p,
+    .sidebar-menu i {
+        color: var(--text-active) !important;
+    }
+
+    .sidebar-header button {
+        background-color: var(--bg-cozy-orange) !important;
+        color: var(--text-primary)
+    }
+</style>
+
 <div class="sidebar-header d-flex align-items-center mb-3">
-    <h4 class="fw-bold m-0" style="color: var(--text-active);">
-        <i class="bi bi-music-note me-1" style="color: var(--text-orange) !important;"></i>
+    <h4 class="fw-bold m-0">
+        <i class="bi bi-music-note me-1"></i>
         Cozy Cove
     </h4>
-    <button id="toggle-btn" class="btn rounded-2" title="Toggle Sidebar"
-        style="background-color: var(--bg-cozy-orange); color: var(--text-primary);">
+    <button id="toggle-btn" class="btn rounded-2" title="Toggle Sidebar">
         <i class="bi bi-list"></i>
     </button>
 </div>
 
 <div class="text-center mb-3 cozy-profile">
     <img id="sidebar-profile-img" src="assets/img/yeti.jpg" alt="" class="img-fluid rounded-4">
-    <p id="sidebar-username" class="mb-0 fw-semibold" style="color: var(--text-active);">Cozy User</p>
+    <p id="sidebar-username" class="mb-0 fw-semibold">Cozy User</p>
 </div>
 
 

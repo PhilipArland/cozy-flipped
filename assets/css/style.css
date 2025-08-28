@@ -15,6 +15,7 @@
     --text-light: #faf7f2;
     --text-brown: #8b7355;
     --text-active: #faf7f2;
+    --text-navbar: #faf7f2;
 }
 
 body.dark-mode {
@@ -33,7 +34,7 @@ body.dark-mode {
     --text-light: #4a3f35;
     --text-brown: #665847;
     --text-active: #f5efe6;
-
+    --text-navbar: #d4a574;
 }
 
 * {
@@ -95,7 +96,6 @@ label {
 #left-sidebar {
     min-width: 260px;
     max-width: 260px;
-    transition: all 0.3s ease;
     height: 95.6vh;
     position: sticky;
     top: 16px;

@@ -1,15 +1,67 @@
-/*** Handle getting local storage size ***/
+// ===== GLOBAL THEME & PROFILE HELPERS =====
+
+function applySavedProfile() {
+    const savedName = localStorage.getItem("cozy-username");
+    const savedImg = localStorage.getItem("cozy-profile-img");
+
+    const usernameDisplays = [
+        document.getElementById("sidebar-username"),
+        document.getElementById("navbar-username")
+    ];
+    const profileImages = [
+        document.getElementById("sidebar-profile-img"),
+        document.getElementById("navbar-profile-img"),
+        document.getElementById("nav-profile-img")
+    ];
+
+    if (savedName) {
+        usernameDisplays.forEach(el => { if (el) el.textContent = savedName; });
+    }
+
+    if (savedImg) {
+        profileImages.forEach(el => { if (el) el.src = savedImg; });
+    }
+}
+
+function applySavedTheme() {
+    const savedTheme = localStorage.getItem("theme") || "light";
+    if (savedTheme === "dark") {
+        document.body.classList.add("dark-mode");
+    } else {
+        document.body.classList.remove("dark-mode");
+    }
+}
+
+function applySavedSidebarBehavior() {
+    const savedBehavior = localStorage.getItem("sidebarBehavior") || "always";
+    const sidebar = document.getElementById("left-sidebar");
+
+    if (!sidebar) return;
+
+    const alwaysRadio = document.getElementById("sidebarAlways");
+    const collapsedRadio = document.getElementById("sidebarCollapsed");
+
+    // Apply the saved behavior to the sidebar
+    if (savedBehavior === "collapsed") {
+        sidebar.classList.add("closed");
+        if (collapsedRadio) collapsedRadio.checked = true;
+    } else {
+        sidebar.classList.remove("closed");
+        if (alwaysRadio) alwaysRadio.checked = true;
+    }
+}
+
+// ===== LOCAL STORAGE HELPERS =====
 function getLocalStorageSize() {
     let total = 0;
     for (let key in localStorage) {
         if (localStorage.hasOwnProperty(key)) {
-            total += (localStorage[key].length + key.length) * 2; // 2 bytes per char
+            total += (localStorage[key].length + key.length) * 2;
         }
     }
-    return total; // bytes
+    return total;
 }
 
-// Helper: format bytes into KB, MB, GB
 function formatBytes(bytes) {
     if (bytes < 1024) return bytes + " B";
     else if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + " KB";
@@ -17,40 +69,32 @@ function formatBytes(bytes) {
     else return (bytes / (1024 * 1024 * 1024)).toFixed(2) + " GB";
 }
 
-/*** Update storage usage info & progress bar ***/
 async function updateStorageInfo() {
     const storageInfo = document.getElementById("storage-info");
     const progressBar = document.getElementById("storage-progress");
     if (!storageInfo || !progressBar) return;
 
-    const sizeBytes = getLocalStorageSize();
+    let sizeBytes = getLocalStorageSize();
     let quotaBytes = 5 * 1024 * 1024; // fallback 5MB
 
     if (navigator.storage && navigator.storage.estimate) {
         try {
             const estimate = await navigator.storage.estimate();
-            if (estimate.quota) {
-                quotaBytes = estimate.quota;
-            }
-        } catch (err) {
-            console.warn("Could not get storage quota, using default 5MB", err);
-        }
+            quotaBytes = estimate.quota || quotaBytes;
+        } catch { }
     }
 
-    // Format values dynamically
     const usedFormatted = formatBytes(sizeBytes);
     const quotaFormatted = formatBytes(quotaBytes);
 
-    // Update text
     storageInfo.textContent = `Approx. ${usedFormatted} used of ${quotaFormatted}`;
 
-    // Update progress
     let percent = Math.min((sizeBytes / quotaBytes) * 100, 100);
     progressBar.style.width = percent + "%";
     progressBar.setAttribute("aria-valuenow", percent.toFixed(2));
 }
 
-/*** Universal Cozy Status Modal Helper ***/
+// ===== UNIVERSAL STATUS MODAL =====
 function showStatusModal(type, title, message) {
     const modalEl = document.getElementById("settings-modal");
     if (!modalEl) return;
@@ -63,7 +107,8 @@ function showStatusModal(type, title, message) {
         success: "assets/img/congrats.gif",
         error: "assets/img/coffee.gif",
         warning: "assets/img/music.gif",
-        info: "assets/img/dance.gif"
+        info: "assets/img/dance.gif",
+        delete: "assets/img/delete.gif"
     };
 
     if (imgEl) {
@@ -77,7 +122,7 @@ function showStatusModal(type, title, message) {
     modal.show();
 }
 
-/*** Init Settings Page ***/
+// ===== SETTINGS PAGE INITIALIZATION =====
 function initSettingsPage() {
     const usernameInput = document.getElementById("username");
     const fileInput = document.getElementById("profile-img");
@@ -86,31 +131,68 @@ function initSettingsPage() {
     const modalEl = document.getElementById("settings-modal");
     let uploadedImageData = null;
 
-    // Universal elements for username & profile images
-    const usernameDisplays = [
-        document.getElementById("sidebar-username"),
-        document.getElementById("navbar-username")
-    ];
-    const profileImages = [
-        document.getElementById("sidebar-profile-img"),
-        document.getElementById("navbar-profile-img"),
-        document.getElementById("nav-profile-img")
-    ];
+    const lightModeRadio = document.getElementById("lightMode");
+    const darkModeRadio = document.getElementById("darkMode");
 
-    // Load saved data
+    // Sync radio buttons with saved theme
+    const savedTheme = localStorage.getItem("theme") || "light";
+    lightModeRadio.checked = savedTheme === "light";
+    darkModeRadio.checked = savedTheme === "dark";
+
+    lightModeRadio.addEventListener("change", () => {
+        if (lightModeRadio.checked) {
+            document.body.classList.remove("dark-mode");
+            localStorage.setItem("theme", "light");
+        }
+    });
+
+    darkModeRadio.addEventListener("change", () => {
+        if (darkModeRadio.checked) {
+            document.body.classList.add("dark-mode");
+            localStorage.setItem("theme", "dark");
+        }
+    });
+
+    // Sidebar behavior
+    const sidebarAlwaysRadio = document.getElementById("sidebarAlways");
+    const sidebarCollapsedRadio = document.getElementById("sidebarCollapsed");
+    const leftSidebar = document.getElementById("left-sidebar");
+
+    // Apply saved sidebar state on load
+    const savedSidebar = localStorage.getItem("sidebarBehavior") || "always";
+    if (savedSidebar === "collapsed") {
+        sidebarCollapsedRadio.checked = true;
+        leftSidebar.classList.add("closed");
+    } else {
+        sidebarAlwaysRadio.checked = true;
+        leftSidebar.classList.remove("closed");
+    }
+
+    // Event listeners to save changes
+    sidebarAlwaysRadio.addEventListener("change", () => {
+        if (sidebarAlwaysRadio.checked) {
+            leftSidebar.classList.remove("closed");
+            localStorage.setItem("sidebarBehavior", "always");
+        }
+    });
+
+    sidebarCollapsedRadio.addEventListener("change", () => {
+        if (sidebarCollapsedRadio.checked) {
+            leftSidebar.classList.add("closed");
+            localStorage.setItem("sidebarBehavior", "collapsed");
+        }
+    });
+
+
+
+    // Load existing profile data into inputs
     const savedName = localStorage.getItem("cozy-username");
     const savedImg = localStorage.getItem("cozy-profile-img");
 
-    if (savedName) {
-        usernameInput.value = savedName;
-        usernameDisplays.forEach(el => { if (el) el.textContent = savedName; });
-    }
+    if (savedName) usernameInput.value = savedName;
+    if (savedImg) uploadedImageData = savedImg;
 
-    if (savedImg) {
-        profileImages.forEach(el => { if (el) el.src = savedImg; });
-    }
-
-    // Preview uploaded image
+    // Image preview
     if (fileInput) {
         fileInput.addEventListener("change", function () {
             const file = this.files[0];
@@ -132,38 +214,28 @@ function initSettingsPage() {
         });
     }
 
-    // Save settings
+    // Save button
     if (saveBtn) {
         saveBtn.addEventListener("click", function () {
             const newName = usernameInput.value.trim();
             const hasImage = uploadedImageData !== null;
 
-            // 🚫 Validation: nothing to save
             if (!newName && !hasImage) {
                 showStatusModal("warning", "Nothing to Save", "Please enter a name or upload an image first.");
-                return; // stop here
+                return;
             }
 
-            // ✅ Save name
-            if (newName) {
-                usernameDisplays.forEach(el => { if (el) el.textContent = newName; });
-                localStorage.setItem("cozy-username", newName);
-            }
+            if (newName) localStorage.setItem("cozy-username", newName);
+            if (hasImage) localStorage.setItem("cozy-profile-img", uploadedImageData);
 
-            // ✅ Save image
-            if (hasImage) {
-                profileImages.forEach(el => { if (el) el.src = uploadedImageData; });
-                localStorage.setItem("cozy-profile-img", uploadedImageData);
-            }
-
+            // Apply globally
+            applySavedProfile();
             updateStorageInfo();
-
             showStatusModal("success", "Changes Saved", "Your profile settings have been updated successfully.");
         });
     }
 
-
-    // Clear storage with confirmation
+    // Clear storage
     if (clearBtn) {
         clearBtn.addEventListener("click", function () {
             const confirmModalEl = document.getElementById("confirm-clear-modal");
@@ -172,7 +244,6 @@ function initSettingsPage() {
 
             const confirmBtn = document.getElementById("confirm-clear-btn");
             confirmBtn.onclick = function () {
-
                 localStorage.removeItem("cozy-username");
                 localStorage.removeItem("cozy-profile-img");
 
@@ -182,9 +253,8 @@ function initSettingsPage() {
                 if (fileInput) fileInput.value = "";
                 uploadedImageData = null;
 
-                usernameDisplays.forEach(el => { if (el) el.textContent = "Cozy User"; });
-                profileImages.forEach(el => { if (el) el.src = "assets/img/yeti.jpg"; });
-
+                // Apply defaults globally
+                applySavedProfile();
                 updateStorageInfo();
                 confirmModal.hide();
 
@@ -207,36 +277,6 @@ function initSettingsPage() {
     const popovers = document.querySelectorAll('[data-bs-toggle="popover"]');
     popovers.forEach(el => new bootstrap.Popover(el));
 
-    const lightModeRadio = document.getElementById("lightMode");
-    const darkModeRadio = document.getElementById("darkMode");
-
-    // Apply saved mode on load
-    const savedTheme = localStorage.getItem("theme") || "light";
-    if (savedTheme === "dark") {
-        document.body.classList.add("dark-mode");
-        darkModeRadio.checked = true;
-    } else {
-        document.body.classList.remove("dark-mode");
-        lightModeRadio.checked = true;
-    }
-
-    // Event listeners
-    lightModeRadio.addEventListener("change", () => {
-        if (lightModeRadio.checked) {
-            document.body.classList.remove("dark-mode");
-            localStorage.setItem("theme", "light");
-        }
-    });
-
-    darkModeRadio.addEventListener("change", () => {
-        if (darkModeRadio.checked) {
-            document.body.classList.add("dark-mode");
-            localStorage.setItem("theme", "dark");
-        }
-    });
-
     // Initial storage info
     updateStorageInfo();
 }
-
-

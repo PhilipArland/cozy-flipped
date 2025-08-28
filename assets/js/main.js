@@ -1,4 +1,58 @@
+// ===== Global Theme & Profile Helpers =====
+function applySavedTheme() {
+    const savedTheme = localStorage.getItem("theme") || "light";
+    if (savedTheme === "dark") {
+        document.body.classList.add("dark-mode");
+    } else {
+        document.body.classList.remove("dark-mode");
+    }
+}
+
+function applySavedProfile() {
+    const savedName = localStorage.getItem("cozy-username");
+    const savedImg = localStorage.getItem("cozy-profile-img");
+
+    const usernameDisplays = [
+        document.getElementById("sidebar-username"),
+        document.getElementById("navbar-username")
+    ];
+    const profileImages = [
+        document.getElementById("sidebar-profile-img"),
+        document.getElementById("navbar-profile-img"),
+        document.getElementById("nav-profile-img")
+    ];
+
+    if (savedName) {
+        usernameDisplays.forEach(el => { if (el) el.textContent = savedName; });
+    }
+
+    if (savedImg) {
+        profileImages.forEach(el => { if (el) el.src = savedImg; });
+    }
+}
+
+// ===== DOMContentLoaded =====
 document.addEventListener("DOMContentLoaded", function () {
+
+    applySavedTheme();
+    applySavedProfile();
+    applySavedSidebarBehavior();
+
+    function loadPage(page, callback) {
+        fetch(`pages/${page}.html`)
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('content').innerHTML = html;
+
+                handlePageInit(page);
+
+                // Reapply profile info after loading new content
+                applySavedProfile();
+
+                if (callback) callback();
+            })
+            .catch(err => console.error(err));
+    }
 
     /*** Helper: Load HTML into a target element ***/
     function loadHTML(targetId, url, callback) {
@@ -9,18 +63,6 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(html => {
                 document.getElementById(targetId).innerHTML = html;
-                if (callback) callback();
-            })
-            .catch(err => console.error(err));
-    }
-
-    /*** Helper: Load main content pages ***/
-    function loadPage(page, callback) {
-        fetch(`pages/${page}.html`)
-            .then(res => res.text())
-            .then(html => {
-                document.getElementById('content').innerHTML = html;
-                handlePageInit(page); // 🔁 Centralize page-specific initialization
                 if (callback) callback();
             })
             .catch(err => console.error(err));
@@ -77,21 +119,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function generateCalendar() {
-        console.log("Calendar initialized");
-
         const grid = document.getElementById("calendar-grid");
         const monthLabel = document.getElementById("calendar-month");
 
         const date = new Date();
         const year = date.getFullYear();
         const month = date.getMonth();
-
         const monthName = date.toLocaleString("default", { month: "long" });
         monthLabel.textContent = `${monthName} ${year}`;
-
         grid.innerHTML = "";
 
-        // Weekday labels
         const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         weekdays.forEach(d => {
             let div = document.createElement("div");
@@ -100,16 +137,13 @@ document.addEventListener("DOMContentLoaded", function () {
             grid.appendChild(div);
         });
 
-        // Days of month
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-        // Empty slots before first day
         for (let i = 0; i < firstDay; i++) {
             grid.appendChild(document.createElement("div"));
         }
 
-        // Fill days
         for (let d = 1; d <= daysInMonth; d++) {
             let div = document.createElement("div");
             div.textContent = d;
@@ -134,41 +168,31 @@ document.addEventListener("DOMContentLoaded", function () {
             toggleBtn.addEventListener("click", () => {
                 sidebar.classList.toggle("active");
                 overlay.classList.toggle("active");
-
-                // ✅ toggle body scroll lock
-                if (sidebar.classList.contains("active")) {
-                    document.body.classList.add("no-scroll");
-                } else {
-                    document.body.classList.remove("no-scroll");
-                }
+                document.body.classList.toggle("no-scroll", sidebar.classList.contains("active"));
             });
 
             overlay.addEventListener("click", () => {
                 sidebar.classList.remove("active");
                 overlay.classList.remove("active");
-                document.body.classList.remove("no-scroll"); // ✅ unlock scrolling
+                document.body.classList.remove("no-scroll");
             });
         }
 
-        const links = document.querySelectorAll("#mobileSidebar a[data-page]");
-        links.forEach(link => {
+        document.querySelectorAll("#mobileSidebar a[data-page]").forEach(link => {
             link.addEventListener("click", e => {
                 e.preventDefault();
                 const page = link.getAttribute("data-page");
                 loadPage(page);
                 sidebar.classList.remove("active");
                 overlay.classList.remove("active");
-                document.body.classList.remove("no-scroll"); // ✅ unlock after clicking link
+                document.body.classList.remove("no-scroll");
             });
         });
     });
 
-
     /*** Right Sidebar (Music Player) ***/
     loadHTML("right-sidebar", "includes/right-sidebar.html", () => {
-        if (typeof initPlaylist === "function") {
-            initPlaylist();
-        }
+        if (typeof initPlaylist === "function") initPlaylist();
     });
 
     /*** Left Sidebar ***/
@@ -193,6 +217,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     /*** Load default page ***/
-    // loadPage('dashboard');
-    loadPage('settings');
+    loadPage('dashboard');
 });
