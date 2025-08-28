@@ -72,12 +72,12 @@ body {
     border-image-slice: 1;
 }
 
-h6,
+/* h6,
 h5,
 p,
 label {
     color: var(--text-primary) !important;
-}
+} */
 
 .text-muted {
     color: var(--text-secondary) !important;

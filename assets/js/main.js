@@ -72,16 +72,20 @@ document.addEventListener("DOMContentLoaded", function () {
     function handlePageInit(page) {
         syncActiveLinks(page);
 
-        if (page === 'activities') {
-            if (typeof initExerciseToDo === 'function') initExerciseToDo();
-            attachGoBackHomeListener();
-        }
-
         if (page === 'dashboard') {
             attachViewActivitiesListener();
             attachGoBackHomeListener();
             generateCalendar();
         }
+
+        if (page === 'activities') {
+            if (typeof initExerciseToDo === 'function') initExerciseToDo();
+            attachGoBackHomeListener();
+        }
+
+        if (page === "playlist") {
+            initPlaylistGrid();
+        } 
 
         if (page === 'settings') {
             if (typeof initSettingsPage === 'function') initSettingsPage();
@@ -195,6 +199,23 @@ document.addEventListener("DOMContentLoaded", function () {
     /*** Right Sidebar (Music Player) ***/
     loadHTML("right-sidebar", "includes/right-sidebar.html", () => {
         if (typeof initPlaylist === "function") initPlaylist();
+        if (typeof initPlayer === "function") initPlayer();
+
+        const menuBtn = document.getElementById("playlistMenuBtn");
+        const menu = document.getElementById("playlistMenu");
+
+        if (menuBtn && menu) {
+            menuBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                menu.classList.toggle("d-none");
+            });
+
+            document.addEventListener("click", (e) => {
+                if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
+                    menu.classList.add("d-none");
+                }
+            });
+        }
     });
 
     /*** Left Sidebar ***/
@@ -219,5 +240,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     /*** Load default page ***/
-    loadPage('settings');
+    loadPage('playlist');
 });

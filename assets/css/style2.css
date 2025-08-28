@@ -345,11 +345,14 @@ body {
 }
 
 .right-sidebar-page {
-    h6, .track {
+
+    h6,
+    .track {
         color: var(--text-primary);
     }
 
-    p, span {
+    p,
+    span {
         color: var(--text-secondary);
     }
 }
@@ -389,4 +392,20 @@ body {
 .btn-add i {
     background-color: var(--bg-gentle-green);
     color: var(--text-active);
+}
+
+
+
+
+
+
+@media screen and (max-width: 640px) {
+    .mobile-sidebar {
+        height: 100dvh;
+    }
+
+    .small {
+        font-size: .8rem;
+    }
+
 }
