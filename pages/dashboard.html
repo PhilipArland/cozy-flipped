@@ -1,16 +1,24 @@
-<div class="row g-2 g-md-3 justify-content-center">
-    <!-- <div class="col-lg-12">
-        <div class="weather-card d-flex justify-content-between align-items-center p-4 rounded-4 text-light">
-            <div class="weather-info">
-                <h4 id="location" class="mb-1">Loading location...</h4>
-                <small id="weather-description" style="color: var(--cozy-orange);">Loading weather...</small>
-                <h1 id="temperature" class="mt-3">--°C</h1>
-            </div>
-            <div class="weather-icon" id="weather-icon">
-            </div>
-        </div>
-    </div> -->
+<style>
+    .dashboard-page {
 
+        h4,
+        h5,
+        p {
+            color: var(--text-primary);
+        }
+
+        i {
+            color: var(--text-secondary);
+        }
+
+        .cozy-task {
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+        }
+    }
+</style>
+
+<div class="row g-2 g-md-3 justify-content-center dashboard-page">
     <div class="col-lg-12">
         <div class="card cozy-card p-2 p-md-4 rounded-4 shadow-sm border-0">
             <div class="d-flex align-items-start">
@@ -20,7 +28,7 @@
                 </div>
 
                 <div class="welcome-content">
-                    <h4 class="fw-bold mb-2" style="color: var(--deep-brown);">Welcome!</h4>
+                    <h4 class="fw-bold mb-2">Welcome!</h4>
                     <p class="mb-0 text-muted small">
                         This is your cozy space where you can manage your tasks and enjoy music at the same time.
                     </p>
@@ -83,10 +91,10 @@
     <div class="col-lg-6">
         <div class="card cozy-card p-3 center rounded-4 shadow-sm border-0 h-100 text-center">
             <div class="mb-3">
-                <i class="bi bi-music-note-list" style="font-size: 2rem; color: var(--soft-brown);"></i>
+                <i class="bi bi-music-note-list" style="font-size: 2rem; color: var(--text-secondary);"></i>
             </div>
 
-            <h5 class="fw-bold" style="color: var(--deep-brown);">No songs played yet</h5>
+            <h5 class="fw-bold">No songs played yet</h5>
 
             <p class="text-muted small mb-3">
                 Your top played songs will appear here once you start listening 🎶
@@ -108,11 +116,10 @@
         <div class="card cozy-card p-3 p-md-4 rounded-4 shadow-sm border-0">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h5 class="mb-0">
-                    <i class="bi bi-graph-up-arrow me-2" style="color: var(--soft-brown);"></i>
+                    <i class="bi bi-graph-up-arrow me-2"></i>
                     Activity Overview
                 </h5>
-                <a href="#" id="viewActivitiesBtn" class="btn btn-sm text-light"
-                    style="background-color: var(--gentle-green)">
+                <a href="#" id="viewActivitiesBtn" class="btn-add text-decoration-none">
                     View All <i class="bi bi-arrow-right ms-1"></i>
                 </a>
             </div>
@@ -121,7 +128,7 @@
             <div class="row g-3">
 
                 <div class="col-12">
-                    <div class="cozy-task d-flex align-items-center p-3 bg-light rounded-3 shadow-sm">
+                    <div class="cozy-task d-flex align-items-center p-3 rounded-3 shadow-sm">
                         <div class="icon center me-3">
                             <i class="bi bi-person-fill fs-1" style="color: var(--deep-brown)"></i>
                         </div>
@@ -137,7 +144,7 @@
                 </div>
 
                 <div class="col-12">
-                    <div class="cozy-task d-flex align-items-center p-3 bg-light rounded-3 shadow-sm">
+                    <div class="cozy-task d-flex align-items-center p-3 rounded-3 shadow-sm">
                         <div class="icon center me-3">
                             <i class="bi bi-universal-access fs-1" style="color: var(--deep-brown)"></i>
                         </div>
@@ -183,7 +190,7 @@
     <div class="col-lg-12">
         <div class="card cozy-card p-3 rounded-4 shadow-sm border-0">
             <div class="text-center">
-                <h5 class="fw-bold mb-2" style="color: var(--deep-brown);">Track and monitor your productivity</h5>
+                <h5 class="fw-bold mb-2">Track and monitor your productivity</h5>
                 <p class="small text-muted mb-3">
                     Stay motivated! Each completed task fills your progress bar below.
                 </p>
@@ -191,7 +198,7 @@
                 <div>
                     <div class="d-flex align-items-center">
                         <div class="me-3">
-                            <i class="bi bi-person-fill fs-3" style="color: var(--deep-brown);"></i>
+                            <i class="bi bi-person-fill fs-3"></i>
                         </div>
 
                         <div class="flex-grow-1">
@@ -213,7 +220,7 @@
                 <div>
                     <div class="d-flex align-items-center">
                         <div class="me-3">
-                            <i class="bi bi-universal-access fs-3" style="color: var(--deep-brown);"></i>
+                            <i class="bi bi-universal-access fs-3"></i>
                         </div>
 
                         <div class="flex-grow-1">
@@ -240,10 +247,10 @@
             <div class="p-2 rounded-top-4 text-white" style="background-color: var(--soft-brown);">
                 <div class="d-flex justify-content-between px-2">
                     <div class="">
-                        <h5 class="fw-bold mb-0" style="color: var(--warm-cream);">Calendar</h5>
+                        <h5 class="fw-bold mb-0" style="color: var(--text-light);">Calendar</h5>
                         <p class="small mb-0" id="calendar-month"></p>
                     </div>
-                    <i class="bi bi-calendar-check fs-2" style="color: var(--warm-cream);"></i>
+                    <i class="bi bi-calendar-check fs-2"></i>
                 </div>
             </div>
 
@@ -252,20 +259,6 @@
             </div>
         </div>
     </div>
-    <!-- <div class="col-lg-12">
-        <div class="card cozy-card rounded-4 shadow-sm border-0">
-            <div class="p-2 rounded-top-4 text-white" style="background-color: var(--soft-brown);">
-                <h5 class="fw-bold mb-0 text-center" style="color: var(--warm-cream);">Calendar</h5>
-                <p class="small text-center mb-0" id="calendar-month"></p>
-            </div>
-            <div class="p-3 text-center">
-                <div class="calendar-grid" id="calendar-grid"></div>
-            </div>
-        </div>
-    </div> -->
-
-
-
 </div>
 
 
@@ -286,8 +279,8 @@
     }
 
     .calendar-grid div:hover {
-        background: var(--soft-brown);
-        color: white;
+        background: var(--bg-soft-brown);
+        color: var(--text-primary);
         cursor: pointer;
     }
 </style>

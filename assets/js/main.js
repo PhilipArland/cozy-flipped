@@ -134,6 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let div = document.createElement("div");
             div.textContent = d;
             div.style.fontWeight = "bold";
+            div.style.color = "var(--text-primary)";
             grid.appendChild(div);
         });
 
@@ -146,11 +147,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         for (let d = 1; d <= daysInMonth; d++) {
             let div = document.createElement("div");
+            div.style.color = "var(--text-primary)";
             div.textContent = d;
 
             if (d === date.getDate()) {
-                div.style.background = "var(--cozy-orange)";
-                div.style.color = "white";
+                div.style.background = "var(--bg-cozy-orange)";
+                div.style.color = "var(--text-primary)";
                 div.style.borderRadius = "6px";
             }
 
@@ -217,5 +219,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     /*** Load default page ***/
-    loadPage('settings');
+    loadPage('dashboard');
 });
