@@ -1,70 +1,62 @@
 <style>
-    .bi-music-note {
-        color: var(--text-orange);
-    }
+    .sidebar-page {
+        .bi-music-note {
+            color: var(--text-orange);
+        }
 
-    .sidebar-header h4,
-    .cozy-profile p,
-    .sidebar-menu i {
-        color: var(--text-active) !important;
-    }
+        .sidebar-header h4,
+        .cozy-profile p,
+        .sidebar-menu i {
+            color: var(--text-active) !important;
+        }
 
-    .sidebar-header button {
-        background-color: var(--bg-cozy-orange) !important;
-        color: var(--text-primary)
-    }
+        .sidebar-header button {
+            background-color: var(--bg-cozy-orange) !important;
+            color: var(--text-primary)
+        }
 
-    .sidebar-menu a.active i {
-        color: var(--text-primary) !important;
+        .sidebar-menu a.active i {
+            color: var(--text-primary) !important;
+        }
     }
 </style>
 
-<div class="sidebar-header d-flex align-items-center mb-3">
-    <h4 class="fw-bold m-0">
-        <i class="bi bi-music-note me-1"></i>
-        Cozy Cove
-    </h4>
-    <button id="toggle-btn" class="btn rounded-2" title="Toggle Sidebar">
-        <i class="bi bi-list"></i>
-    </button>
-</div>
+<div class="sidebar-page">
+    <div class="sidebar-header d-flex align-items-center mb-3">
+        <h4 class="fw-bold m-0">
+            <i class="bi bi-music-note me-1"></i>
+            Cozy Cove
+        </h4>
+        <button id="toggle-btn" class="btn rounded-2" title="Toggle Sidebar">
+            <i class="bi bi-list"></i>
+        </button>
+    </div>
 
-<div class="text-center mb-3 cozy-profile">
-    <img id="sidebar-profile-img" src="assets/img/yeti.jpg" alt="" class="img-fluid rounded-4">
-    <p id="sidebar-username" class="mb-0 fw-semibold">Cozy User</p>
-</div>
+    <div class="text-center mb-3 cozy-profile">
+        <img id="sidebar-profile-img" src="assets/img/yeti.jpg" alt="" class="img-fluid rounded-4">
+        <p id="sidebar-username" class="mb-0 fw-semibold">Cozy User</p>
+    </div>
 
-<div class="btn-group mt-3 mt-md-0" role="group" aria-label="Dark Mode toggle">
-    <input type="radio" class="btn-check" name="darkModeOption" id="lightMode" value="light" checked>
-    <label class="btn-sm rounded-pill px-3 py-1 d-flex align-items-center gap-2" for="lightMode">
-        <i class="bi bi-sun-fill text-light"></i> Light
-    </label>
-
-    <input type="radio" class="btn-check" name="darkModeOption" id="darkMode" value="dark">
-    <label class="btn-sm rounded-pill px-3 py-1 d-flex align-items-center gap-2" for="darkMode">
-        <i class="bi bi-moon-stars-fill"></i> Dark
-    </label>
-</div>
-
-<div class="sidebar-menu">
-    <ul class="list-unstyled mb-0">
-        <li class="mb-2">
-            <a href="#" data-page="dashboard" class="p-2 rounded-3 text-decoration-none active">
-                <i class="bi bi-speedometer2"></i>
-                <span>Dashboard</span>
-            </a>
-        </li>
-        <li class="mb-2">
-            <a href="#" data-page="activities" class="p-2 rounded-3 text-decoration-none">
-                <i class="bi bi-list-check"></i>
-                <span>Activities</span>
-            </a>
-        </li>
-        <li class="mb-2">
-            <a href="#" data-page="settings" class="p-2 rounded-3 text-decoration-none">
-                <i class="bi bi-gear"></i>
-                <span>Settings</span>
-            </a>
-        </li>
-    </ul>
+    <div class="sidebar-menu">
+        <ul class="list-unstyled mb-0">
+            <li class="mb-2">
+                <a href="#" data-page="dashboard" class="p-2 rounded-3 text-decoration-none active">
+                    <i class="bi bi-speedometer2"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="mb-2">
+                <a href="#" data-page="activities" class="p-2 rounded-3 text-decoration-none">
+                    <i class="bi bi-list-check"></i>
+                    <span>Activities</span>
+                </a>
+            </li>
+            <li class="mb-2">
+                <a href="#" data-page="settings" class="p-2 rounded-3 text-decoration-none">
+                    <i class="bi bi-gear"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+    </div>
 </div>
