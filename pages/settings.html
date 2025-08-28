@@ -33,7 +33,7 @@
                 <div class="upload-box text-center p-3 rounded-3">
                     <i class="bi bi-cloud-arrow-up fs-2 d-block mb-2"></i>
                     <input type="file" id="profile-img" accept="image/*" class="form-control custom-input d-none">
-                    <button type="button" id="upload-btn" class="btn-dark"
+                    <button type="button" id="upload-btn" class="btn-primary"
                         onclick="document.getElementById('profile-img').click();">
                         Upload Image
                     </button>
@@ -42,8 +42,8 @@
             </div>
 
             <div class="d-flex justify-content-end">
-                <button id="save-settings" class="dark-btn px-3">
-                    <i class="bi bi-check2-circle me-2 text-light"></i> Save
+                <button id="save-settings" class="btn-primary">
+                    <i class="bi bi-check2-circle px-1"></i> Save
                 </button>
             </div>
         </div>
@@ -51,7 +51,7 @@
 
 
     <!-- Section: Appearance -->
-    <h6 class="fw-semibold mt-4 mb-0 px-3" style="color: var(--soft-brown); letter-spacing: .5px;">
+    <h6 class="fw-semibold mt-4 mb-0 px-3">
         Appearance & Layout
     </h6>
 
@@ -65,7 +65,7 @@
                 <h5 class="settings-title mb-3 d-flex align-items-center">
                     <i class="bi bi-moon-stars-fill me-2"></i> Dark Mode
                 </h5>
-                <p class="mb-0 small" style="color: var(--warm-gray);">
+                <p class="mb-0 small">
                     Toggle between light and dark themes for a cozy experience.
                 </p>
             </div>
@@ -74,7 +74,7 @@
             <div class="btn-group mt-3 mt-md-0" role="group" aria-label="Dark Mode toggle">
                 <input type="radio" class="btn-check" name="darkModeOption" id="lightMode" value="light" checked>
                 <label class="btn-sm rounded-pill px-3 py-1 d-flex align-items-center gap-2" for="lightMode">
-                    <i class="bi bi-sun-fill text-light"></i> Light
+                    <i class="bi bi-sun-fill"></i> Light
                 </label>
 
                 <input type="radio" class="btn-check" name="darkModeOption" id="darkMode" value="dark">
@@ -115,7 +115,7 @@
 
 
     <!-- Section: Storage -->
-    <h6 class="fw-semibold mt-4 mb-0 px-3" style="color: var(--soft-brown); letter-spacing: .5px;">
+    <h6 class="fw-semibold mt-4 mb-0 px-3">
         Storage & Data
     </h6>
 
@@ -127,7 +127,7 @@
                     <i class="bi bi-cloud-fill me-2"></i> Manage Your Storage
                 </h5>
                 <h5>
-                    <i class="bi bi-info-circle ms-2 text-muted" tabindex="0" data-bs-toggle="popover"
+                    <i class="bi bi-info-circle ms-2" tabindex="0" data-bs-toggle="popover"
                         data-bs-trigger="focus" data-bs-placement="left" data-bs-html="true"
                         title='<i class="bi bi-info-circle-fill me-1"></i> About Local Storage'
                         data-bs-content="This page uses your browser's localStorage to save your settings. The available space may vary depending on your browser and device.">
@@ -135,22 +135,22 @@
                 </h5>
             </div>
 
-            <p class="mb-2 small" style="color: var(--warm-gray);">
+            <p class="mb-2 small">
                 See how much space your saved data occupies in local storage and clear it if needed.
             </p>
 
             <div class="progress mb-2" style="height: 12px; border-radius: 6px;">
                 <div id="storage-progress" class="progress-bar" role="progressbar"
-                    style="width: 0%; background-color: var(--soft-brown);" aria-valuenow="0" aria-valuemin="0"
+                    style="width: 0%; background-color: var(--bg-soft-brown);" aria-valuenow="0" aria-valuemin="0"
                     aria-valuemax="100">
                 </div>
             </div>
 
-            <div id="storage-info" class="small text-muted fw-semibold mb-2"></div>
+            <div id="storage-info" class="small fw-semibold mb-2"></div>
 
             <div class="d-flex justify-content-end">
-                <button id="clear-storage" class="dark-btn px-3">
-                    <i class="bi bi-trash me-1 text-light"></i>
+                <button id="clear-storage" class="btn-primary">
+                    <i class="bi bi-trash"></i>
                     Clear Storage
                 </button>
             </div>
@@ -229,19 +229,15 @@
 
 
 <style>
-    .settings-page i {
+    .custom-input {
+        border: 1px solid var(--bg-cozy-orange);
+        background: var(--bg-warm-cream);
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
         color: var(--text-primary);
     }
 
-    .custom-input {
-        border: 1px solid var(--bg-gentle-green);
-        background: #fffdf8;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-
     .custom-input:focus {
-        border-color: var(--bg-cozy-orange);
-        box-shadow: 0 0 5px rgba(212, 165, 116, 0.5);
+        box-shadow: 0 0 8px rgba(212, 165, 116, 0.5);
     }
 
     .upload-box {
@@ -289,50 +285,41 @@
         color: var(--deep-brown);
     }
 
-    /* General style for all toggle buttons */
+
     .btn-check+label {
         border: 1px solid var(--cozy-orange);
         background-color: transparent;
-        color: var(--deep-brown);
         cursor: pointer;
         transition: all 0.2s ease;
         border-radius: 50rem;
-        /* pill style */
     }
 
-    /* Dark Mode Buttons */
-    #lightMode:checked+label {
+    #lightMode:checked+label,
+    #sidebarAlways:checked+label,
+    #sidebarCollapsed:checked+label {
         background-color: var(--bg-deep-brown);
-        color: var(--text-light) !important;
-        border-color: var(--bg-deep-brown);
+        color: var(--text-active);
+    }
+
+    #lightMode:checked+label i,
+    #sidebarAlways:checked+label i,
+    #sidebarCollapsed:checked+label i {
+        color: var(--text-active);
     }
 
     #darkMode:checked+label {
         background-color: var(--bg-cozy-orange);
-        color: var(--text-primary) !important;
+        color: var(--text-primary);
         border-color: var(--bg-cozy-orange);
     }
 
-    /* Sidebar Behavior Buttons */
-    #sidebarAlways:checked+label,
-    #sidebarCollapsed:checked+label {
-        background-color: var(--bg-deep-brown);
-        color: var(--text-active) !important;
-    }
-
-    #sidebarAlways:checked+label i,
-    #sidebarCollapsed:checked+label i {
-        color: var(--text-active) !important;
-    }
-
-    /* Dark mode overrides for sidebar buttons */
     .dark-mode #sidebarAlways:checked+label,
     .dark-mode #sidebarCollapsed:checked+label {
-        background-color: var(--bg-cozy-orange) !important;
+        background-color: var(--bg-cozy-orange);
     }
 
     .dark-mode #sidebarAlways:checked+label i,
     .dark-mode #sidebarCollapsed:checked+label i {
-        color: var(--text-active) !important;
+        color: var(--text-active);
     }
 </style>
