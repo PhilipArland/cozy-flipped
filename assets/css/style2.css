@@ -189,11 +189,10 @@ body {
 
 .playlist-item.active {
     background: linear-gradient(45deg, var(--bg-cozy-orange), var(--bg-gentle-green));
-    font-weight: 600;
 }
 
 .playlist-item.active .track-duration {
-    color: var(--bg-warm-cream);
+    color: var(--text-active);
 }
 
 .playlist-item.move-up {
@@ -307,8 +306,6 @@ body {
     p {
         color: var(--text-primary);
     }
-
-
 }
 
 .dashboard-page {
@@ -344,6 +341,16 @@ body {
 
     i {
         color: var(--text-primary);
+    }
+}
+
+.right-sidebar-page {
+    h6, .track {
+        color: var(--text-primary);
+    }
+
+    p, span {
+        color: var(--text-secondary);
     }
 }
 
