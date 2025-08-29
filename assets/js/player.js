@@ -1,34 +1,41 @@
 // player.js
 
-window.allTracks = [
-    { title: "Multo", artist: "Cup of Joe", src: "assets/playlist/multo.mp3", cover: "assets/playlist/cover/multo.jpg" },
-    { title: "Tingin", artist: "Cup of Joe ft. Janine Teñoso", src: "assets/playlist/tingin.mp3", cover: "assets/playlist/cover/tingin.jpg" },
-    { title: "Dalangin", artist: "Earl Agustin", src: "assets/playlist/dalangin.mp3", cover: "assets/playlist/cover/dalangin.jpg" },
-    { title: "Migraine", artist: "Moonstar88", src: "assets/playlist/migraine.mp3", cover: "assets/playlist/cover/migraine.jpg" },
-    { title: "Paraluman", artist: "Adie", src: "assets/playlist/paraluman.mp3", cover: "assets/playlist/cover/paraluman.jpg" },
-    { title: "Kundiman", artist: "Silent Sanctuary", src: "assets/playlist/kundiman.mp3", cover: "assets/playlist/cover/kundiman.jpg" },
-    { title: "Ikot", artist: "Over October", src: "assets/playlist/ikot.mp3", cover: "assets/playlist/cover/ikot.jpg" },
-    { title: "Museo", artist: "Eliza Maturan", src: "assets/playlist/museo.mp3", cover: "assets/playlist/cover/museo.jpg" },
+window.defaultTracks = [
+    { id: 1, title: "Multo", artist: "Cup of Joe", src: "assets/playlist/multo.mp3", cover: "assets/playlist/cover/multo.jpg" },
+    { id: 2, title: "Tingin", artist: "Cup of Joe ft. Janine Teñoso", src: "assets/playlist/tingin.mp3", cover: "assets/playlist/cover/tingin.jpg" },
+    { id: 3, title: "Dalangin", artist: "Earl Agustin", src: "assets/playlist/dalangin.mp3", cover: "assets/playlist/cover/dalangin.jpg" },
+    { id: 4, title: "Migraine", artist: "Moonstar88", src: "assets/playlist/migraine.mp3", cover: "assets/playlist/cover/migraine.jpg" },
+    { id: 5, title: "Paraluman", artist: "Adie", src: "assets/playlist/paraluman.mp3", cover: "assets/playlist/cover/paraluman.jpg" },
+    { id: 6, title: "Kundiman", artist: "Silent Sanctuary", src: "assets/playlist/kundiman.mp3", cover: "assets/playlist/cover/kundiman.jpg" },
+    { id: 7, title: "Ikot", artist: "Over October", src: "assets/playlist/ikot.mp3", cover: "assets/playlist/cover/ikot.jpg" },
+    { id: 8, title: "Museo", artist: "Eliza Maturan", src: "assets/playlist/museo.mp3", cover: "assets/playlist/cover/museo.jpg" },
 ];
-
 
 function initPlayer() {
     console.log("Player initialized");
 
-    // Temporary demo: load playlist from localStorage or fallback
-    const urlParams = new URLSearchParams(window.location.search);
-    const playlistId = parseInt(urlParams.get("playlist")) || null;
-
+    // 🔥 Merge default tracks into "Cozy Playlist" if missing
     let allPlaylists = JSON.parse(localStorage.getItem("playlists")) || [];
-    let currentPlaylist = allPlaylists.find(p => p.id === playlistId);
 
-    if (!currentPlaylist) {
-        currentPlaylist = {
-            id: 0,
-            name: "Demo Playlist",
-            tracks: window.allTracks
-        };
+    let cozy = allPlaylists.find(p => p.id === 1);
+    if (!cozy) {
+        cozy = { id: 1, name: "Cozy Playlist", tracks: [...window.defaultTracks] };
+        allPlaylists.push(cozy);
+    } else {
+        // ensure no duplicates, merge missing tracks
+        window.defaultTracks.forEach(track => {
+            if (!cozy.tracks.some(t => t.id === track.id)) {
+                cozy.tracks.push(track);
+            }
+        });
     }
+    localStorage.setItem("playlists", JSON.stringify(allPlaylists));
+
+    // 🔥 Load current playlist
+    const urlParams = new URLSearchParams(window.location.search);
+    const playlistId = parseInt(urlParams.get("playlist")) || cozy.id;
+
+    let currentPlaylist = allPlaylists.find(p => p.id === playlistId) || cozy;
 
     const tracks = currentPlaylist.tracks;
     if (!tracks.length) {

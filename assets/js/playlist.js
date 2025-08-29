@@ -3,7 +3,7 @@
 /*** Renders All Songs card (uses tracks from localStorage or global allTracks) ***/
 function renderAllSongs() {
     // Load saved songs from localStorage
-    window.allTracks = JSON.parse(localStorage.getItem("allTracks")) || window.allTracks || [];
+    window.allTracks = JSON.parse(localStorage.getItem("allTracks")) || [];
 
     const container = document.getElementById("allSongsList");
     if (!container) return;
@@ -23,7 +23,7 @@ function renderAllSongs() {
         item.innerHTML = `
         <div class="d-flex align-items-center">
             <div class="me-3">
-                <img src="${song.cover || 'assets/img/default-cover.jpg'}" 
+                <img src="${song.cover || 'assets/img/default-song-cover.jpg'}" 
                     class="rounded-3 shadow-sm" 
                     style="width:50px; height:50px; object-fit:cover;" 
                     alt="${song.title}">
@@ -56,7 +56,7 @@ function renderAllSongs() {
             item.querySelector(".track-duration").textContent = `${min}:${sec}`;
         };
 
-        // Play song when clicking the item (but ignore clicks inside dropdown)
+        // Play song when clicking the item (ignore dropdown clicks)
         item.addEventListener("click", e => {
             if (e.target.closest(".dropdown")) return;
             if (typeof playSong === "function") {
@@ -88,13 +88,19 @@ function renderAllSongs() {
             window.allTracks = window.allTracks.filter(s => s.id !== song.id);
             localStorage.setItem("allTracks", JSON.stringify(window.allTracks));
 
-            // Re-render list
+            // 🔥 Also remove from Cozy Playlist
+            let playlists = JSON.parse(localStorage.getItem("playlists")) || [];
+            let cozy = playlists.find(p => p.name === "Cozy Playlist");
+            if (cozy) {
+                cozy.tracks = cozy.tracks.filter(s => s.id !== song.id);
+                localStorage.setItem("playlists", JSON.stringify(playlists));
+            }
+
             renderAllSongs();
         });
 
         container.appendChild(item);
     });
-
 }
 
 
@@ -105,48 +111,19 @@ function initPlaylistGrid() {
     const grid = document.getElementById("playlistsGrid");
     const createBtn = document.getElementById("createPlaylistBtn");
 
-    // ===== Handle Add Song Form =====
-    const addSongForm = document.getElementById("addSongForm");
-    if (addSongForm) {
-        addSongForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            const title = document.getElementById("songTitle").value;
-            const artist = document.getElementById("songArtist").value;
-            const fileInput = document.getElementById("songFile");
-
-            if (!fileInput.files.length) {
-                alert("Please select an audio file.");
-                return;
-            }
-
-            const file = fileInput.files[0];
-            const url = URL.createObjectURL(file);
-
-            const newSong = {
-                id: Date.now(),
-                title,
-                artist,
-                src: url,
-                cover: "assets/img/default-song-cover.jpg"
-            };
-
-            if (!window.allTracks) window.allTracks = [];
-            window.allTracks.push(newSong);
-            localStorage.setItem("allTracks", JSON.stringify(window.allTracks));
-
-            renderAllSongs();
-
-            const modal = bootstrap.Modal.getInstance(document.getElementById("addSongModal"));
-            modal.hide();
-            e.target.reset();
-        });
-    }
-
     // Load playlists from localStorage or default
-    let playlists = JSON.parse(localStorage.getItem("playlists")) || [
-        { id: 1, name: "Chill Vibes", cover: "assets/img/cozy-welcome.jpg", tracks: [] },
-    ];
+    let playlists = JSON.parse(localStorage.getItem("playlists")) || [];
+
+    // 🔥 Ensure Cozy Playlist always exists
+    if (!playlists.find(p => p.name === "Cozy Playlist")) {
+        playlists.push({
+            id: 1,
+            name: "Cozy Playlist",
+            cover: "assets/img/cozy-welcome.jpg",
+            tracks: window.allTracks || []
+        });
+        localStorage.setItem("playlists", JSON.stringify(playlists));
+    }
 
     function savePlaylists() {
         localStorage.setItem("playlists", JSON.stringify(playlists));
@@ -158,6 +135,7 @@ function initPlaylistGrid() {
         playlists.forEach(p => {
             const col = document.createElement("div");
             col.className = "col-md-4 col-sm-6";
+            col.style.cursor = "pointer";
             col.innerHTML = `
                 <div class="card rounded-4 shadow-sm border-0 overflow-hidden h-100 playlist-card"
                     data-id="${p.id}">
@@ -173,6 +151,58 @@ function initPlaylistGrid() {
             grid.appendChild(col);
         });
     }
+
+    function renderPlaylistModal(playlist) {
+        const title = document.getElementById("playlistModalLabel");
+        const container = document.getElementById("playlistTracks");
+
+        title.textContent = playlist.name;
+        container.innerHTML = "";
+
+        if (!playlist.tracks || !playlist.tracks.length) {
+            container.innerHTML = `<p class="text-muted">No songs in this playlist yet.</p>`;
+            return;
+        }
+
+        playlist.tracks.forEach(song => {
+            const item = document.createElement("div");
+            item.className = "list-group-item d-flex align-items-center justify-content-between";
+            item.style.cursor = "pointer";
+
+            item.innerHTML = `
+            <div class="d-flex align-items-center">
+                <img src="${song.cover || 'assets/img/default-cover.jpg'}" 
+                    class="rounded-3 me-3"
+                    style="width:40px; height:40px; object-fit:cover;"
+                    alt="${song.title}">
+                <div>
+                    <div class="fw-bold">${song.title}</div>
+                    <small class="text-muted">${song.artist}</small>
+                </div>
+            </div>
+            <button class="btn btn-sm btn-outline-danger btn-remove">
+                <i class="bi bi-trash"></i>
+            </button>
+        `;
+
+            // Play song when clicking item
+            item.addEventListener("click", e => {
+                if (e.target.closest(".btn-remove")) return;
+                if (typeof playSong === "function") playSong(song);
+            });
+
+            // Remove song from playlist
+            item.querySelector(".btn-remove").addEventListener("click", e => {
+                e.stopPropagation();
+                playlist.tracks = playlist.tracks.filter(s => s.id !== song.id);
+                savePlaylists();
+                renderPlaylistModal(playlist);
+            });
+
+            container.appendChild(item);
+        });
+    }
+
 
     /*** Create new playlist ***/
     function createPlaylist() {
@@ -206,50 +236,57 @@ function initPlaylistGrid() {
             savePlaylists();
             renderGrid();
         } else {
-            // Navigate to player view (pass playlist ID via query)
-            window.location.href = `player.html?playlist=${id}`;
+            // 🎵 Show playlist in modal
+            const playlist = playlists.find(p => p.id === id);
+            renderPlaylistModal(playlist);
+
+            const modal = new bootstrap.Modal(document.getElementById("playlistModal"));
+            modal.show();
         }
     });
+
+
+    // ===== Handle Add Song Form =====
+    const addSongForm = document.getElementById("addSongForm");
+    if (addSongForm) {
+        addSongForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const title = document.getElementById("songTitle").value;
+            const artist = document.getElementById("songArtist").value;
+            const fileInput = document.getElementById("songFile");
+
+            if (!fileInput.files.length) {
+                alert("Please select an audio file.");
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const url = URL.createObjectURL(file);
+
+            const newSong = {
+                id: Date.now(),
+                title,
+                artist,
+                src: url,
+                cover: "assets/img/default-song-cover.jpg"
+            };
+
+            // Add to All Songs
+            if (!window.allTracks) window.allTracks = [];
+            window.allTracks.push(newSong);
+            localStorage.setItem("allTracks", JSON.stringify(window.allTracks));
+
+            renderAllSongs();
+            renderGrid();
+
+            const modal = bootstrap.Modal.getInstance(document.getElementById("addSongModal"));
+            modal.hide();
+            e.target.reset();
+        });
+    }
 
     // Init render
     renderGrid();
     renderAllSongs();
 }
-
-
-/*** Add Song Form Handler ***/
-document.getElementById("addSongForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const title = document.getElementById("songTitle").value;
-    const artist = document.getElementById("songArtist").value;
-    const fileInput = document.getElementById("songFile");
-
-    if (!fileInput.files.length) {
-        alert("Please select an audio file.");
-        return;
-    }
-
-    const file = fileInput.files[0];
-    const url = URL.createObjectURL(file);
-
-    const newSong = {
-        id: Date.now(),
-        title,
-        artist,
-        src: url,
-        cover: "assets/img/default-song-cover.jpg"
-    };
-
-    if (!window.allTracks) window.allTracks = [];
-    window.allTracks.push(newSong);
-
-    localStorage.setItem("allTracks", JSON.stringify(window.allTracks));
-
-    renderAllSongs();
-
-    const modal = bootstrap.Modal.getInstance(document.getElementById("addSongModal"));
-    modal.hide();
-
-    e.target.reset();
-});

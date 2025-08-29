@@ -237,7 +237,6 @@ function initSettingsPage() {
     }
 
     // Clear storage
-    // Clear storage
     if (clearBtn) {
         clearBtn.addEventListener("click", function () {
             const confirmModalEl = document.getElementById("confirm-clear-modal");
@@ -246,6 +245,10 @@ function initSettingsPage() {
 
             const confirmBtn = document.getElementById("confirm-clear-btn");
             confirmBtn.onclick = function () {
+                // Grab Cozy Playlist if it exists
+                let playlists = JSON.parse(localStorage.getItem("playlists")) || [];
+                let cozy = playlists.find(p => p.name === "Cozy Playlist");
+
                 // Clear user profile
                 localStorage.removeItem("cozy-username");
                 localStorage.removeItem("cozy-profile-img");
@@ -253,6 +256,19 @@ function initSettingsPage() {
                 // Clear songs and playlists
                 localStorage.removeItem("allTracks");
                 localStorage.removeItem("playlists");
+
+                // Restore Cozy Playlist
+                if (cozy) {
+                    localStorage.setItem("playlists", JSON.stringify([cozy]));
+                } else {
+                    // fallback: recreate Cozy Playlist with hardcoded tracks
+                    localStorage.setItem("playlists", JSON.stringify([{
+                        id: 1,
+                        name: "Cozy Playlist",
+                        cover: "assets/img/cozy-welcome.jpg",
+                        tracks: window.myTracks || []
+                    }]));
+                }
 
                 // Reset globals (so app doesn’t still hold old data in memory)
                 window.allTracks = [];
@@ -274,11 +290,10 @@ function initSettingsPage() {
                 updateStorageInfo();
                 confirmModal.hide();
 
-                showStatusModal("delete", "Storage Cleared", "All saved data, playlists, and songs have been removed.");
+                showStatusModal("delete", "Storage Cleared", "All saved data has been removed, Cozy Playlist was preserved.");
             };
         });
     }
-
 
     // Cleanup on modal close
     if (modalEl) {
