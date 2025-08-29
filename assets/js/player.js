@@ -78,9 +78,9 @@ function initPlayer() {
                     alt="${track.title}">
             </div>
             <div class="w-100">
-                <h6 class="mb-1 fs-6">${track.title}</h6>
+                <h6 class="mb-1 fs-6 track-title">${track.title}</h6>
                 <div class="d-flex justify-content-between track small">
-                    <small>${track.artist}</small>
+                    <small class="track-artist">${track.artist}</small>
                     <small class="track-duration">--:--</small>
                 </div>
             </div>
