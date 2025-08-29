@@ -145,8 +145,7 @@ function initPlaylistGrid() {
 
     // Load playlists from localStorage or default
     let playlists = JSON.parse(localStorage.getItem("playlists")) || [
-        { id: 1, name: "Chill Vibes", cover: "assets/img/cozy-music.jpg", tracks: [] },
-        { id: 2, name: "Workout Mix", cover: "assets/img/workout.jpg", tracks: [] }
+        { id: 1, name: "Chill Vibes", cover: "assets/img/cozy-welcome.jpg", tracks: [] },
     ];
 
     function savePlaylists() {
@@ -182,7 +181,7 @@ function initPlaylistGrid() {
         const newPlaylist = {
             id: Date.now(),
             name,
-            cover: "assets/img/default-cover.jpg",
+            cover: "assets/img/cozy-welcome.jpg",
             tracks: []
         };
         playlists.push(newPlaylist);

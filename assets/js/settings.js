@@ -237,6 +237,7 @@ function initSettingsPage() {
     }
 
     // Clear storage
+    // Clear storage
     if (clearBtn) {
         clearBtn.addEventListener("click", function () {
             const confirmModalEl = document.getElementById("confirm-clear-modal");
@@ -245,24 +246,39 @@ function initSettingsPage() {
 
             const confirmBtn = document.getElementById("confirm-clear-btn");
             confirmBtn.onclick = function () {
+                // Clear user profile
                 localStorage.removeItem("cozy-username");
                 localStorage.removeItem("cozy-profile-img");
 
+                // Clear songs and playlists
+                localStorage.removeItem("allTracks");
+                localStorage.removeItem("playlists");
+
+                // Reset globals (so app doesn’t still hold old data in memory)
+                window.allTracks = [];
+                window.playlists = [];
+
+                // Reset UI inputs
                 usernameInput.value = "";
                 const preview = document.getElementById("profile-preview");
                 if (preview) preview.remove();
                 if (fileInput) fileInput.value = "";
                 uploadedImageData = null;
 
+                // Re-render songs and playlists if render functions exist
+                if (typeof renderAllSongs === "function") renderAllSongs();
+                if (typeof renderPlaylists === "function") renderPlaylists();
+
                 // Apply defaults globally
                 applySavedProfile();
                 updateStorageInfo();
                 confirmModal.hide();
 
-                showStatusModal("delete", "Storage Cleared", "All saved data has been removed from local storage.");
+                showStatusModal("delete", "Storage Cleared", "All saved data, playlists, and songs have been removed.");
             };
         });
     }
+
 
     // Cleanup on modal close
     if (modalEl) {
