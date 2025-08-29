@@ -134,17 +134,14 @@ function initPlaylistGrid() {
         grid.innerHTML = "";
         playlists.forEach(p => {
             const col = document.createElement("div");
-            col.className = "col-md-4 col-sm-6";
+            col.className = "col-md-3 col-sm-6";
             col.style.cursor = "pointer";
             col.innerHTML = `
-                <div class="card rounded-4 shadow-sm border-0 overflow-hidden h-100 playlist-card"
+                <div class="card rounded-4 shadow-sm border-0 overflow-hidden h-100 playlist-card" style="background-color: var(--bg-playlist)"
                     data-id="${p.id}">
                     <img src="${p.cover}" class="card-img-top" alt="${p.name}">
-                    <div class="card-body d-flex justify-content-between align-items-center">
-                        <h6 class="fw-bold mb-0">${p.name}</h6>
-                        <button class="btn btn-sm btn-outline-danger btn-delete">
-                            <i class="bi bi-trash"></i>
-                        </button>
+                    <div class="card-body d-flex justify-content-between align-items-center px-2 py-2">
+                        <h6 class="fw-bold mb-0" style="color: var(--text-active);"><i class="bi bi-music-note"></i> ${p.name}</h6>
                     </div>
                 </div>
             `;
@@ -156,7 +153,7 @@ function initPlaylistGrid() {
         const title = document.getElementById("playlistModalLabel");
         const container = document.getElementById("playlistTracks");
 
-        title.textContent = playlist.name;
+        title.innerHTML = `<i class="bi bi-music-note-list"></i> ${playlist.name}`;
         container.innerHTML = "";
 
         if (!playlist.tracks || !playlist.tracks.length) {
@@ -166,7 +163,7 @@ function initPlaylistGrid() {
 
         playlist.tracks.forEach(song => {
             const item = document.createElement("div");
-            item.className = "list-group-item d-flex align-items-center justify-content-between";
+            item.className = "list-group-item d-flex align-items-center justify-content-between bg-transparent border-0 p-0 mb-2";
             item.style.cursor = "pointer";
 
             item.innerHTML = `
@@ -176,8 +173,8 @@ function initPlaylistGrid() {
                     style="width:40px; height:40px; object-fit:cover;"
                     alt="${song.title}">
                 <div>
-                    <div class="fw-bold">${song.title}</div>
-                    <small class="text-muted">${song.artist}</small>
+                    <div class="fw-bold" style="color: var(--text-primary);">${song.title}</div>
+                    <small class="text-muted" style="color: var(--text-soft);">${song.artist}</small>
                 </div>
             </div>
             <button class="btn btn-sm btn-outline-danger btn-remove">

@@ -7,6 +7,7 @@
     --bg-warm-gray: hsl(0, 0%, 42%);
     --bg-gentle-green: #a8b5a0;
     --bg-warm-red: #e35e59;
+    --bg-playlist: hsl(0, 0%, 42%);
 
     --text-primary: #4a3f35;
     --text-secondary: #7a6b57;
@@ -30,6 +31,8 @@ body.dark-mode {
     --bg-warm-gray: hsl(0, 0%, 70%);
     --bg-gentle-green: #6b7a65;
     --bg-warm-red: #e07c78;
+    --bg-playlist: #2b2a28;
+
 
     --text-primary: #faf7f2;
     --text-secondary: #c0b7aa;
@@ -317,7 +320,11 @@ body {
 }
 
 
-
+.playlist-card img {
+    height: 140px;
+    width: auto;
+    object-fit: cover;
+}
 
 
 /* Dark Moders */
@@ -431,7 +438,11 @@ body {
     color: var(--text-active);
 }
 
-
+.btn-red {
+    background-color: var(--bg-warm-red);
+    color: var(--text-primary);
+    border: none;
+}
 
 
 .cozy-hero img {
