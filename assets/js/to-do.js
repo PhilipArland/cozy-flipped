@@ -3,7 +3,7 @@ function initExerciseToDo() {
     // --- ELEMENTS ---
     const exerciseList = document.querySelector('.exercise-list');
 
-    const modalAddExerciseBtn = document.getElementById('modalAddBtn');
+    const modalAddBtn = document.getElementById('modalAddBtn');
     const exerciseNameInput = document.getElementById('exerciseNameInput');
     const exerciseDurationInput = document.getElementById('exerciseDurationInput');
 
@@ -11,7 +11,7 @@ function initExerciseToDo() {
     const timerDisplay = document.getElementById('timerDisplay');
     const progressCircle = document.getElementById('progressCircle');
 
-    if (!exerciseList || !modalAddExerciseBtn) {
+    if (!exerciseList || !modalAddBtn) {
         console.warn("Exercise To-Do elements not found on this page.");
         return;
     }
@@ -54,49 +54,56 @@ function initExerciseToDo() {
             return;
         }
 
-        items.forEach(task => {
+        items.forEach((task, index) => {
             const li = document.createElement('li');
             li.className = 'exercise-item d-flex justify-content-between align-items-center mb-3';
             li.innerHTML = `
                 <div class="form-check d-flex align-items-center gap-2">
-                    <input class="form-check-input" type="checkbox" id="exercise${task.id}" ${task.completed ? 'checked' : ''}>
-                    <label class="form-check-label" for="exercise${task.id}">${task.name}</label>
+                    <input class="form-check-input" type="checkbox" id="exercise${index}" ${task.completed ? 'checked' : ''}>
+                    <label class="form-check-label" for="exercise${index}">${task.name}</label>
                     <p class="small mb-0">${task.duration} min</p>
                 </div>
                 <div class="d-flex gap-1">
-                    <button class="start-btn btn-start fs-6"><i class="bi bi-play-fill"></i></button>
-                    <button class="delete-btn btn-delete"><i class="bi bi-trash fs-6 text-white"></i></button>
+                    <button class="btns btn-primary start-btn btn-start fs-6"><i class="bi bi-play-fill"></i></button>
+                    <button class="btns btn-red delete-btn btn-delete"><i class="bi bi-trash fs-6"></i></button>
                 </div>
             `;
             listElement.appendChild(li);
 
-            // Checkbox toggle
-            li.querySelector('input[type="checkbox"]').addEventListener('change', e => {
-                task.completed = e.target.checked;
+            // --- Checkbox toggle ---
+            const checkbox = li.querySelector('.form-check-input');
+            checkbox.addEventListener("change", () => {
+                task.completed = checkbox.checked;
                 saveExercises();
+                updateExerciseProgress();
             });
 
-            // Delete button
-            li.querySelector('.delete-btn').addEventListener('click', () => {
-                exercises = exercises.filter(t => t.id !== task.id);
+            // --- Delete button ---
+            const deleteBtn = li.querySelector('.delete-btn');
+            deleteBtn.addEventListener("click", () => {
+                exercises.splice(index, 1);
                 saveExercises();
-                renderList(listElement, exercises);
+                renderList(exerciseList, exercises);
+                updateExerciseProgress();
             });
 
-            // Start / Pause button
-            li.querySelector('.start-btn').addEventListener('click', () => {
-                const btnIcon = li.querySelector('.start-btn i');
+            // --- Start / Pause button ---
+            const startBtn = li.querySelector('.start-btn');
+            startBtn.addEventListener('click', () => {
+                const btnIcon = startBtn.querySelector('i');
 
                 if (currentTask === task && timerInterval) {
+                    // Pause
                     clearInterval(timerInterval);
                     timerInterval = null;
                     btnIcon.classList.replace('bi-pause-fill', 'bi-play-fill');
                 } else {
+                    // Start new timer
                     document.querySelectorAll('.start-btn i').forEach(i => i.classList.replace('bi-pause-fill', 'bi-play-fill'));
                     currentTask = task;
                     btnIcon.classList.replace('bi-play-fill', 'bi-pause-fill');
-                    if (!remainingTime || currentTask !== task) remainingTime = task.duration * 60;
-                    startTimer(task, li.querySelector('.start-btn'));
+                    remainingTime = task.duration * 60;
+                    startTimer(task, startBtn);
                 }
             });
         });
@@ -114,6 +121,7 @@ function initExerciseToDo() {
                 timerDisplay.textContent = '00:00';
                 btn.querySelector('i').classList.replace('bi-pause-fill', 'bi-play-fill');
 
+                // Play alarm twice
                 let playCount = 0;
                 timerSound.onended = () => {
                     playCount++;
@@ -125,6 +133,7 @@ function initExerciseToDo() {
                 task.completed = true;
                 saveExercises();
                 renderList(exerciseList, exercises);
+                updateExerciseProgress();
                 remainingTime = 0;
                 currentTask = null;
                 return;
@@ -139,19 +148,23 @@ function initExerciseToDo() {
     }
 
     // --- MODAL BUTTON EVENT ---
-    modalAddExerciseBtn.addEventListener('click', () => {
+    modalAddBtn.addEventListener("click", () => {
         const name = exerciseNameInput.value.trim();
-        const duration = parseFloat(exerciseDurationInput.value);
-        if (!name || isNaN(duration) || duration <= 0) return alert('Please enter a valid name and duration!');
+        const duration = parseInt(exerciseDurationInput.value.trim(), 10);
 
-        const task = { id: Date.now(), name, duration, completed: false, type: 'exercise' };
-        exercises.push(task);
-        saveExercises();
-        renderList(exerciseList, exercises);
+        if (name && duration) {
+            exercises.push({ name, duration, completed: false });
+            saveExercises();
 
-        exerciseNameInput.value = '';
-        exerciseDurationInput.value = '';
-        bootstrap.Modal.getInstance(document.getElementById('addExerciseModal')).hide();
+            renderList(exerciseList, exercises);
+            updateExerciseProgress();
+
+            exerciseNameInput.value = "";
+            exerciseDurationInput.value = "";
+
+            const modal = bootstrap.Modal.getInstance(document.getElementById("addExerciseModal"));
+            modal.hide();
+        }
     });
 
     // --- RESET BUTTON ---
@@ -167,6 +180,26 @@ function initExerciseToDo() {
         });
     }
 
+    // --- PROGRESS FUNCTION ---
+    function updateExerciseProgress() {
+        const completedCount = exercises.filter(e => e.completed).length;
+        const totalCount = exercises.length;
+
+        const completedEl = document.getElementById('exercise-completed-count');
+        const totalEl = document.getElementById('exercise-total-count');
+        const progressBar = document.getElementById('exercise-progress-bar');
+
+        if (!completedEl || !totalEl || !progressBar) return;
+
+        completedEl.textContent = completedCount;
+        totalEl.textContent = totalCount;
+
+        const percentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+        progressBar.style.width = percentage + '%';
+        progressBar.textContent = percentage + '%';
+    }
+
     // --- INITIAL RENDER ---
     renderList(exerciseList, exercises);
+    updateExerciseProgress();
 }

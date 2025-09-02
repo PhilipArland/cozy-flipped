@@ -30,7 +30,7 @@ body.dark-mode {
     --bg-soft-brown: #665847;
     --bg-warm-gray: hsl(0, 0%, 70%);
     --bg-gentle-green: #6b7a65;
-    --bg-warm-red: #e07c78;
+    --bg-warm-red: #bc403c;
     --bg-playlist: #2b2a28;
 
 
@@ -440,7 +440,7 @@ body {
 
 .btn-red {
     background-color: var(--bg-warm-red);
-    color: var(--text-primary);
+    color: var(--text-active);
     border: none;
 }
 
