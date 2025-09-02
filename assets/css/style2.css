@@ -2,6 +2,9 @@
     --bg-body: #eef0f2;
     --bg-warm-cream: #faf7f2;
     --bg-cozy-orange: #d4a574;
+    --bg-cozy-green: #28a745;
+    --bg-cozy-yellow: #ffc107;
+
     --bg-deep-brown: #4a3f35;
     --bg-soft-brown: #8b7355;
     --bg-warm-gray: hsl(0, 0%, 42%);
@@ -26,6 +29,9 @@ body.dark-mode {
     --bg-body: #2b2a28;
     --bg-warm-cream: #4a3f35;
     --bg-cozy-orange: #b87c4a;
+    --bg-cozy-green: #38d48b;
+    --bg-cozy-yellow: #ffe066;
+
     --bg-deep-brown: #1f1e1c;
     --bg-soft-brown: #665847;
     --bg-warm-gray: hsl(0, 0%, 70%);
@@ -346,7 +352,8 @@ body {
     }
 }
 
-.dashboard-page, .activities-page {
+.dashboard-page,
+.activities-page {
 
     h4,
     h5 {

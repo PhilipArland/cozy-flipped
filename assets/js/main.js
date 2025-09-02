@@ -77,7 +77,6 @@ document.addEventListener("DOMContentLoaded", function () {
             if (typeof initExerciseToDo === 'function') initExerciseToDo();
             attachViewActivitiesListener();
             attachGoBackHomeListener();
-            generateCalendar();
         }
 
         if (page === 'activities') {
@@ -120,47 +119,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    function generateCalendar() {
-        const grid = document.getElementById("calendar-grid");
-        const monthLabel = document.getElementById("calendar-month");
-
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = date.getMonth();
-        const monthName = date.toLocaleString("default", { month: "long" });
-        monthLabel.textContent = `${monthName} ${year}`;
-        grid.innerHTML = "";
-
-        const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-        weekdays.forEach(d => {
-            let div = document.createElement("div");
-            div.textContent = d;
-            div.style.fontWeight = "bold";
-            div.style.color = "var(--text-primary)";
-            grid.appendChild(div);
-        });
-
-        const firstDay = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-        for (let i = 0; i < firstDay; i++) {
-            grid.appendChild(document.createElement("div"));
-        }
-
-        for (let d = 1; d <= daysInMonth; d++) {
-            let div = document.createElement("div");
-            div.style.color = "var(--text-primary)";
-            div.textContent = d;
-
-            if (d === date.getDate()) {
-                div.style.background = "var(--bg-cozy-orange)";
-                div.style.color = "var(--text-primary)";
-                div.style.borderRadius = "6px";
-            }
-
-            grid.appendChild(div);
-        }
-    }
 
     /*** Mobile Sidebar ***/
     loadHTML("mobileSidebar", "includes/mobile-sidebar.html", () => {
