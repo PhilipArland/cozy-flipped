@@ -74,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (page === 'dashboard') {
             if (typeof initDashboardPage === 'function') initDashboardPage(); // 👈 new
+            if (typeof initExerciseToDo === 'function') initExerciseToDo();
             attachViewActivitiesListener();
             attachGoBackHomeListener();
             generateCalendar();
@@ -82,10 +83,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (page === 'activities') {
             if (typeof initExerciseToDo === 'function') initExerciseToDo();
             attachGoBackHomeListener();
-        }
-
-        if (page === "playlist") {
-            initPlaylistGrid();
         }
 
         if (page === 'settings') {

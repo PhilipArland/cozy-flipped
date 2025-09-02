@@ -2,29 +2,25 @@
 function initExerciseToDo() {
     // --- ELEMENTS ---
     const exerciseList = document.querySelector('.exercise-list');
-
     const modalAddBtn = document.getElementById('modalAddBtn');
     const exerciseNameInput = document.getElementById('exerciseNameInput');
     const exerciseDurationInput = document.getElementById('exerciseDurationInput');
-
     const resetBtn = document.getElementById('resetBtn');
     const timerDisplay = document.getElementById('timerDisplay');
     const progressCircle = document.getElementById('progressCircle');
 
-    if (!exerciseList || !modalAddBtn) {
-        console.warn("Exercise To-Do elements not found on this page.");
-        return;
-    }
+    // If essential elements are missing, skip initialization
+    if (!exerciseList || !modalAddBtn) return;
 
     // --- STATE ---
     let exercises = JSON.parse(localStorage.getItem('cozyExercises')) || [];
-    let timerInterval;
+    let timerInterval = null;
     let currentTask = null;
     let remainingTime = 0;
 
     const timerSound = new Audio('assets/playlist/Alarm02.wav');
-    const circumference = 2 * Math.PI * 70;
-    progressCircle.style.strokeDasharray = circumference;
+    const circumference = progressCircle ? 2 * Math.PI * 70 : 0;
+    if (progressCircle) progressCircle.style.strokeDasharray = circumference;
 
     // --- SAVE FUNCTION ---
     function saveExercises() {
@@ -117,16 +113,22 @@ function initExerciseToDo() {
             if (remainingTime <= 0) {
                 clearInterval(timerInterval);
                 timerInterval = null;
-                progressCircle.style.strokeDashoffset = 0;
-                timerDisplay.textContent = '00:00';
+                if (progressCircle) progressCircle.style.strokeDashoffset = 0;
+                if (timerDisplay) timerDisplay.textContent = '00:00';
                 btn.querySelector('i').classList.replace('bi-pause-fill', 'bi-play-fill');
 
-                // Play alarm twice
+                // --- Lower music and play alarm ---
                 let playCount = 0;
+                if (window.audio) window.audio.volume = 0.3;
+
                 timerSound.onended = () => {
                     playCount++;
-                    if (playCount < 2) timerSound.play();
-                    else timerSound.onended = null;
+                    if (playCount < 2) {
+                        timerSound.play();
+                    } else {
+                        timerSound.onended = null;
+                        if (window.audio) window.audio.volume = 1.0; // restore music
+                    }
                 };
                 timerSound.play();
 
@@ -142,8 +144,8 @@ function initExerciseToDo() {
             remainingTime--;
             const mins = Math.floor(remainingTime / 60);
             const secs = remainingTime % 60;
-            timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-            progressCircle.style.strokeDashoffset = circumference * (remainingTime / (task.duration * 60));
+            if (timerDisplay) timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            if (progressCircle) progressCircle.style.strokeDashoffset = circumference * (remainingTime / (task.duration * 60));
         }, 1000);
     }
 
@@ -155,7 +157,6 @@ function initExerciseToDo() {
         if (name && duration) {
             exercises.push({ name, duration, completed: false });
             saveExercises();
-
             renderList(exerciseList, exercises);
             updateExerciseProgress();
 
@@ -174,8 +175,8 @@ function initExerciseToDo() {
             timerInterval = null;
             remainingTime = 0;
             currentTask = null;
-            timerDisplay.textContent = '00:00';
-            progressCircle.style.strokeDashoffset = circumference;
+            if (timerDisplay) timerDisplay.textContent = '00:00';
+            if (progressCircle) progressCircle.style.strokeDashoffset = circumference;
             document.querySelectorAll('.start-btn i').forEach(i => i.classList.replace('bi-pause-fill', 'bi-play-fill'));
         });
     }
