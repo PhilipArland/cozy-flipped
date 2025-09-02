@@ -297,12 +297,12 @@ body {
 }
 
 .nav-tabs .nav-link {
-    color: var(--bg-deep-brown);
+    color: var(--text-soft);
 }
 
 .nav-tabs .nav-link.active {
     background-color: var(--bg-soft-brown);
-    color: #fff;
+    color: var(--text-active);
 }
 
 .mobile-navbar a {
@@ -346,7 +346,7 @@ body {
     }
 }
 
-.dashboard-page {
+.dashboard-page, .activities-page {
 
     h4,
     h5 {

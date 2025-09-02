@@ -6,7 +6,8 @@ function applySavedProfile() {
 
     const usernameDisplays = [
         document.getElementById("sidebar-username"),
-        document.getElementById("navbar-username")
+        document.getElementById("navbar-username"),
+        document.querySelector(".overlay-box h3") // 👈 Dashboard welcome
     ];
     const profileImages = [
         document.getElementById("sidebar-profile-img"),
@@ -15,13 +16,27 @@ function applySavedProfile() {
     ];
 
     if (savedName) {
-        usernameDisplays.forEach(el => { if (el) el.textContent = savedName; });
+        usernameDisplays.forEach(el => {
+            if (el) {
+                // Special case for dashboard welcome
+                if (el.closest(".overlay-box")) {
+                    el.textContent = `Welcome back, ${savedName}!`;
+                } else {
+                    el.textContent = savedName;
+                }
+            }
+        });
+    } else {
+        // If no name saved → fallback "Stranger"
+        const dashboardWelcome = document.querySelector(".overlay-box h3");
+        if (dashboardWelcome) dashboardWelcome.textContent = "Welcome, Stranger!";
     }
 
     if (savedImg) {
         profileImages.forEach(el => { if (el) el.src = savedImg; });
     }
 }
+
 
 // function applySavedTheme() {
 //     const savedTheme = localStorage.getItem("theme") || "light";

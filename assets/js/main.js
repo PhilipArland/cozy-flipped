@@ -73,6 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
         syncActiveLinks(page);
 
         if (page === 'dashboard') {
+            if (typeof initDashboardPage === 'function') initDashboardPage(); // 👈 new
             attachViewActivitiesListener();
             attachGoBackHomeListener();
             generateCalendar();
@@ -85,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (page === "playlist") {
             initPlaylistGrid();
-        } 
+        }
 
         if (page === 'settings') {
             if (typeof initSettingsPage === 'function') initSettingsPage();
@@ -198,24 +199,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /*** Right Sidebar (Music Player) ***/
     loadHTML("right-sidebar", "includes/right-sidebar.html", () => {
-        if (typeof initPlaylist === "function") initPlaylist();
         if (typeof initPlayer === "function") initPlayer();
 
-        const menuBtn = document.getElementById("playlistMenuBtn");
-        const menu = document.getElementById("playlistMenu");
+        // const menuBtn = document.getElementById("playlistMenuBtn");
+        // const menu = document.getElementById("playlistMenu");
 
-        if (menuBtn && menu) {
-            menuBtn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                menu.classList.toggle("d-none");
-            });
+        // if (menuBtn && menu) {
+        //     menuBtn.addEventListener("click", (e) => {
+        //         e.stopPropagation();
+        //         menu.classList.toggle("d-none");
+        //     });
 
-            document.addEventListener("click", (e) => {
-                if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
-                    menu.classList.add("d-none");
-                }
-            });
-        }
+        //     document.addEventListener("click", (e) => {
+        //         if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
+        //             menu.classList.add("d-none");
+        //         }
+        //     });
+        // }
     });
 
     /*** Left Sidebar ***/
@@ -240,5 +240,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     /*** Load default page ***/
-    loadPage('dashboard');
+    loadPage('activities');
 });

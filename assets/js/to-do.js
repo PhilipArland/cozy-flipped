@@ -2,29 +2,22 @@
 function initExerciseToDo() {
     // --- ELEMENTS ---
     const exerciseList = document.querySelector('.exercise-list');
-    const studyList = document.querySelector('.study-list');
 
     const modalAddExerciseBtn = document.getElementById('modalAddBtn');
-    const modalAddStudyBtn = document.getElementById('modalAddStudyBtn');
-
     const exerciseNameInput = document.getElementById('exerciseNameInput');
     const exerciseDurationInput = document.getElementById('exerciseDurationInput');
-
-    const studyNameInput = document.getElementById('studyNameInput');
-    const studyDurationInput = document.getElementById('studyDurationInput');
 
     const resetBtn = document.getElementById('resetBtn');
     const timerDisplay = document.getElementById('timerDisplay');
     const progressCircle = document.getElementById('progressCircle');
 
-    if (!exerciseList || !studyList || !modalAddExerciseBtn || !modalAddStudyBtn) {
-        console.warn("To-Do elements not found on this page.");
+    if (!exerciseList || !modalAddExerciseBtn) {
+        console.warn("Exercise To-Do elements not found on this page.");
         return;
     }
 
     // --- STATE ---
     let exercises = JSON.parse(localStorage.getItem('cozyExercises')) || [];
-    let studies = JSON.parse(localStorage.getItem('cozyStudies')) || [];
     let timerInterval;
     let currentTask = null;
     let remainingTime = 0;
@@ -33,17 +26,13 @@ function initExerciseToDo() {
     const circumference = 2 * Math.PI * 70;
     progressCircle.style.strokeDasharray = circumference;
 
-    // --- SAVE FUNCTIONS ---
+    // --- SAVE FUNCTION ---
     function saveExercises() {
         localStorage.setItem('cozyExercises', JSON.stringify(exercises));
     }
 
-    function saveStudies() {
-        localStorage.setItem('cozyStudies', JSON.stringify(studies));
-    }
-
     // --- RENDER FUNCTION ---
-    function renderList(listElement, items, type) {
+    function renderList(listElement, items) {
         listElement.innerHTML = '';
 
         if (items.length === 0) {
@@ -51,15 +40,13 @@ function initExerciseToDo() {
             placeholder.className = 'text-center text-muted py-4 d-flex flex-column align-items-center gap-2';
 
             const img = document.createElement('img');
-            img.src = type === 'exercise' ? 'assets/img/workout.gif' : 'assets/img/congrats.gif';
+            img.src = 'assets/img/workout.gif';
             img.alt = 'No tasks yet';
             img.classList.add('img-fluid', 'rounded-4', 'mb-3');
 
             const text = document.createElement('p');
             text.className = 'mb-0';
-            text.innerHTML = type === 'exercise'
-                ? 'No exercises yet! <br>Click "Add Exercise" to start your cozy routine.'
-                : 'No study tasks yet! <br>Click "Add Task" to start your cozy study session.';
+            text.innerHTML = 'No exercises yet! <br>Click "Add Exercise" to start your cozy routine.';
 
             placeholder.appendChild(img);
             placeholder.appendChild(text);
@@ -72,8 +59,8 @@ function initExerciseToDo() {
             li.className = 'exercise-item d-flex justify-content-between align-items-center mb-3';
             li.innerHTML = `
                 <div class="form-check d-flex align-items-center gap-2">
-                    <input class="form-check-input" type="checkbox" id="${type}${task.id}" ${task.completed ? 'checked' : ''}>
-                    <label class="form-check-label" for="${type}${task.id}">${task.name}</label>
+                    <input class="form-check-input" type="checkbox" id="exercise${task.id}" ${task.completed ? 'checked' : ''}>
+                    <label class="form-check-label" for="exercise${task.id}">${task.name}</label>
                     <p class="small mb-0">${task.duration} min</p>
                 </div>
                 <div class="d-flex gap-1">
@@ -86,19 +73,14 @@ function initExerciseToDo() {
             // Checkbox toggle
             li.querySelector('input[type="checkbox"]').addEventListener('change', e => {
                 task.completed = e.target.checked;
-                type === 'exercise' ? saveExercises() : saveStudies();
+                saveExercises();
             });
 
             // Delete button
             li.querySelector('.delete-btn').addEventListener('click', () => {
-                if (type === 'exercise') {
-                    exercises = exercises.filter(t => t.id !== task.id);
-                    saveExercises();
-                } else {
-                    studies = studies.filter(t => t.id !== task.id);
-                    saveStudies();
-                }
-                renderList(listElement, type === 'exercise' ? exercises : studies, type);
+                exercises = exercises.filter(t => t.id !== task.id);
+                saveExercises();
+                renderList(listElement, exercises);
             });
 
             // Start / Pause button
@@ -141,8 +123,8 @@ function initExerciseToDo() {
                 timerSound.play();
 
                 task.completed = true;
-                task.type === 'exercise' ? saveExercises() : saveStudies();
-                renderList(task.type === 'exercise' ? exerciseList : studyList, task.type === 'exercise' ? exercises : studies, task.type);
+                saveExercises();
+                renderList(exerciseList, exercises);
                 remainingTime = 0;
                 currentTask = null;
                 return;
@@ -156,7 +138,7 @@ function initExerciseToDo() {
         }, 1000);
     }
 
-    // --- MODAL BUTTON EVENTS ---
+    // --- MODAL BUTTON EVENT ---
     modalAddExerciseBtn.addEventListener('click', () => {
         const name = exerciseNameInput.value.trim();
         const duration = parseFloat(exerciseDurationInput.value);
@@ -165,26 +147,11 @@ function initExerciseToDo() {
         const task = { id: Date.now(), name, duration, completed: false, type: 'exercise' };
         exercises.push(task);
         saveExercises();
-        renderList(exerciseList, exercises, 'exercise');
+        renderList(exerciseList, exercises);
 
         exerciseNameInput.value = '';
         exerciseDurationInput.value = '';
         bootstrap.Modal.getInstance(document.getElementById('addExerciseModal')).hide();
-    });
-
-    modalAddStudyBtn.addEventListener('click', () => {
-        const name = studyNameInput.value.trim();
-        const duration = parseFloat(studyDurationInput.value);
-        if (!name || isNaN(duration) || duration <= 0) return alert('Please enter a valid name and duration!');
-
-        const task = { id: Date.now(), name, duration, completed: false, type: 'study' };
-        studies.push(task);
-        saveStudies();
-        renderList(studyList, studies, 'study');
-
-        studyNameInput.value = '';
-        studyDurationInput.value = '';
-        bootstrap.Modal.getInstance(document.getElementById('addStudyModal')).hide();
     });
 
     // --- RESET BUTTON ---
@@ -201,6 +168,5 @@ function initExerciseToDo() {
     }
 
     // --- INITIAL RENDER ---
-    renderList(exerciseList, exercises, 'exercise');
-    renderList(studyList, studies, 'study');
+    renderList(exerciseList, exercises);
 }
