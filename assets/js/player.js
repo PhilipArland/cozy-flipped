@@ -11,37 +11,15 @@ window.defaultTracks = [
     { id: 8, title: "Museo", artist: "Eliza Maturan", src: "assets/playlist/museo.mp3", cover: "assets/playlist/cover/museo.jpg" },
 ];
 
-function initPlayer() {
+function initPlayer(tracks = window.defaultTracks) {
     console.log("Player initialized");
 
-    // 🔥 Merge default tracks into "Cozy Playlist" if missing
-    let allPlaylists = JSON.parse(localStorage.getItem("playlists")) || [];
-
-    let cozy = allPlaylists.find(p => p.id === 1);
-    if (!cozy) {
-        cozy = { id: 1, name: "Cozy Playlist", tracks: [...window.defaultTracks] };
-        allPlaylists.push(cozy);
-    } else {
-        // ensure no duplicates, merge missing tracks
-        window.defaultTracks.forEach(track => {
-            if (!cozy.tracks.some(t => t.id === track.id)) {
-                cozy.tracks.push(track);
-            }
-        });
-    }
-    localStorage.setItem("playlists", JSON.stringify(allPlaylists));
-
-    // 🔥 Load current playlist
-    const urlParams = new URLSearchParams(window.location.search);
-    const playlistId = parseInt(urlParams.get("playlist")) || cozy.id;
-
-    let currentPlaylist = allPlaylists.find(p => p.id === playlistId) || cozy;
-
-    const tracks = currentPlaylist.tracks;
-    if (!tracks.length) {
-        console.warn("No tracks found in this playlist");
-        return;
-    }
+    // 🎵 Load current playlist (default is Cozy)
+    let currentTrack = 0;
+    const audio = new Audio(tracks[currentTrack].src);
+    let isShuffled = false;
+    let playHistory = [];
+    let repeatMode = "all"; // can be 'off', 'all', 'one'
 
     // DOM elements
     const playBtn = document.getElementById("playBtn");
@@ -58,12 +36,6 @@ function initPlayer() {
     const trackArtist = document.getElementById("trackArtist");
     const trackCover = document.getElementById("trackCover");
     const playlistContainer = document.getElementById("playlistContainer");
-
-    let currentTrack = 0;
-    const audio = new Audio(tracks[currentTrack].src);
-    let isShuffled = false;
-    let playHistory = [];
-    let repeatMode = "all"; // can be 'off', 'all', 'one'
 
     /*** Build playlist ***/
     function buildPlaylist() {
@@ -210,7 +182,6 @@ function initPlayer() {
     }
 
     if (repeatBtn) {
-        // set initial button state
         const repeatIcon = repeatBtn.querySelector("i");
         repeatIcon.className = "bi bi-repeat";
 
@@ -264,7 +235,6 @@ function initPlayer() {
     progressContainer.addEventListener("click", seekTrack);
     audio.addEventListener("timeupdate", updateProgress);
 
-    // Handle audio end depending on repeat mode
     audio.addEventListener("ended", () => {
         if (repeatMode === "one") {
             audio.currentTime = 0;
