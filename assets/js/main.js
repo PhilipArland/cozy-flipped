@@ -42,7 +42,11 @@ document.addEventListener("DOMContentLoaded", function () {
         fetch(`pages/${page}.html`)
             .then(res => res.text())
             .then(html => {
-                document.getElementById('content').innerHTML = html;
+                const contentEl = document.getElementById('content');
+                contentEl.innerHTML = html;
+
+                contentEl.scrollTop = 0;
+                window.scrollTo(0, 0);
 
                 handlePageInit(page);
 
@@ -53,6 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(err => console.error(err));
     }
+
 
     /*** Helper: Load HTML into a target element ***/
     function loadHTML(targetId, url, callback) {
