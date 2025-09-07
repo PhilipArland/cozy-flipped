@@ -344,7 +344,6 @@ body {
     object-fit: cover;
 }
 
-/* Radio Button */
 /* Container for checkbox and label */
 .form-check {
     display: flex;
