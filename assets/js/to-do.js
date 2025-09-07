@@ -1,4 +1,11 @@
 // to-do.js
+function getLocalDateKey(date = new Date()) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+}
+
 function initExerciseToDo() {
     // --- ELEMENTS ---
     const exerciseList = document.querySelector('.exercise-list');
@@ -190,14 +197,20 @@ function initExerciseToDo() {
         const totalEl = document.getElementById('exercise-total-count');
         const progressBar = document.getElementById('exercise-progress-bar');
 
-        if (!completedEl || !totalEl || !progressBar) return;
-
-        completedEl.textContent = completedCount;
-        totalEl.textContent = totalCount;
+        if (completedEl) completedEl.textContent = completedCount;
+        if (totalEl) totalEl.textContent = totalCount;
 
         const percentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
-        progressBar.style.width = percentage + '%';
-        progressBar.textContent = percentage + '%';
+        if (progressBar) {
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = percentage + '%';
+        }
+
+        // ✅ Log progress for today's LOCAL date
+        const todayKey = getLocalDateKey();
+        let log = JSON.parse(localStorage.getItem("cozyExercisesLog")) || {};
+        log[todayKey] = exercises.filter(e => e.completed).map(e => e.name);
+        localStorage.setItem("cozyExercisesLog", JSON.stringify(log));
     }
 
     // --- INITIAL RENDER ---

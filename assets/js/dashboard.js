@@ -1,16 +1,34 @@
+// dashboard.js
+function getLocalDateKey(date = new Date()) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+}
+
 function initDashboardPage() {
     // --- Reset exercises daily ---
     function resetDailyExercises() {
-        const today = new Date().toDateString(); // e.g., "Tue Sep 03 2025"
+        const today = new Date().toDateString(); // e.g., "Sun Sep 07 2025"
         const lastReset = localStorage.getItem('cozyExercisesLastReset');
 
         if (lastReset !== today) {
-            // Reset all exercises to incomplete
+            // ✅ Finalize yesterday
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yKey = getLocalDateKey(yesterday);
+
             const exercises = JSON.parse(localStorage.getItem('cozyExercises')) || [];
+            let log = JSON.parse(localStorage.getItem("cozyExercisesLog")) || {};
+
+            if (!log[yKey]) {
+                log[yKey] = exercises.filter(e => e.completed).map(e => e.name);
+                localStorage.setItem("cozyExercisesLog", JSON.stringify(log));
+            }
+
+            // Reset for today
             exercises.forEach(e => e.completed = false);
             localStorage.setItem('cozyExercises', JSON.stringify(exercises));
-
-            // Store today's date as last reset
             localStorage.setItem('cozyExercisesLastReset', today);
         }
     }
@@ -85,6 +103,10 @@ function initDashboardPage() {
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
 
+        const exercises = JSON.parse(localStorage.getItem('cozyExercises')) || [];
+        const completedLog = JSON.parse(localStorage.getItem('cozyExercisesLog')) || {};
+
+        // Empty cells before first day
         for (let i = 0; i < firstDay; i++) {
             grid.appendChild(document.createElement("div"));
         }
@@ -94,9 +116,26 @@ function initDashboardPage() {
             div.style.color = "var(--text-primary)";
             div.textContent = d;
 
+            const dayKey = getLocalDateKey(new Date(year, month, d));
+
+            // --- Highlight today ---
             if (d === date.getDate()) {
                 div.style.background = "var(--bg-cozy-orange)";
-                div.style.color = "var(--text-active)";
+                div.style.color = "#fff";
+                div.style.borderRadius = "6px";
+            }
+
+            // --- Highlight completed tasks ---
+            if (completedLog[dayKey] && completedLog[dayKey].length > 0) {
+                if (completedLog[dayKey].length === exercises.length) {
+                    // ✅ All done
+                    div.style.background = "var(--bg-cozy-green)";
+                    div.style.color = "#fff";
+                } else {
+                    // ⚠️ Some done
+                    div.style.background = "var(--bg-cozy-yellow)";
+                    div.style.color = "#000";
+                }
                 div.style.borderRadius = "6px";
             }
 
@@ -107,7 +146,7 @@ function initDashboardPage() {
     // --- Initial update on page load ---
     updatePersonalProgress();
     updateExerciseProgress();
-    generateCalendar(); // 🎯 Calendar call
+    generateCalendar();
 
     // --- Keep them in sync live ---
     setInterval(() => {
@@ -115,6 +154,5 @@ function initDashboardPage() {
         updateExerciseProgress();
     }, 2000);
 
-    // ... other dashboard initialization code
     applySavedProfile();
 }
