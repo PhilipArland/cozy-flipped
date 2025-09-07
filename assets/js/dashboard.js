@@ -96,7 +96,7 @@ function initDashboardPage() {
 
             if (d === date.getDate()) {
                 div.style.background = "var(--bg-cozy-orange)";
-                div.style.color = "var(--text-primary)";
+                div.style.color = "var(--text-active)";
                 div.style.borderRadius = "6px";
             }
 
