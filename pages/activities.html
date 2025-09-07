@@ -75,11 +75,20 @@
         <div class="card cozy-card p-3 rounded-4 border-0 shadow-sm">
             <!-- Tabs Navigation -->
             <ul class="nav nav-tabs mb-3" id="todoTabs" role="tablist">
+                <!-- Exercise Tab -->
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="exercise-tab" data-bs-toggle="tab"
                         data-bs-target="#exercise-tab-pane" type="button" role="tab" aria-controls="exercise-tab-pane"
                         aria-selected="true">
                         <i class="bi bi-universal-access me-1"></i>Exercise
+                    </button>
+                </li>
+
+                <!-- Personal Tab -->
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal-tab-pane"
+                        type="button" role="tab" aria-controls="personal-tab-pane" aria-selected="false">
+                        <i class="bi bi-person-check me-1"></i>Personal
                     </button>
                 </li>
             </ul>
@@ -99,8 +108,22 @@
                     </div>
                     <ul class="list-unstyled m-0 p-0 exercise-list"></ul>
                 </div>
+
+                <!-- Personal Tab -->
+                <div class="tab-pane fade" id="personal-tab-pane" role="tabpanel" aria-labelledby="personal-tab">
+                    <div class="d-flex align-items-center mb-3 justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <h5 class="mb-0">Personal To-Do</h5>
+                        </div>
+                        <button class="btns btn-add" data-bs-toggle="modal" data-bs-target="#addPersonalModal">
+                            + Add Personal
+                        </button>
+                    </div>
+                    <ul class="list-unstyled m-0 p-0 personal-list"></ul>
+                </div>
             </div>
         </div>
+
     </div>
 
 
