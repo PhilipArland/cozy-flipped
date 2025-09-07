@@ -344,6 +344,54 @@ body {
     object-fit: cover;
 }
 
+/* Radio Button */
+/* Container for checkbox and label */
+.form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Hide default checkbox */
+.form-check-input {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 2px solid #c0c0c0;
+    border-radius: 50%;
+    /* makes it round, use 4px for square */
+    background-color: #fff;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+/* Checked state */
+.form-check-input:checked {
+    background-color: var(--bg-cozy-green);
+    /* or your primary color */
+    border-color: var(--bg-cozy-green);
+}
+
+/* Optional: Add checkmark inside */
+.form-check-input:checked::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff;
+}
+
+/* Label styling */
+.form-check-label {
+    cursor: pointer;
+    font-weight: 500;
+}
+
 
 /* Dark Moders */
 

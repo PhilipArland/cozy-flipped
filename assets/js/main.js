@@ -42,10 +42,10 @@ document.addEventListener("DOMContentLoaded", function () {
         fetch(`pages/${page}.html`)
             .then(res => res.text())
             .then(html => {
-                const contentEl = document.getElementById('content');
-                contentEl.innerHTML = html;
+                const content = document.getElementById('content');
+                content.innerHTML = html;
 
-                contentEl.scrollTop = 0;
+                // Force scroll to top instantly
                 window.scrollTo(0, 0);
 
                 handlePageInit(page);
@@ -67,7 +67,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 return response.text();
             })
             .then(html => {
-                document.getElementById(targetId).innerHTML = html;
+                const target = document.getElementById(targetId);
+                target.innerHTML = html;
+
+                // Reset scroll positions for sidebars too
+                target.scrollTop = 0;
+
                 if (callback) callback();
             })
             .catch(err => console.error(err));
@@ -126,7 +131,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-
     /*** Mobile Sidebar ***/
     loadHTML("mobileSidebar", "includes/mobile-sidebar.html", () => {
         const toggleBtn = document.getElementById("mobileSidebarToggle");
@@ -162,22 +166,6 @@ document.addEventListener("DOMContentLoaded", function () {
     /*** Right Sidebar (Music Player) ***/
     loadHTML("right-sidebar", "includes/right-sidebar.html", () => {
         if (typeof initPlayer === "function") initPlayer();
-
-        // const menuBtn = document.getElementById("playlistMenuBtn");
-        // const menu = document.getElementById("playlistMenu");
-
-        // if (menuBtn && menu) {
-        //     menuBtn.addEventListener("click", (e) => {
-        //         e.stopPropagation();
-        //         menu.classList.toggle("d-none");
-        //     });
-
-        //     document.addEventListener("click", (e) => {
-        //         if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
-        //             menu.classList.add("d-none");
-        //         }
-        //     });
-        // }
     });
 
     /*** Left Sidebar ***/
