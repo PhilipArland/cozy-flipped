@@ -73,14 +73,16 @@ document.addEventListener("DOMContentLoaded", function () {
         syncActiveLinks(page);
 
         if (page === 'dashboard') {
-            if (typeof initDashboardPage === 'function') initDashboardPage(); // 👈 new
-            if (typeof initExerciseToDo === 'function') initExerciseToDo();
+            if (typeof initDashboardPage === 'function') initDashboardPage();
+            initToDo("exercise");
+            initToDo("personal");
             attachViewActivitiesListener();
             attachGoBackHomeListener();
         }
 
         if (page === 'activities') {
-            if (typeof initExerciseToDo === 'function') initExerciseToDo();
+            initToDo("exercise");
+            initToDo("personal");
             attachGoBackHomeListener();
         }
 

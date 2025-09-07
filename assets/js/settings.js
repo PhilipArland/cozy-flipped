@@ -37,16 +37,6 @@ function applySavedProfile() {
     }
 }
 
-
-// function applySavedTheme() {
-//     const savedTheme = localStorage.getItem("theme") || "light";
-//     if (savedTheme === "dark") {
-//         document.body.classList.add("dark-mode");
-//     } else {
-//         document.body.classList.remove("dark-mode");
-//     }
-// }
-
 function applySavedSidebarBehavior() {
     const savedBehavior = localStorage.getItem("sidebarBehavior") || "always";
     const sidebar = document.getElementById("left-sidebar");
@@ -260,10 +250,6 @@ function initSettingsPage() {
 
             const confirmBtn = document.getElementById("confirm-clear-btn");
             confirmBtn.onclick = function () {
-                // Grab Cozy Playlist if it exists
-                let playlists = JSON.parse(localStorage.getItem("playlists")) || [];
-                let cozy = playlists.find(p => p.name === "Cozy Playlist");
-
                 // Clear user profile
                 localStorage.removeItem("cozy-username");
                 localStorage.removeItem("cozy-profile-img");
@@ -285,7 +271,13 @@ function initSettingsPage() {
                     }]));
                 }
 
-                // Reset globals (so app doesn’t still hold old data in memory)
+                // --- NEW: Clear To-Do Lists ---
+                localStorage.removeItem("cozyExercises");
+                localStorage.removeItem("cozyPersonals");
+                localStorage.removeItem("cozyTasksLog");
+                localStorage.removeItem("cozyExercisesLastReset");
+
+                // Reset globals if any
                 window.allTracks = [];
                 window.playlists = [];
 
@@ -307,6 +299,7 @@ function initSettingsPage() {
 
                 showStatusModal("delete", "Storage Cleared", "All saved data has been removed, Cozy Playlist was preserved.");
             };
+
         });
     }
 

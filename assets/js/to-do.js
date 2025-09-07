@@ -1,4 +1,4 @@
-// to-do.js
+// --- UTIL ---
 function getLocalDateKey(date = new Date()) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -6,113 +6,120 @@ function getLocalDateKey(date = new Date()) {
     return `${year}-${month}-${day}`;
 }
 
-function initExerciseToDo() {
-    // --- ELEMENTS ---
-    const exerciseList = document.querySelector('.exercise-list');
-    const modalAddBtn = document.getElementById('modalAddBtn');
-    const exerciseNameInput = document.getElementById('exerciseNameInput');
-    const exerciseDurationInput = document.getElementById('exerciseDurationInput');
-    const resetBtn = document.getElementById('resetBtn');
-    const timerDisplay = document.getElementById('timerDisplay');
-    const progressCircle = document.getElementById('progressCircle');
+// ==================
+// GENERIC TO-DO (Exercise + Personal)
+// ==================
+function initToDo(type) {
+    const list = document.querySelector(`.${type}-list`);
+    const modalAddBtn = document.getElementById(`modalAdd${capitalize(type)}Btn`);
+    const nameInput = document.getElementById(`${type}NameInput`);
+    const durationInput = document.getElementById(`${type}DurationInput`);
 
-    // If essential elements are missing, skip initialization
-    if (!exerciseList || !modalAddBtn) return;
+    if (!list || !modalAddBtn) return;
 
-    // --- STATE ---
-    let exercises = JSON.parse(localStorage.getItem('cozyExercises')) || [];
+    const storageKey = type === "exercise" ? "cozyExercises" : "cozyPersonals";
+    const logKey = type === "exercise" ? "cozyExercisesLog" : "cozyPersonalsLog";
+
+    let tasks = JSON.parse(localStorage.getItem(storageKey)) || [];
+
+    // Timer-specific vars (only for exercise)
     let timerInterval = null;
     let currentTask = null;
     let remainingTime = 0;
-
-    const timerSound = new Audio('assets/playlist/Alarm02.wav');
+    const timerSound = type === "exercise" ? new Audio('assets/playlist/Alarm02.wav') : null;
+    const timerDisplay = document.getElementById('timerDisplay');
+    const progressCircle = document.getElementById('progressCircle');
     const circumference = progressCircle ? 2 * Math.PI * 70 : 0;
     if (progressCircle) progressCircle.style.strokeDasharray = circumference;
 
-    // --- SAVE FUNCTION ---
-    function saveExercises() {
-        localStorage.setItem('cozyExercises', JSON.stringify(exercises));
+    // Save
+    function saveTasks() {
+        localStorage.setItem(storageKey, JSON.stringify(tasks));
     }
 
-    // --- RENDER FUNCTION ---
-    function renderList(listElement, items) {
-        listElement.innerHTML = '';
+    // Render
+    function renderList() {
+        list.innerHTML = '';
 
-        if (items.length === 0) {
+        if (tasks.length === 0) {
             const placeholder = document.createElement('li');
             placeholder.className = 'text-center text-muted py-4 d-flex flex-column align-items-center gap-2';
 
-            const img = document.createElement('img');
-            img.src = 'assets/img/workout.gif';
-            img.alt = 'No tasks yet';
-            img.classList.add('img-fluid', 'rounded-4', 'mb-3');
+            if (type === "exercise") {
+                const img = document.createElement('img');
+                img.src = 'assets/img/workout.gif';
+                img.alt = 'No tasks yet';
+                img.classList.add('img-fluid', 'rounded-4', 'mb-3');
+                placeholder.appendChild(img);
 
-            const text = document.createElement('p');
-            text.className = 'mb-0';
-            text.innerHTML = 'No exercises yet! <br>Click "Add Exercise" to start your cozy routine.';
+                const text = document.createElement('p');
+                text.className = 'mb-0';
+                text.innerHTML = 'No exercises yet! <br>Click "Add Exercise" to start your cozy routine.';
+                placeholder.appendChild(text);
+            } else {
+                placeholder.textContent = 'No personal tasks yet!';
+            }
 
-            placeholder.appendChild(img);
-            placeholder.appendChild(text);
-            listElement.appendChild(placeholder);
+            list.appendChild(placeholder);
             return;
         }
 
-        items.forEach((task, index) => {
+        tasks.forEach((task, index) => {
             const li = document.createElement('li');
-            li.className = 'exercise-item d-flex justify-content-between align-items-center mb-3';
+            li.className = `${type}-item d-flex justify-content-between align-items-center mb-3`;
             li.innerHTML = `
                 <div class="form-check d-flex align-items-center gap-2">
-                    <input class="form-check-input" type="checkbox" id="exercise${index}" ${task.completed ? 'checked' : ''}>
-                    <label class="form-check-label" for="exercise${index}">${task.name}</label>
+                    <input class="form-check-input" type="checkbox" id="${type}${index}" ${task.completed ? 'checked' : ''}>
+                    <label class="form-check-label" for="${type}${index}">${task.name}</label>
                     <p class="small mb-0">${task.duration} min</p>
                 </div>
                 <div class="d-flex gap-1">
-                    <button class="btns btn-primary start-btn btn-start fs-6"><i class="bi bi-play-fill"></i></button>
-                    <button class="btns btn-red delete-btn btn-delete"><i class="bi bi-trash fs-6"></i></button>
+                    ${type === "exercise" ? `<button class="btns btn-primary start-btn btn-start fs-6"><i class="bi bi-play-fill"></i></button>` : ""}
+                    <button class="btns btn-red delete-btn"><i class="bi bi-trash fs-6"></i></button>
                 </div>
             `;
-            listElement.appendChild(li);
+            list.appendChild(li);
 
-            // --- Checkbox toggle ---
+            // Checkbox
             const checkbox = li.querySelector('.form-check-input');
             checkbox.addEventListener("change", () => {
                 task.completed = checkbox.checked;
-                saveExercises();
-                updateExerciseProgress();
+                saveTasks();
+                updateProgress();
             });
 
-            // --- Delete button ---
+            // Delete
             const deleteBtn = li.querySelector('.delete-btn');
             deleteBtn.addEventListener("click", () => {
-                exercises.splice(index, 1);
-                saveExercises();
-                renderList(exerciseList, exercises);
-                updateExerciseProgress();
+                tasks.splice(index, 1);
+                saveTasks();
+                renderList();
+                updateProgress();
             });
 
-            // --- Start / Pause button ---
-            const startBtn = li.querySelector('.start-btn');
-            startBtn.addEventListener('click', () => {
-                const btnIcon = startBtn.querySelector('i');
+            // Start timer (only for exercise)
+            if (type === "exercise") {
+                const startBtn = li.querySelector('.start-btn');
+                startBtn.addEventListener('click', () => {
+                    const btnIcon = startBtn.querySelector('i');
 
-                if (currentTask === task && timerInterval) {
-                    // Pause
-                    clearInterval(timerInterval);
-                    timerInterval = null;
-                    btnIcon.classList.replace('bi-pause-fill', 'bi-play-fill');
-                } else {
-                    // Start new timer
-                    document.querySelectorAll('.start-btn i').forEach(i => i.classList.replace('bi-pause-fill', 'bi-play-fill'));
-                    currentTask = task;
-                    btnIcon.classList.replace('bi-play-fill', 'bi-pause-fill');
-                    remainingTime = task.duration * 60;
-                    startTimer(task, startBtn);
-                }
-            });
+                    if (currentTask === task && timerInterval) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                        btnIcon.classList.replace('bi-pause-fill', 'bi-play-fill');
+                    } else {
+                        document.querySelectorAll('.start-btn i').forEach(i => i.classList.replace('bi-pause-fill', 'bi-play-fill'));
+                        currentTask = task;
+                        btnIcon.classList.replace('bi-play-fill', 'bi-pause-fill');
+                        remainingTime = task.duration * 60;
+                        startTimer(task, startBtn);
+                    }
+                });
+            }
         });
     }
 
-    // --- TIMER FUNCTION ---
+    // Timer logic (only for exercise)
     function startTimer(task, btn) {
         clearInterval(timerInterval);
 
@@ -124,7 +131,6 @@ function initExerciseToDo() {
                 if (timerDisplay) timerDisplay.textContent = '00:00';
                 btn.querySelector('i').classList.replace('bi-pause-fill', 'bi-play-fill');
 
-                // --- Lower music and play alarm ---
                 let playCount = 0;
                 if (window.audio) window.audio.volume = 0.3;
 
@@ -134,15 +140,15 @@ function initExerciseToDo() {
                         timerSound.play();
                     } else {
                         timerSound.onended = null;
-                        if (window.audio) window.audio.volume = 1.0; // restore music
+                        if (window.audio) window.audio.volume = 1.0;
                     }
                 };
                 timerSound.play();
 
                 task.completed = true;
-                saveExercises();
-                renderList(exerciseList, exercises);
-                updateExerciseProgress();
+                saveTasks();
+                renderList();
+                updateProgress();
                 remainingTime = 0;
                 currentTask = null;
                 return;
@@ -156,46 +162,49 @@ function initExerciseToDo() {
         }, 1000);
     }
 
-    // --- MODAL BUTTON EVENT ---
+    // Add button
     modalAddBtn.addEventListener("click", () => {
-        const name = exerciseNameInput.value.trim();
-        const duration = parseInt(exerciseDurationInput.value.trim(), 10);
+        const name = nameInput.value.trim();
+        const duration = parseInt(durationInput.value.trim(), 10);
 
         if (name && duration) {
-            exercises.push({ name, duration, completed: false });
-            saveExercises();
-            renderList(exerciseList, exercises);
-            updateExerciseProgress();
+            tasks.push({ name, duration, completed: false });
+            saveTasks();
+            renderList();
+            updateProgress();
 
-            exerciseNameInput.value = "";
-            exerciseDurationInput.value = "";
+            nameInput.value = "";
+            durationInput.value = "";
 
-            const modal = bootstrap.Modal.getInstance(document.getElementById("addExerciseModal"));
+            const modal = bootstrap.Modal.getInstance(document.getElementById(`add${capitalize(type)}Modal`));
             modal.hide();
         }
     });
 
-    // --- RESET BUTTON ---
-    if (resetBtn) {
-        resetBtn.addEventListener('click', () => {
-            clearInterval(timerInterval);
-            timerInterval = null;
-            remainingTime = 0;
-            currentTask = null;
-            if (timerDisplay) timerDisplay.textContent = '00:00';
-            if (progressCircle) progressCircle.style.strokeDashoffset = circumference;
-            document.querySelectorAll('.start-btn i').forEach(i => i.classList.replace('bi-pause-fill', 'bi-play-fill'));
-        });
+    // Reset button (only for exercise)
+    if (type === "exercise") {
+        const resetBtn = document.getElementById('resetBtn');
+        if (resetBtn) {
+            resetBtn.addEventListener('click', () => {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                remainingTime = 0;
+                currentTask = null;
+                if (timerDisplay) timerDisplay.textContent = '00:00';
+                if (progressCircle) progressCircle.style.strokeDashoffset = circumference;
+                document.querySelectorAll('.start-btn i').forEach(i => i.classList.replace('bi-pause-fill', 'bi-play-fill'));
+            });
+        }
     }
 
-    // --- PROGRESS FUNCTION ---
-    function updateExerciseProgress() {
-        const completedCount = exercises.filter(e => e.completed).length;
-        const totalCount = exercises.length;
+    // Update progress
+    function updateProgress() {
+        const completedCount = tasks.filter(e => e.completed).length;
+        const totalCount = tasks.length;
 
-        const completedEl = document.getElementById('exercise-completed-count');
-        const totalEl = document.getElementById('exercise-total-count');
-        const progressBar = document.getElementById('exercise-progress-bar');
+        const completedEl = document.getElementById(`${type}-completed-count`);
+        const totalEl = document.getElementById(`${type}-total-count`);
+        const progressBar = document.getElementById(`${type}-progress-bar`);
 
         if (completedEl) completedEl.textContent = completedCount;
         if (totalEl) totalEl.textContent = totalCount;
@@ -206,14 +215,26 @@ function initExerciseToDo() {
             progressBar.textContent = percentage + '%';
         }
 
-        // ✅ Log progress for today's LOCAL date
         const todayKey = getLocalDateKey();
-        let log = JSON.parse(localStorage.getItem("cozyExercisesLog")) || {};
-        log[todayKey] = exercises.filter(e => e.completed).map(e => e.name);
-        localStorage.setItem("cozyExercisesLog", JSON.stringify(log));
+        let log = JSON.parse(localStorage.getItem(logKey)) || {};
+        log[todayKey] = tasks.filter(e => e.completed).map(e => e.name);
+        localStorage.setItem(logKey, JSON.stringify(log));
     }
 
-    // --- INITIAL RENDER ---
-    renderList(exerciseList, exercises);
-    updateExerciseProgress();
+    // Init
+    renderList();
+    updateProgress();
 }
+
+// Capitalize helper
+function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// ==================
+// INIT BOTH
+// ==================
+document.addEventListener('DOMContentLoaded', () => {
+    initToDo("exercise");
+    initToDo("personal");
+});
