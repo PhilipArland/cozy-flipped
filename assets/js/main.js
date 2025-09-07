@@ -195,5 +195,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     /*** Load default page ***/
-    loadPage('activities');
+    loadPage('dashboard');
 });
