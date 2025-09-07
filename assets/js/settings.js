@@ -254,32 +254,11 @@ function initSettingsPage() {
                 localStorage.removeItem("cozy-username");
                 localStorage.removeItem("cozy-profile-img");
 
-                // Clear songs and playlists
-                localStorage.removeItem("allTracks");
-                localStorage.removeItem("playlists");
-
-                // Restore Cozy Playlist
-                if (cozy) {
-                    localStorage.setItem("playlists", JSON.stringify([cozy]));
-                } else {
-                    // fallback: recreate Cozy Playlist with hardcoded tracks
-                    localStorage.setItem("playlists", JSON.stringify([{
-                        id: 1,
-                        name: "Cozy Playlist",
-                        cover: "assets/img/cozy-welcome.jpg",
-                        tracks: window.myTracks || []
-                    }]));
-                }
-
                 // --- NEW: Clear To-Do Lists ---
                 localStorage.removeItem("cozyExercises");
                 localStorage.removeItem("cozyPersonals");
                 localStorage.removeItem("cozyTasksLog");
                 localStorage.removeItem("cozyExercisesLastReset");
-
-                // Reset globals if any
-                window.allTracks = [];
-                window.playlists = [];
 
                 // Reset UI inputs
                 usernameInput.value = "";

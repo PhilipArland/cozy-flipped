@@ -6,6 +6,10 @@ function getLocalDateKey(date = new Date()) {
     return `${year}-${month}-${day}`;
 }
 
+function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 // ==================
 // GENERIC TO-DO (Exercise + Personal)
 // ==================
@@ -19,6 +23,7 @@ function initToDo(type) {
 
     const storageKey = type === "exercise" ? "cozyExercises" : "cozyPersonals";
     const logKey = type === "exercise" ? "cozyExercisesLog" : "cozyPersonalsLog";
+    const lastResetKey = `${storageKey}LastReset`;
 
     let tasks = JSON.parse(localStorage.getItem(storageKey)) || [];
 
@@ -32,12 +37,33 @@ function initToDo(type) {
     const circumference = progressCircle ? 2 * Math.PI * 70 : 0;
     if (progressCircle) progressCircle.style.strokeDasharray = circumference;
 
-    // Save
+    // --- DAILY RESET ---
+    const todayStr = new Date().toDateString();
+    const lastReset = localStorage.getItem(lastResetKey);
+
+    if (lastReset !== todayStr) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const yKey = getLocalDateKey(yesterday);
+
+        let log = JSON.parse(localStorage.getItem(logKey)) || {};
+        if (!log[yKey]) {
+            log[yKey] = tasks.filter(t => t.completed).map(t => t.name);
+            localStorage.setItem(logKey, JSON.stringify(log));
+        }
+
+        // Reset today's tasks
+        tasks.forEach(t => t.completed = false);
+        localStorage.setItem(storageKey, JSON.stringify(tasks));
+        localStorage.setItem(lastResetKey, todayStr);
+    }
+
+    // --- SAVE ---
     function saveTasks() {
         localStorage.setItem(storageKey, JSON.stringify(tasks));
     }
 
-    // Render
+    // --- RENDER LIST ---
     function renderList() {
         list.innerHTML = '';
 
@@ -45,20 +71,18 @@ function initToDo(type) {
             const placeholder = document.createElement('li');
             placeholder.className = 'text-center text-muted py-4 d-flex flex-column align-items-center gap-2';
 
-            if (type === "exercise") {
-                const img = document.createElement('img');
-                img.src = 'assets/img/workout.gif';
-                img.alt = 'No tasks yet';
-                img.classList.add('img-fluid', 'rounded-4', 'mb-3');
-                placeholder.appendChild(img);
+            const img = document.createElement('img');
+            img.src = type === "exercise" ? 'assets/img/workout.gif' : 'assets/img/music.gif';
+            img.alt = 'No tasks yet';
+            img.classList.add('img-fluid', 'rounded-4', 'mb-3');
+            placeholder.appendChild(img);
 
-                const text = document.createElement('p');
-                text.className = 'mb-0';
-                text.innerHTML = 'No exercises yet! <br>Click "Add Exercise" to start your cozy routine.';
-                placeholder.appendChild(text);
-            } else {
-                placeholder.textContent = 'No personal tasks yet!';
-            }
+            const text = document.createElement('p');
+            text.className = 'mb-0';
+            text.innerHTML = type === "exercise"
+                ? 'No exercises yet! <br>Click "Add Exercise" to start your cozy routine.'
+                : 'No personal tasks yet! <br>Click "Add Personal" to start your cozy routine.';
+            placeholder.appendChild(text);
 
             list.appendChild(placeholder);
             return;
@@ -97,7 +121,7 @@ function initToDo(type) {
                 updateProgress();
             });
 
-            // Start timer (only for exercise)
+            // Start timer (exercise only)
             if (type === "exercise") {
                 const startBtn = li.querySelector('.start-btn');
                 startBtn.addEventListener('click', () => {
@@ -119,10 +143,9 @@ function initToDo(type) {
         });
     }
 
-    // Timer logic (only for exercise)
+    // --- TIMER LOGIC ---
     function startTimer(task, btn) {
         clearInterval(timerInterval);
-
         timerInterval = setInterval(() => {
             if (remainingTime <= 0) {
                 clearInterval(timerInterval);
@@ -133,12 +156,10 @@ function initToDo(type) {
 
                 let playCount = 0;
                 if (window.audio) window.audio.volume = 0.3;
-
                 timerSound.onended = () => {
                     playCount++;
-                    if (playCount < 2) {
-                        timerSound.play();
-                    } else {
+                    if (playCount < 2) timerSound.play();
+                    else {
                         timerSound.onended = null;
                         if (window.audio) window.audio.volume = 1.0;
                     }
@@ -151,37 +172,35 @@ function initToDo(type) {
                 updateProgress();
                 remainingTime = 0;
                 currentTask = null;
-                return;
+            } else {
+                remainingTime--;
+                const mins = Math.floor(remainingTime / 60);
+                const secs = remainingTime % 60;
+                if (timerDisplay) timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                if (progressCircle) progressCircle.style.strokeDashoffset = circumference * (remainingTime / (task.duration * 60));
             }
-
-            remainingTime--;
-            const mins = Math.floor(remainingTime / 60);
-            const secs = remainingTime % 60;
-            if (timerDisplay) timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-            if (progressCircle) progressCircle.style.strokeDashoffset = circumference * (remainingTime / (task.duration * 60));
         }, 1000);
     }
 
-    // Add button
+    // --- ADD TASK ---
     modalAddBtn.addEventListener("click", () => {
         const name = nameInput.value.trim();
         const duration = parseInt(durationInput.value.trim(), 10);
+        if (!name || !duration) return;
 
-        if (name && duration) {
-            tasks.push({ name, duration, completed: false });
-            saveTasks();
-            renderList();
-            updateProgress();
+        tasks.push({ name, duration, completed: false });
+        saveTasks();
+        renderList();
+        updateProgress();
 
-            nameInput.value = "";
-            durationInput.value = "";
+        nameInput.value = "";
+        durationInput.value = "";
 
-            const modal = bootstrap.Modal.getInstance(document.getElementById(`add${capitalize(type)}Modal`));
-            modal.hide();
-        }
+        const modal = bootstrap.Modal.getInstance(document.getElementById(`add${capitalize(type)}Modal`));
+        modal.hide();
     });
 
-    // Reset button (only for exercise)
+    // --- RESET BUTTON (exercise only) ---
     if (type === "exercise") {
         const resetBtn = document.getElementById('resetBtn');
         if (resetBtn) {
@@ -197,7 +216,7 @@ function initToDo(type) {
         }
     }
 
-    // Update progress
+    // --- UPDATE PROGRESS & LOG ---
     function updateProgress() {
         const completedCount = tasks.filter(e => e.completed).length;
         const totalCount = tasks.length;
@@ -215,20 +234,20 @@ function initToDo(type) {
             progressBar.textContent = percentage + '%';
         }
 
+        // --- Update cozyTasksLog ---
         const todayKey = getLocalDateKey();
-        let log = JSON.parse(localStorage.getItem(logKey)) || {};
-        log[todayKey] = tasks.filter(e => e.completed).map(e => e.name);
-        localStorage.setItem(logKey, JSON.stringify(log));
-    }
+        let tasksLog = JSON.parse(localStorage.getItem("cozyTasksLog")) || {};
+        const todayLog = tasksLog[todayKey] || { exercisesDone: [], personalsDone: [] };
 
-    // Init
+        if (type === "exercise") todayLog.exercisesDone = tasks.filter(e => e.completed).map(e => e.name);
+        if (type === "personal") todayLog.personalsDone = tasks.filter(p => p.completed).map(p => p.name);
+
+        tasksLog[todayKey] = todayLog;
+        localStorage.setItem("cozyTasksLog", JSON.stringify(tasksLog));
+    }
+    // --- INIT ---
     renderList();
     updateProgress();
-}
-
-// Capitalize helper
-function capitalize(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 // ==================

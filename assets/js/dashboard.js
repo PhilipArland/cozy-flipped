@@ -13,7 +13,7 @@ function initDashboardPage() {
         const lastReset = localStorage.getItem("cozyTasksLastReset");
 
         if (lastReset !== today) {
-            // ✅ Finalize yesterday
+            // Finalize yesterday
             const yesterday = new Date();
             yesterday.setDate(yesterday.getDate() - 1);
             const yKey = getLocalDateKey(yesterday);
@@ -47,17 +47,23 @@ function initDashboardPage() {
         const personalTasks = JSON.parse(localStorage.getItem("cozyPersonals")) || [];
         const totalCount = personalTasks.length;
         const completedCount = personalTasks.filter(task => task.completed).length;
-        const remainingCount = totalCount - completedCount;
 
+        const remainingCount = totalCount - completedCount;
         const personalEl = document.getElementById("personal-count");
         if (personalEl) personalEl.textContent = remainingCount;
 
         const progressBar = document.getElementById("personal-progress-bar");
+        const completedSpan = document.getElementById("personal-completed-count");
+        const totalSpan = document.getElementById("personal-total-count");
+
         if (progressBar) {
             const percentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
             progressBar.style.width = percentage + "%";
             progressBar.textContent = percentage + "%";
         }
+
+        if (completedSpan) completedSpan.textContent = completedCount;
+        if (totalSpan) totalSpan.textContent = totalCount;
     }
 
     // --- Exercise Tasks ---
@@ -65,8 +71,8 @@ function initDashboardPage() {
         const exercises = JSON.parse(localStorage.getItem("cozyExercises")) || [];
         const totalCount = exercises.length;
         const completedCount = exercises.filter(e => e.completed).length;
-        const remainingCount = totalCount - completedCount;
 
+        const remainingCount = totalCount - completedCount;
         const exerciseEl = document.getElementById("exercise-count");
         if (exerciseEl) exerciseEl.textContent = remainingCount;
 
@@ -127,52 +133,35 @@ function initDashboardPage() {
 
             const dayKey = getLocalDateKey(new Date(year, month, d));
 
-            // Today is always orange
             if (d === today) {
+                // Today always orange
                 div.style.background = "var(--bg-cozy-orange)";
                 div.style.color = "#fff";
                 div.style.borderRadius = "6px";
+            } else if (completedLog[dayKey]) {
+                const { exercisesDone = [], personalsDone = [] } = completedLog[dayKey];
+                const allExercisesDone = exercises.length > 0 && exercisesDone.length === exercises.length;
+                const allPersonalsDone = personals.length > 0 && personalsDone.length === personals.length;
 
-                if (completedLog[dayKey]) {
-                    let banner = document.createElement("span");
-                    banner.textContent = "✓";
-                    banner.style.position = "absolute";
-                    banner.style.top = "2px";
-                    banner.style.right = "4px";
-                    banner.style.fontSize = "0.7rem";
-                    banner.style.color = "#fff";
-                    banner.style.background = "var(--bg-cozy-green)";
-                    banner.style.borderRadius = "4px";
-                    banner.style.padding = "0 3px";
-                    div.appendChild(banner);
+                if (allExercisesDone && allPersonalsDone) {
+                    div.style.background = "var(--bg-cozy-green)";
+                    div.style.color = "#fff";
+                } else {
+                    div.style.background = "var(--bg-cozy-yellow)";
+                    div.style.color = "#000";
                 }
-            } else {
-                if (completedLog[dayKey]) {
-                    const { exercisesDone = [], personalsDone = [] } = completedLog[dayKey];
-                    const allExercisesDone = exercises.length > 0 && exercisesDone.length === exercises.length;
-                    const allPersonalsDone = personals.length > 0 && personalsDone.length === personals.length;
-
-                    if (allExercisesDone && allPersonalsDone) {
-                        div.style.background = "var(--bg-cozy-green)"; // ✅ all done
-                        div.style.color = "#fff";
-                    } else {
-                        div.style.background = "var(--bg-cozy-yellow)"; // ⚠️ some done
-                        div.style.color = "#000";
-                    }
-                    div.style.borderRadius = "6px";
-                }
+                div.style.borderRadius = "6px";
             }
-
             grid.appendChild(div);
         }
     }
 
-    // --- Initial update on page load ---
+    // --- Initial update ---
     updatePersonalProgress();
     updateExerciseProgress();
     generateCalendar();
 
-    // --- Keep them in sync live ---
+    // --- Keep live ---
     setInterval(() => {
         updatePersonalProgress();
         updateExerciseProgress();

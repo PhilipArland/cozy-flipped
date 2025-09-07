@@ -145,20 +145,23 @@
     <div class="modal fade" id="addPersonalModal" tabindex="-1" aria-labelledby="addPersonalModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="border-radius: 15px;">
+            <div class="modal-content rounded-4"> <!-- simpler border-radius -->
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addPersonalModalLabel">Add New Personal</h5>
+                    <h5 class="modal-title" id="addPersonalModalLabel">Add New Personal Task</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="personalNameInput" class="form-label">Personal Name</label>
-                        <input type="text" class="form-control" id="personalNameInput" placeholder="Jogging">
-                    </div>
-                    <div class="mb-3">
-                        <label for="personalDurationInput" class="form-label">Duration (minutes)</label>
-                        <input type="number" class="form-control" id="personalDurationInput" placeholder="30">
-                    </div>
+                    <form id="addPersonalForm">
+                        <div class="mb-3">
+                            <label for="personalNameInput" class="form-label">Task Name</label>
+                            <input type="text" class="form-control" id="personalNameInput" placeholder="Study">
+                        </div>
+                        <div class="mb-3">
+                            <label for="personalDurationInput" class="form-label">Duration (minutes)</label>
+                            <input type="number" class="form-control" id="personalDurationInput" placeholder="30"
+                                min="1">
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btns btn-cancel" data-bs-dismiss="modal">Cancel</button>
@@ -167,6 +170,7 @@
             </div>
         </div>
     </div>
+
 
 
 
