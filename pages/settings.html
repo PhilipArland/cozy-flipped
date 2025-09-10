@@ -25,7 +25,7 @@
 
             <div class="mb-3">
                 <label for="username" class="form-label fw-bold">Display Name</label>
-                <input type="text" id="username" class="form-control custom-input" placeholder="Enter your name">
+                <input type="text" id="username" class="form-control custom-text-input" placeholder="Enter your name">
             </div>
 
             <div class="mb-3">
@@ -127,8 +127,8 @@
                     <i class="bi bi-cloud-fill me-2"></i> Manage Your Storage
                 </h5>
                 <h5>
-                    <i class="bi bi-info-circle ms-2" tabindex="0" data-bs-toggle="popover"
-                        data-bs-trigger="focus" data-bs-placement="left" data-bs-html="true"
+                    <i class="bi bi-info-circle ms-2" tabindex="0" data-bs-toggle="popover" data-bs-trigger="focus"
+                        data-bs-placement="left" data-bs-html="true"
                         title='<i class="bi bi-info-circle-fill me-1"></i> About Local Storage'
                         data-bs-content="This page uses your browser's localStorage to save your settings. The available space may vary depending on your browser and device.">
                     </i>
@@ -229,16 +229,28 @@
 
 
 <style>
-    .custom-input {
+    .custom-text-input {
         border: 1px solid var(--bg-cozy-orange);
-        background: var(--bg-warm-cream);
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        background: rgba(212, 165, 116, 0.1);
+        /* default background */
+        transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
         color: var(--text-primary);
     }
 
-    .custom-input:focus {
-        box-shadow: 0 0 8px rgba(212, 165, 116, 0.5);
+    .custom-text-input:focus {
+        background: rgba(212, 165, 116, 0.2);
+        border-color: var(--bg-cozy-orange);
+        box-shadow: 0 0 4px rgba(212, 165, 116, 0.5);
+        color: var(--text-primary);
+        outline: none;
     }
+
+    .custom-text-input::placeholder {
+        color: var(--text-secondary);
+        opacity: 1;
+    }
+
+
 
     .upload-box {
         background: rgba(212, 165, 116, 0.1);
