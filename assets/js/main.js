@@ -31,11 +31,29 @@ function applySavedProfile() {
     }
 }
 
+function applyDynamicFooter() {
+    const year = new Date().getFullYear();
+    const yearEls = [
+        document.getElementById("footer-year"),          // desktop
+        document.getElementById("mobile-footer-year")    // mobile (if exists)
+    ];
+
+    yearEls.forEach(el => {
+        if (el) el.textContent = year;
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    applyDynamicFooter();
+});
+
+
 // ===== DOMContentLoaded =====
 document.addEventListener("DOMContentLoaded", function () {
 
     applySavedTheme();
     applySavedProfile();
+    applyDynamicFooter();
     applySavedSidebarBehavior();
 
     function loadPage(page, callback) {
@@ -187,6 +205,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 loadPage(page);
             });
         });
+
+        applyDynamicFooter();
     });
 
     /*** Load default page ***/

@@ -1,4 +1,4 @@
-<div class="sidebar-page p-2">
+<div class="sidebar-page p-2 d-flex flex-column h-100">
     <div class="sidebar-header d-flex align-items-center my-2 pb-2">
         <h4 class="fw-bold m-0">
             <i class="bi bi-music-note me-1"></i>
@@ -11,7 +11,7 @@
         <p id="navbar-username" class="mb-0 fw-semibold">Cozy User</p>
     </div>
 
-    <div class="sidebar-menu">
+    <div class="sidebar-menu flex-grow-1">
         <ul class="list-unstyled mb-0">
             <li class="mb-2">
                 <a href="#" data-page="dashboard" class="p-2 rounded-3 text-decoration-none active">
@@ -38,5 +38,10 @@
                 </a>
             </li>
         </ul>
+    </div>
+
+    <!-- Footer pinned to bottom -->
+    <div class="sidebar-footer text-center py-2 mt-auto" id="mobile-sidebar-footer">
+        <!-- Dynamic year will be injected -->
     </div>
 </div>

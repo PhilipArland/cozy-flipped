@@ -21,7 +21,7 @@
     }
 </style>
 
-<div class="sidebar-page">
+<div class="sidebar-page d-flex flex-column h-100">
     <div class="sidebar-header d-flex align-items-center mb-3">
         <h4 class="fw-bold m-0">
             <i class="bi bi-music-note me-1"></i>
@@ -37,7 +37,8 @@
         <p id="sidebar-username" class="mb-0 fw-semibold">Cozy User</p>
     </div>
 
-    <div class="sidebar-menu">
+    <!-- menu grows to push footer down -->
+    <div class="sidebar-menu flex-grow-1">
         <ul class="list-unstyled mb-0">
             <li class="mb-2">
                 <a href="#" data-page="dashboard" class="p-2 rounded-3 text-decoration-none active">
@@ -51,12 +52,6 @@
                     <span>Activities</span>
                 </a>
             </li>
-            <!-- <li class="mb-2">
-                <a href="#" data-page="playlist" class="p-2 rounded-3 text-decoration-none">
-                    <i class="bi bi-music-note-list"></i>
-                    <span>Playlist</span>
-                </a>
-            </li> -->
             <li class="mb-2">
                 <a href="#" data-page="settings" class="p-2 rounded-3 text-decoration-none">
                     <i class="bi bi-gear"></i>
@@ -66,4 +61,9 @@
         </ul>
     </div>
 
+    <!-- Footer pinned to bottom -->
+    <div id="sidebar-footer" class="sidebar-footer text-center py-2">
+        &copy; <span id="footer-year"></span>
+        <span class="footer-extra">| Designed by Philip Arland Alili</span>
+    </div>
 </div>

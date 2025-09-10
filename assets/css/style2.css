@@ -105,6 +105,10 @@ body {
     padding: 0;
 }
 
+#left-sidebar.closed .sidebar-footer .footer-extra {
+    display: none;
+}
+
 #left-sidebar .sidebar-header {
     justify-content: space-between;
 }
@@ -389,6 +393,13 @@ body {
 .form-check-label {
     cursor: pointer;
     font-weight: 500;
+}
+
+.sidebar-footer {
+    color: var(--text-soft);
+    font-size: 0.8rem;
+    margin-top: auto;
+    border-top: 1px solid var(--bg-soft-brown);
 }
 
 
