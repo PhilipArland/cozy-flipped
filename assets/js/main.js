@@ -210,5 +210,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     /*** Load default page ***/
-    loadPage('settings');
+    loadPage('dashbaord');
 });
