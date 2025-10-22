@@ -179,10 +179,18 @@
                     .join(' ');
                 }
 
-                // 🚨 Check for duplicates in the entire column
+                // 🚨 Check for duplicates in the entire column (ignores extra spaces)
                 function checkDuplicate(sheet, range, value, column) {
-                const data = sheet.getRange(2, column, sheet.getLastRow() - 1).getValues().flat();
-                const matches = data.filter(v => String(v).toLowerCase() === value);
+                // Normalize the value: lowercase + trimmed
+                const cleanValue = String(value).toLowerCase().trim();
+
+                const data = sheet
+                    .getRange(2, column, sheet.getLastRow() - 1)
+                    .getValues()
+                    .flat()
+                    .map(v => String(v).toLowerCase().trim()); // 👈 trim spaces for all cells
+
+                const matches = data.filter(v => v === cleanValue);
 
                 if (matches.length > 1) {
                     // Highlight duplicate cell in light red
@@ -197,7 +205,7 @@
                 function setDefaultFont(range) {
                 range.setFontFamily('Helvetica Neue');
                 range.setFontSize(11);
-                }
+            }
             </code></pre>
 
             <div>
