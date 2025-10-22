@@ -206,6 +206,29 @@
                 range.setFontFamily('Helvetica Neue');
                 range.setFontSize(11);
             }
+
+
+            - - - - - - -
+
+            =IF(
+            COUNTA(A1:A100)=0,
+            "No cities listed.",
+            IF(
+                COUNTIF(D1:D100, TRUE) + COUNTIF(D1:D100, "TRUE")=0,
+                "No city completed yet. I will start collecting now in " & INDEX(A1:A100,1) & ", " & INDEX(C1:C100,1) & ".",
+                IF(
+                COUNTIF(D1:D100, TRUE) + COUNTIF(D1:D100, "TRUE")=COUNTA(A1:A100),
+                "All cities completed.",
+                "Hi, I finished collecting emails in " &
+                    INDEX(A1:A100, MAX(FILTER(ROW(A1:A100)-ROW(A1)+1, (D1:D100=TRUE)+(D1:D100="TRUE")>0))) &
+                    ", " & INDEX(C1:C100, MAX(FILTER(ROW(A1:A100)-ROW(A1)+1, (D1:D100=TRUE)+(D1:D100="TRUE")>0))) &
+                    " for Bars/Night Clubs. I will start collecting now in " &
+                    INDEX(A1:A100, MATCH(FALSE, (D1:D100=TRUE)+(D1:D100="TRUE")>0, 0)) &
+                    ", " & INDEX(C1:C100, MATCH(FALSE, (D1:D100=TRUE)+(D1:D100="TRUE")>0, 0)) & "."
+                )
+            )
+            )
+
             </code></pre>
 
             <div>
