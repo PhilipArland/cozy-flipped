@@ -111,31 +111,6 @@
             </div>
 
         </div>
-
-        <div class="alert alert-info mt-3 rounded-4 small">
-            <div class="d-flex align-items-start gap-2 mb-2">
-                <i class="bi bi-info-circle-fill fs-5"></i>
-                <div>
-                    <strong>For Delete:</strong> Just copy this script into your Google Apps Script editor.
-                </div>
-            </div>
-
-            <!-- Code box -->
-            <pre class="bg-dark text-white p-3 rounded-4 mt-2 small overflow-auto" style="max-height: 400px;">
-            <code class="language-javascript">
-                <!-- https://chatgpt.com/share/69150f09-c1d0-8005-b27d-fd3326821070 -->
-                function updateText() {
-                    let company = document.getElementById("company").value;
-                    company = company.trim() || "CompanyName";
-                    
-                    document.getElementById("subject").value = defaultSubject.replace("{{CompanyName}}", company);
-                    document.getElementById("body").value = defaultBody.replace(/{{Company}}/g, company);
-                }
-
-                https://drive.google.com/drive/folders/1vUNpt9JFZFr2ZKKhtJaKDBqsQIxs7qBE?usp=drive_link
-            </code></pre>
-        </div>
-
     </div>
 
 
