@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function handlePageInit(page) {
         syncActiveLinks(page);
 
-        if (page === 'dashboard') {
+        if (page === 'dashboard2') {
             if (typeof initDashboardPage === 'function') initDashboardPage();
             initToDo("exercise");
             initToDo("personal");
@@ -210,5 +210,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     /*** Load default page ***/
-    loadPage('dashboard');
+    loadPage('dashboard2');
 });

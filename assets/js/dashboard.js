@@ -1,170 +1,258 @@
-// --- UTIL ---
-function getLocalDateKey(date = new Date()) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-}
+console.log("dashboard.js loaded");
 
-// ==================
-// DASHBOARD INIT
-// ==================
 function initDashboardPage() {
-    // --- Reset tasks daily ---
-    function resetDailyTasks() {
-        const today = new Date().toDateString();
-        const lastReset = localStorage.getItem("cozyTasksLastReset");
 
-        if (lastReset !== today) {
-            // Finalize yesterday
-            const yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-            const yKey = getLocalDateKey(yesterday);
+    console.log("initDashboardPage() called");
 
-            const exercises = JSON.parse(localStorage.getItem("cozyExercises")) || [];
-            const personals = JSON.parse(localStorage.getItem("cozyPersonals")) || [];
-            let log = JSON.parse(localStorage.getItem("cozyTasksLog")) || {};
+    const todoColumn = document.getElementById("todoColumn");
+    const progressColumn = document.getElementById("progressColumn");
+    const doneColumn = document.getElementById("doneColumn");
 
-            if (!log[yKey]) {
-                log[yKey] = {
-                    exercisesDone: exercises.filter(e => e.completed).map(e => e.name),
-                    personalsDone: personals.filter(p => p.completed).map(p => p.name)
-                };
-                localStorage.setItem("cozyTasksLog", JSON.stringify(log));
+    console.log("todoColumn:", todoColumn);
+    console.log("progressColumn:", progressColumn);
+    console.log("doneColumn:", doneColumn);
+
+    if (!todoColumn || !progressColumn || !doneColumn) {
+        console.log("Kanban elements not found!");
+        return;
+    }
+
+    let tasks = JSON.parse(localStorage.getItem("kanbanTasks"));
+
+    if (!tasks) {
+        tasks = [
+            {
+                id: Date.now(),
+                title: "Website Backup",
+                status: "todo",
+                label: "Website"
             }
+        ];
 
-            // Reset for today
-            exercises.forEach(e => e.completed = false);
-            personals.forEach(p => p.completed = false);
-
-            localStorage.setItem("cozyExercises", JSON.stringify(exercises));
-            localStorage.setItem("cozyPersonals", JSON.stringify(personals));
-            localStorage.setItem("cozyTasksLastReset", today);
-        }
+        saveTasks();
     }
 
-    resetDailyTasks();
 
-    // --- Unified Task Progress (Exercises + Personal) ---
-    function updateTaskProgress(type) {
-        const tasks = JSON.parse(localStorage.getItem(type === "exercise" ? "cozyExercises" : "cozyPersonals")) || [];
-        const completedCount = tasks.filter(t => t.completed).length;
-        const totalCount = tasks.length;
-        const remainingCount = totalCount - completedCount;
-
-        const countEl = document.getElementById(`${type}-count`);
-        const messageEl = countEl.nextElementSibling;
-
-        if (totalCount === 0) {
-            countEl.textContent = '';
-            messageEl.textContent = 'You have no tasks today! 🛋️';
-        } else if (remainingCount === 0) {
-            countEl.textContent = '';
-            messageEl.textContent = '🎉 All done!';
-        } else {
-            countEl.textContent = remainingCount;
-            messageEl.textContent = 'remaining';
-        }
-
-        const progressBar = document.getElementById(`${type}-progress-bar`);
-        const completedSpan = document.getElementById(`${type}-completed-count`);
-        const totalSpan = document.getElementById(`${type}-total-count`);
-
-        if (progressBar) {
-            const percentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
-            progressBar.style.width = percentage + '%';
-            progressBar.textContent = percentage + '%';
-        }
-        if (completedSpan) completedSpan.textContent = completedCount;
-        if (totalSpan) totalSpan.textContent = totalCount;
-
-        // Update cozyTasksLog
-        const todayKey = getLocalDateKey();
-        let tasksLog = JSON.parse(localStorage.getItem("cozyTasksLog")) || {};
-        const todayLog = tasksLog[todayKey] || { exercisesDone: [], personalsDone: [] };
-
-        if (type === "exercise") todayLog.exercisesDone = tasks.filter(t => t.completed).map(t => t.name);
-        if (type === "personal") todayLog.personalsDone = tasks.filter(t => t.completed).map(t => t.name);
-
-        tasksLog[todayKey] = todayLog;
-        localStorage.setItem("cozyTasksLog", JSON.stringify(tasksLog));
+    function saveTasks() {
+        localStorage.setItem("kanbanTasks", JSON.stringify(tasks));
     }
 
-    // --- Calendar Generation ---
-    function generateCalendar() {
-        const grid = document.getElementById("calendar-grid");
-        const monthLabel = document.getElementById("calendar-month");
-        if (!grid || !monthLabel) return;
 
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = date.getMonth();
-        const today = date.getDate();
-        const monthName = date.toLocaleString("default", { month: "long" });
-        monthLabel.textContent = `${monthName} ${year}`;
-        grid.innerHTML = "";
+    function renderTasks() {
 
-        const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-        weekdays.forEach(d => {
-            const div = document.createElement("div");
-            div.textContent = d;
-            div.style.fontWeight = "bold";
-            div.style.color = "var(--text-primary)";
-            grid.appendChild(div);
+        todoColumn.innerHTML = "";
+        progressColumn.innerHTML = "";
+        doneColumn.innerHTML = "";
+
+        const todoTasks = tasks.filter(task => task.status === "todo");
+        const progressTasks = tasks.filter(task => task.status === "progress");
+        const doneTasks = tasks.filter(task => task.status === "done");
+
+
+        todoTasks.forEach(task => {
+            todoColumn.appendChild(createTaskCard(task));
         });
 
-        const firstDay = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        progressTasks.forEach(task => {
+            progressColumn.appendChild(createTaskCard(task));
+        });
 
-        const exercises = JSON.parse(localStorage.getItem("cozyExercises")) || [];
-        const personals = JSON.parse(localStorage.getItem("cozyPersonals")) || [];
-        const completedLog = JSON.parse(localStorage.getItem("cozyTasksLog")) || {};
+        doneTasks.forEach(task => {
+            doneColumn.appendChild(createTaskCard(task));
+        });
 
-        // Empty cells before first day
-        for (let i = 0; i < firstDay; i++) grid.appendChild(document.createElement("div"));
 
-        for (let d = 1; d <= daysInMonth; d++) {
-            const div = document.createElement("div");
-            div.style.color = "var(--text-primary)";
-            div.style.position = "relative";
-            div.textContent = d;
+        addCardButton(todoColumn, "todo");
+        addCardButton(progressColumn, "progress");
+        addCardButton(doneColumn, "done");
 
-            const dayKey = getLocalDateKey(new Date(year, month, d));
 
-            if (d === today) {
-                div.style.background = "var(--bg-cozy-orange)";
-                div.style.color = "#fff";
-                div.style.borderRadius = "6px";
-            } else if (completedLog[dayKey]) {
-                const { exercisesDone = [], personalsDone = [] } = completedLog[dayKey];
-                const allExercisesDone = exercises.length > 0 && exercisesDone.length === exercises.length;
-                const allPersonalsDone = personals.length > 0 && personalsDone.length === personals.length;
-
-                if (allExercisesDone && allPersonalsDone) {
-                    div.style.background = "var(--bg-cozy-green)";
-                    div.style.color = "#fff";
-                } else if (exercisesDone.length > 0 || personalsDone.length > 0) {
-                    div.style.background = "var(--bg-cozy-yellow)";
-                    div.style.color = "#000";
-                }
-                div.style.borderRadius = "6px";
-            }
-
-            grid.appendChild(div);
-        }
+        todoCount.textContent = todoTasks.length;
+        progressCount.textContent = progressTasks.length;
+        doneCount.textContent = doneTasks.length;
     }
 
-    // --- Initial update on page load ---
-    updateTaskProgress("personal");
-    updateTaskProgress("exercise");
-    generateCalendar();
 
-    // --- Keep them in sync live ---
-    setInterval(() => {
-        updateTaskProgress("personal");
-        updateTaskProgress("exercise");
-        generateCalendar();
-    }, 2000);
+    function createTaskCard(task) {
 
-    applySavedProfile();
+        const card = document.createElement("div");
+
+        card.className = "card border shadow-sm";
+
+        card.innerHTML = `
+            <div class="card-body p-3">
+
+                <div class="d-flex justify-content-between align-items-start">
+
+                    <h6 class="mb-2">
+                        ${escapeHtml(task.title)}
+                    </h6>
+
+                    <div class="dropdown">
+                        <button
+                            class="btn btn-sm btn-light p-1"
+                            data-bs-toggle="dropdown">
+                            <i class="bi bi-three-dots"></i>
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-end">
+
+                            ${task.status !== "todo"
+                ? `
+                                        <li>
+                                            <button
+                                                class="dropdown-item move-task"
+                                                data-id="${task.id}"
+                                                data-status="todo">
+                                                Move to To Do
+                                            </button>
+                                        </li>
+                                      `
+                : ""
+            }
+
+                            ${task.status !== "progress"
+                ? `
+                                        <li>
+                                            <button
+                                                class="dropdown-item move-task"
+                                                data-id="${task.id}"
+                                                data-status="progress">
+                                                Move to In Progress
+                                            </button>
+                                        </li>
+                                      `
+                : ""
+            }
+
+                            ${task.status !== "done"
+                ? `
+                                        <li>
+                                            <button
+                                                class="dropdown-item move-task"
+                                                data-id="${task.id}"
+                                                data-status="done">
+                                                Move to Done
+                                            </button>
+                                        </li>
+                                      `
+                : ""
+            }
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <li>
+                                <button
+                                    class="dropdown-item text-danger delete-task"
+                                    data-id="${task.id}">
+                                    Delete
+                                </button>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                </div>
+
+                ${task.label
+                ? `
+                            <span class="badge bg-primary-subtle text-primary">
+                                ${escapeHtml(task.label)}
+                            </span>
+                          `
+                : ""
+            }
+
+            </div>
+        `;
+
+        return card;
+    }
+
+
+    function addCardButton(column, status) {
+
+        const button = document.createElement("button");
+
+        button.className =
+            "btn btn-light text-start text-muted border-0";
+
+        button.innerHTML = `
+            <i class="bi bi-plus-lg me-1"></i>
+            Add a card
+        `;
+
+        button.addEventListener("click", function () {
+
+            const title = prompt("Enter task name:");
+
+            if (!title || !title.trim()) return;
+
+            tasks.push({
+                id: Date.now(),
+                title: title.trim(),
+                status: status,
+                label: ""
+            });
+
+            saveTasks();
+            renderTasks();
+
+        });
+
+        column.appendChild(button);
+    }
+
+
+    document.addEventListener("click", function (event) {
+
+        const moveButton =
+            event.target.closest(".move-task");
+
+        const deleteButton =
+            event.target.closest(".delete-task");
+
+
+        if (moveButton) {
+
+            const id = Number(moveButton.dataset.id);
+            const status = moveButton.dataset.status;
+
+            const task = tasks.find(task => task.id === id);
+
+            if (task) {
+                task.status = status;
+
+                saveTasks();
+                renderTasks();
+            }
+        }
+
+
+        if (deleteButton) {
+
+            const id = Number(deleteButton.dataset.id);
+
+            tasks = tasks.filter(task => task.id !== id);
+
+            saveTasks();
+            renderTasks();
+        }
+
+    });
+
+
+    function escapeHtml(text) {
+
+        const div = document.createElement("div");
+
+        div.textContent = text;
+
+        return div.innerHTML;
+    }
+
+
+    renderTasks();
 }
